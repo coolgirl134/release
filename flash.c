@@ -1324,6 +1324,7 @@ Status static_write(struct ssd_info * ssd, unsigned int channel,unsigned int chi
     } 
     else
     {
+        ssd->need_to_write++;
         sub->next_state_predict_time=ssd->current_time+7*ssd->parameter->time_characteristics.tWC+(sub->size*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tWC;
     }
     sub->complete_time=sub->next_state_predict_time;		

@@ -189,10 +189,12 @@ struct ssd_info *pre_process_page(struct ssd_info *ssd)
     full_page=~(0xffffffff<<(ssd->parameter->subpage_page));
     /*计算出这个ssd的最大逻辑扇区号*/
     largest_lsn=(unsigned int )((ssd->parameter->chip_num*ssd->parameter->die_chip*ssd->parameter->plane_die*ssd->parameter->block_plane*ssd->parameter->page_block*ssd->parameter->subpage_page)*(1-ssd->parameter->overprovide));
-
+    int response;
     while(fgets(buffer_request,200,ssd->tracefile))
     {
-        sscanf(buffer_request,"%lld %d %d %d %d",&time,&device,&lsn,&size,&ope);
+        // sscanf(buffer_request,"%lld %d %d %d %d",&time,&device,&lsn,&size,&ope);
+        sscanf(buffer_request,"%lld %d %d %lld %d %d",&time,&device,&ope,&lsn,&size,&response);
+        size /= SECTOR;
         fl++;
         trace_assert(time,device,lsn,size,ope);                         /*断言，当读到的time，device，lsn，size，ope不合法时就会处理*/
 

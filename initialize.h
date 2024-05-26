@@ -163,13 +163,20 @@ struct ssd_info{
     unsigned int token;                  //在动态分配中，为防止每次分配在第一个channel需要维持一个令牌，每次从令牌所指的位置开始分配
     unsigned int gc_request;             //记录在SSD中，当前时刻有多少gc操作的请求
 
-    unsigned int write_request_count;    //记录写操作的次数
-    unsigned int read_request_count;     //记录读操作的次数
+    unsigned int write_request_count;    //记录写操作的次数，基于大请求
+    unsigned int read_request_count;     //记录读操作的次数,基于大请求
     int64_t write_avg;                   //记录用于计算写请求平均响应时间的时间
     int64_t read_avg;                    //记录用于计算读请求平均响应时间的时间
 
+    unsigned int total_write;           //记录基于子请求的写操作个数
+    unsigned int total_read;            //记录基于子请求的读操作个数
+    unsigned int tail_latency;          // 记录尾延迟
+
+    int need_to_write;                  //记录真实需要写入的页的数量
+    unsigned int real_written;          //记录实际写入的页的数量
+
     unsigned int min_lsn;
-    unsigned int max_lsn;
+    unsigned long max_lsn;
     unsigned long read_count;
     unsigned long program_count;
     unsigned long erase_count;
@@ -360,7 +367,7 @@ struct request{
     int distri_flag;		           // indicate whether this request has been distributed already
 
     int64_t begin_time;
-    int64_t response_time;
+    int64_t response_time;              //记录该请求在dram中的响应时间
     double energy_consumption;         //记录该请求的能量消耗，单位为uJ
 
     struct sub_request *subs;          //链接到属于该请求的所有子请求
