@@ -113,6 +113,9 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define OVERFLOW	-3
 typedef int Status;     
 
+unsigned int latency[1000];
+int latency_index;
+
 struct ac_time_characteristics{
     int tPROG;     //program time
     int tDBSY;     //bummy busy time for two-plane program
@@ -172,8 +175,9 @@ struct ssd_info{
     unsigned int total_read;            //记录基于子请求的读操作个数
     unsigned int tail_latency;          // 记录尾延迟
 
-    int need_to_write;                  //记录真实需要写入的页的数量
-    unsigned int real_written;          //记录实际写入的页的数量
+    int gc_rewrite;                  //记录gc产生的多余的写入量
+    unsigned int real_written;          //记录写请求产生的写入量
+    int free_invalid;               //空白页被置为无效的数量
 
     unsigned int min_lsn;
     unsigned long max_lsn;

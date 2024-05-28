@@ -1036,6 +1036,7 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
         }
         if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[i].valid_state>0) /*该页是有效页，需要copyback操作*/		
         {	
+            ssd->gc_rewrite++;      //由于gc操作产生的额外的写操作数量
             location=(struct local * )malloc(sizeof(struct local ));
             alloc_assert(location,"location");
             memset(location,0, sizeof(struct local));

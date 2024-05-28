@@ -694,6 +694,8 @@ void trace_output(struct ssd_info* ssd){
                 if(tail > ssd->tail_latency){
                     ssd->tail_latency = tail;
                 }
+                latency[latency_index] = tail;
+                latency_index++;
 
                 while(req->subs!=NULL)
                 {
@@ -805,7 +807,29 @@ void statistic_output(struct ssd_info *ssd)
             }
         }
     }
-
+    int size = 10;
+    int latency_array[size];
+    for(int i = 0;i < size; i++){
+        latency_array[i] = 0;
+    }
+    for(int i = 0;i <= latency_index;i++){
+        int range = ssd->tail_latency / size;
+        int j = latency[i] / range;
+        latency_array[j]++;
+    }
+    fprintf(ssd->outputfile,"---------------------------latency array distribute---------------------------\n");
+    fprintf(ssd->outputfile,"total latency num is %d\n",latency_index);
+    int total = 0;
+    for(int i = 0;i < size; i++){
+        fprintf(ssd->outputfile,"rang %d request num is %d\n",i,latency_array[i]);
+        total += latency_array[i];
+    }
+    if(total == latency_index){
+        printf("It's right!\n");
+    }else{
+        printf("total is %d\n",total);
+    }
+    
     fprintf(ssd->outputfile,"\n");
     fprintf(ssd->outputfile,"\n");
     fprintf(ssd->outputfile,"---------------------------static data---------------------------\n");	 
@@ -847,7 +871,9 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->outputfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
     fprintf(ssd->outputfile,"tail latency: %13d\n",ssd->tail_latency);
     fprintf(ssd->outputfile,"---------------------------Space utilization rate---------------------------\n");
-    fprintf(ssd->outputfile,"Space utilization rate: %8f\n",(float)ssd->need_to_write/ssd->program_count);
+    fprintf(ssd->outputfile,"real written pagenums: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
+    fprintf(ssd->outputfile,"---------------------------WA---------------------------\n");
+    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->gc_rewrite));
     fprintf(ssd->outputfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->outputfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->outputfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
@@ -857,7 +883,11 @@ void statistic_output(struct ssd_info *ssd)
 
     fclose(ssd->outputfile);
 
-
+    fprintf(ssd->statisticfile,"---------------------------latency array distribute---------------------------\n");
+    fprintf(ssd->statisticfile,"total latency num is %d\n",latency_index);
+    for(int i = 0;i < size; i++){
+        fprintf(ssd->statisticfile,"rang %d request num is %d\n",i,latency_array[i]);
+    }
     fprintf(ssd->statisticfile,"\n");
     fprintf(ssd->statisticfile,"\n");
     fprintf(ssd->statisticfile,"---------------------------static data---------------------------\n");	
@@ -899,6 +929,10 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"write request average response time: %lld\n",ssd->write_avg/ssd->write_request_count);
     fprintf(ssd->statisticfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
     fprintf(ssd->statisticfile,"tail latency: %13d\n",ssd->tail_latency);
+     fprintf(ssd->statisticfile,"---------------------------Space utilization rate---------------------------\n");
+    fprintf(ssd->statisticfile,"real written pagenums: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
+    fprintf(ssd->statisticfile,"---------------------------WA---------------------------\n");
+    fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->gc_rewrite));
     fprintf(ssd->statisticfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->statisticfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->statisticfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);

@@ -1308,6 +1308,7 @@ Status copy_back(struct ssd_info * ssd, unsigned int channel, unsigned int chip,
  ******************/
 Status static_write(struct ssd_info * ssd, unsigned int channel,unsigned int chip, unsigned int die,struct sub_request * sub)
 {
+    ssd->real_written++;        //写请求总写入flash的数量
     long long time=0;
     if (ssd->dram->map->map_entry[sub->lpn].state!=0)                                    /*说明这个逻辑页之前有写过，需要使用先读出来，再写下去，否则直接写下去即可*/
     {
@@ -1324,7 +1325,6 @@ Status static_write(struct ssd_info * ssd, unsigned int channel,unsigned int chi
     } 
     else
     {
-        ssd->need_to_write++;
         sub->next_state_predict_time=ssd->current_time+7*ssd->parameter->time_characteristics.tWC+(sub->size*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tWC;
     }
     sub->complete_time=sub->next_state_predict_time;		

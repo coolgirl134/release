@@ -74,6 +74,9 @@ struct ssd_info *initiation(struct ssd_info *ssd)
     char buffer[300];
     struct parameter_value *parameters;
     FILE *fp=NULL;
+    latency_index = 0;
+    ssd->real_written = 0;
+    ssd->gc_rewrite = 0;
 
     /*printf("input parameter file name:");
       gets(ssd->parameterfilename);
