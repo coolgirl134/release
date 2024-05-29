@@ -550,12 +550,9 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
     }else if(bit_type == 0){
         free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
     }else{
-        printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0]);
-        printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1]);
+        // printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0]);
+        // printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1]);
         free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];
-        if(free_page_num == 0){
-            printf("%d\n",free_page_num + 1);
-        }
     }
 
     // 只有正向编程，不用再判断编程类型
@@ -618,6 +615,8 @@ Status write_page_new(struct ssd_info *ssd,unsigned int channel,unsigned int chi
     // LSB MSB情况需要移动字线
     if(type % 2 == 0){
         cell = ++(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type]);
+    }else{
+        cell = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type];
     }
     if(cell>=(int)(ssd->parameter->page_block))
     {
@@ -633,8 +632,8 @@ Status write_page_new(struct ssd_info *ssd,unsigned int channel,unsigned int chi
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].page_head[page].written_count++;
     ssd->write_flash_count++; 
     // 这里修改了块的bit数量
-    *ppn=find_ppn(ssd,channel,chip,die,plane,active_block,page);
-
+    *ppn=find_ppn_new(ssd,channel,chip,die,plane,active_block,page);
+    
     return SUCCESS;
 }
 
@@ -658,7 +657,6 @@ Status write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,un
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].page_head[last_write_page].written_count++;
     ssd->write_flash_count++;    
     *ppn=find_ppn(ssd,channel,chip,die,plane,active_block,last_write_page);
-
     return SUCCESS;
 }
 

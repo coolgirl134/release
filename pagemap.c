@@ -76,7 +76,7 @@ struct local *find_location(struct ssd_info *ssd,unsigned int ppn)
     struct local *location=NULL;
     unsigned int i=0;
     int pn,ppn_value=ppn;
-    int page_plane=0,page_die=0,page_chip=0,page_channel=0;
+    int page_plane=0,page_die=0,page_chip=0,page_channel=0,page_block=0;
 
     pn = ppn;
 
@@ -88,7 +88,8 @@ struct local *find_location(struct ssd_info *ssd,unsigned int ppn)
     alloc_assert(location,"location");
     memset(location,0, sizeof(struct local));
 
-    page_plane=ssd->parameter->page_block*ssd->parameter->block_plane;
+    page_block = ssd->parameter->page_block * BITS_PER_CELL;
+    page_plane=page_block*ssd->parameter->block_plane;
     page_die=page_plane*ssd->parameter->plane_die;
     page_chip=page_die*ssd->parameter->die_chip;
     page_channel=page_chip*ssd->parameter->chip_channel[0];
@@ -101,17 +102,13 @@ struct local *find_location(struct ssd_info *ssd,unsigned int ppn)
     location->chip = (ppn%page_channel)/page_chip;
     location->die = ((ppn%page_channel)%page_chip)/page_die;
     location->plane = (((ppn%page_channel)%page_chip)%page_die)/page_plane;
-    location->block = ((((ppn%page_channel)%page_chip)%page_die)%page_plane)/ssd->parameter->page_block;
-    location->page = (((((ppn%page_channel)%page_chip)%page_die)%page_plane)%ssd->parameter->page_block)%ssd->parameter->page_block;
+    location->block = ((((ppn%page_channel)%page_chip)%page_die)%page_plane)/page_block;
+    location->page = (((((ppn%page_channel)%page_chip)%page_die)%page_plane)%page_block)%page_block;
 
     return location;
 }
 
 
-/*****************************************************************************
- *这个函数的功能是根据参数channel，chip，die，plane，block，page，找到该物理页号
- *函数的返回值就是这个物理页号
- ******************************************************************************/
 unsigned int find_ppn(struct ssd_info * ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,unsigned int block,unsigned int page)
 {
     unsigned int ppn=0;
@@ -127,7 +124,7 @@ unsigned int find_ppn(struct ssd_info * ssd,unsigned int channel,unsigned int ch
      *计算出plane，die，chip，channel中的page的数目
      **********************************************/
     // 这里更新计算了实际每个块page的数量
-    page_block=ssd->parameter->page_block*BITS_PER_CELL;
+    page_block=ssd->parameter->page_block;
     page_plane=ssd->parameter->page_block*ssd->parameter->block_plane;
     page_die=page_plane*ssd->parameter->plane_die;
     page_chip=page_die*ssd->parameter->die_chip;
@@ -147,6 +144,50 @@ unsigned int find_ppn(struct ssd_info * ssd,unsigned int channel,unsigned int ch
         i++;
     }
     ppn=ppn+page_chip*chip+page_die*die+page_plane*plane+block*ssd->parameter->page_block+page;
+
+    return ppn;
+}
+
+
+/*****************************************************************************
+ *这个函数的功能是根据参数channel，chip，die，plane，block，page，找到该物理页号
+ *函数的返回值就是这个物理页号
+ ******************************************************************************/
+unsigned int find_ppn_new(struct ssd_info * ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,unsigned int block,unsigned int page)
+{
+    unsigned int ppn=0;
+    unsigned int i=0;
+    int page_plane=0,page_die=0,page_chip=0,page_block = 0;
+    int page_channel[100];                  /*这个数组存放的是每个channel的page数目*/
+
+#ifdef DEBUG
+    printf("enter find_psn,channel:%d, chip:%d, die:%d, plane:%d, block:%d, page:%d\n",channel,chip,die,plane,block,page);
+#endif
+
+    /*********************************************
+     *计算出plane，die，chip，channel中的page的数目
+     **********************************************/
+    // 这里更新计算了实际每个块page的数量
+    page_block=ssd->parameter->page_block*BITS_PER_CELL;
+    page_plane=page_block*ssd->parameter->block_plane;
+    page_die=page_plane*ssd->parameter->plane_die;
+    page_chip=page_die*ssd->parameter->die_chip;
+    while(i<ssd->parameter->channel_number)
+    {
+        page_channel[i]=ssd->parameter->chip_channel[i]*page_chip;
+        i++;
+    }
+
+    /****************************************************************************
+     *计算物理页号ppn，ppn是channel，chip，die，plane，block，page中page个数的总和
+     *****************************************************************************/
+    i=0;
+    while(i<channel)
+    {
+        ppn=ppn+page_channel[i];
+        i++;
+    }
+    ppn=ppn+page_chip*chip+page_die*die+page_plane*plane+block*page_block+page;
 
     return ppn;
 }
@@ -235,7 +276,10 @@ struct ssd_info *pre_process_page(struct ssd_info *ssd)
                      *获得利用get_ppn_for_pre_process函数获得ppn，再得到location
                      *修改ssd的相关参数，dram的映射表map，以及location下的page的状态
                      ***************************************************************/
-                    ppn=get_ppn_for_pre_process(ssd,lsn);                  
+                    ppn=get_ppn_for_pre_process(ssd,lsn); 
+                    if(ppn == 255){
+                        printf("here\n");
+                    }                 
                     location=find_location(ssd,ppn);
                     ssd->program_count++;	
                     ssd->channel_head[location->channel].program_count++;
@@ -393,6 +437,10 @@ unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn)
     {
         return 0;
     }
+    if(ppn == 255) {
+        printf("%d\n",ppn);
+    }
+
 
     return ppn;
 }
