@@ -43,6 +43,13 @@ int  main()
     
 
     ssd=initiation(ssd);
+
+    // 刚开始，所有的plane buffer类型都为NONE
+    ssd->plane_num = ssd->parameter->channel_number * ssd->parameter->chip_channel[0] * ssd->parameter->die_chip * ssd->parameter->plane_die;
+    for(int i = 0;i < ssd->plane_num;i++){
+        SET_BIT(NONE_bitmap,i);
+        bitmap_table[i] = NONE;
+    }
     make_aged(ssd);
     pre_process_page(ssd);
 

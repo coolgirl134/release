@@ -2,7 +2,7 @@
   This project was supported by the National Basic Research 973 Program of China under Grant No.2011CB302301
   Huazhong University of Science and Technology (HUST)   Wuhan National Laboratory for Optoelectronics
 
-  FileNameï¼š flash.h
+  FileNameï¼? flash.h
 Author: Hu Yang		Version: 2.1	Date:2011/12/02
 Description: 
 
@@ -49,6 +49,7 @@ struct ssd_info *delete_from_channel(struct ssd_info *ssd,unsigned int channel,s
 struct ssd_info *un_greed_interleave_copyback(struct ssd_info *,unsigned int,unsigned int,unsigned int,struct sub_request *,struct sub_request *);
 struct ssd_info *un_greed_copyback(struct ssd_info *,unsigned int,unsigned int,unsigned int,struct sub_request *);
 int  find_active_block(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane);
+Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
 int write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,unsigned int active_block,unsigned int *ppn);
 int allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req);
 

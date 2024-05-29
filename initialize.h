@@ -19,6 +19,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define INITIALIZE_H 10000
 
 #include <stdio.h>
+#include "./include/bitmap.h"
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
@@ -111,10 +112,35 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define ERROR		-1
 #define INFEASIBLE	-2
 #define OVERFLOW	-3
-typedef int Status;     
+typedef int Status;    
 
+#define NONE -1
+
+#define LSB_PAGE 0
+#define CSB_PAGE 1
+#define MSB_PAGE 2
+#define TSB_PAGE 3
+
+#define P_LC 0
+#define P_MT 1
+
+#define BITS_PER_CELL 4
+
+// 保存每个请求的延迟时间，不包括dram
 unsigned int latency[1000];
+// 保存latency偏移量的索引
 int latency_index;
+
+
+/*****************************************
+ *三种plane类型的bitmap
+ *NONE_bitmap LC_bitmap MT_bitmap
+ *对应bit置1表示当前plane buffer的类型
+ ******************************************/
+bitchunk_t NONE_bitmap[1];
+bitchunk_t LC_bitmap[1];
+bitchunk_t MT_bitmap[1];
+char bitmap_table[16];
 
 struct ac_time_characteristics{
     int tPROG;     //program time
@@ -162,6 +188,7 @@ struct ssd_info{
     int flag;
     int active_flag;                     //记录主动写是否阻塞，如果发现柱塞，需要将时间向前推进,0表示没有阻塞，1表示被阻塞，需要向前推进时间
     unsigned int page;
+    int plane_num;                      //记录当前总共有多少plane数量
 
     unsigned int token;                  //在动态分配中，为防止每次分配在第一个channel需要维持一个令牌，每次从令牌所指的位置开始分配
     unsigned int gc_request;             //记录在SSD中，当前时刻有多少gc操作的请求
@@ -286,6 +313,7 @@ struct plane_info{
     int can_erase_block;                //记录在一个plane中准备在gc操作中被擦除操作的块,-1表示还没有找到合适的块
     struct direct_erase *erase_node;    //用来记录可以直接删除的块号,在获取新的ppn时，每当出现invalid_page_num==64时，将其添加到这个指针上，供GC操作时直接删除
     struct blk_info *blk_head;
+    int activeblk[2];                   //分别记录LC MT对应的活跃块
 };
 
 
@@ -295,6 +323,8 @@ struct blk_info{
     unsigned int invalid_page_num;     //记录该块中失效页的个数，同上
     int last_write_page;               //记录最近一次写操作执行的页数,-1表示该块没有一页被写过
     struct page_info *page_head;       //记录每一子页的状态
+
+    int LCMT_number[2];                 //记录当前块对应的bit类型到达的cell number，刚开始为NONE
 };
 
 

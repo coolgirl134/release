@@ -19,6 +19,9 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define _CRTDBG_MAP_ALLOC
 
 #include "pagemap.h"
+#include "./include/bitmap.h"
+#include "initialize.h"
+#include "flash.h"
 
 
 /************************************************
@@ -113,7 +116,7 @@ unsigned int find_ppn(struct ssd_info * ssd,unsigned int channel,unsigned int ch
 {
     unsigned int ppn=0;
     unsigned int i=0;
-    int page_plane=0,page_die=0,page_chip=0;
+    int page_plane=0,page_die=0,page_chip=0,page_block = 0;
     int page_channel[100];                  /*这个数组存放的是每个channel的page数目*/
 
 #ifdef DEBUG
@@ -123,6 +126,8 @@ unsigned int find_ppn(struct ssd_info * ssd,unsigned int channel,unsigned int ch
     /*********************************************
      *计算出plane，die，chip，channel中的page的数目
      **********************************************/
+    // 这里更新计算了实际每个块page的数量
+    page_block=ssd->parameter->page_block*BITS_PER_CELL;
     page_plane=ssd->parameter->page_block*ssd->parameter->block_plane;
     page_die=page_plane*ssd->parameter->plane_die;
     page_chip=page_die*ssd->parameter->die_chip;
@@ -284,6 +289,20 @@ struct ssd_info *pre_process_page(struct ssd_info *ssd)
     return ssd;
 }
 
+struct local* get_loc_by_plane(struct ssd_info* ssd,int plane){
+    struct local* loc;
+    loc=(struct local *)malloc(sizeof(struct local));
+    int plane_die = ssd->parameter->plane_die;
+    int plane_chip = ssd->parameter->die_chip * plane_die;
+    int plane_channel = ssd->parameter->chip_channel[0] * plane_chip;
+
+    loc->channel = plane / plane_channel;
+    loc->chip = plane % plane_channel / plane_chip;
+    loc->die = plane % plane_channel % plane_chip / plane_die;
+    loc->plane =  plane % plane_channel % plane_chip % plane_die;
+    return loc;
+}
+
 /**************************************
  *函数功能是为预处理函数获取物理页号ppn
  *获取页号分为动态获取和静态获取
@@ -294,6 +313,7 @@ unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn)
     unsigned int ppn,lpn;
     unsigned int active_block;
     unsigned int channel_num=0,chip_num=0,die_num=0,plane_num=0;
+    int type = NONE;
 
 #ifdef DEBUG
     printf("enter get_psn_for_pre_process\n");
@@ -305,101 +325,71 @@ unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn)
     plane_num=ssd->parameter->plane_die;
     lpn=lsn/ssd->parameter->subpage_page;
 
-    if (ssd->parameter->allocation_scheme==0)                           /*动态方式下获取ppn*/
-    {
-        if (ssd->parameter->dynamic_allocation==0)                      /*表示全动态方式下，也就是channel，chip，die，plane，block等都是动态分配*/
-        {
-            channel=ssd->token;
-            ssd->token=(ssd->token+1)%ssd->parameter->channel_number;
-            chip=ssd->channel_head[channel].token;
-            ssd->channel_head[channel].token=(chip+1)%ssd->parameter->chip_channel[0];
-            die=ssd->channel_head[channel].chip_head[chip].token;
-            ssd->channel_head[channel].chip_head[chip].token=(die+1)%ssd->parameter->die_chip;
-            plane=ssd->channel_head[channel].chip_head[chip].die_head[die].token;
-            ssd->channel_head[channel].chip_head[chip].die_head[die].token=(plane+1)%ssd->parameter->plane_die;
-        } 
-        else if (ssd->parameter->dynamic_allocation==1)                 /*表示半动态方式，channel静态给出，package，die，plane动态分配*/                 
-        {
-            channel=lpn%ssd->parameter->channel_number;
-            chip=ssd->channel_head[channel].token;
-            ssd->channel_head[channel].token=(chip+1)%ssd->parameter->chip_channel[0];
-            die=ssd->channel_head[channel].chip_head[chip].token;
-            ssd->channel_head[channel].chip_head[chip].token=(die+1)%ssd->parameter->die_chip;
-            plane=ssd->channel_head[channel].chip_head[chip].die_head[die].token;
-            ssd->channel_head[channel].chip_head[chip].die_head[die].token=(plane+1)%ssd->parameter->plane_die;
-        }
-    } 
-    else if (ssd->parameter->allocation_scheme==1)                       /*表示静态分配，同时也有0,1,2,3,4,5这6中不同静态分配方式*/
-    {
-        switch (ssd->parameter->static_allocation)
-        {
-
-            case 0:         
-                {
-                    channel=(lpn/(plane_num*die_num*chip_num))%channel_num;
-                    chip=lpn%chip_num;
-                    die=(lpn/chip_num)%die_num;
-                    plane=(lpn/(die_num*chip_num))%plane_num;
-                    break;
-                }
-            case 1:
-                {
-                    channel=lpn%channel_num;
-                    chip=(lpn/channel_num)%chip_num;
-                    die=(lpn/(chip_num*channel_num))%die_num;
-                    plane=(lpn/(die_num*chip_num*channel_num))%plane_num;
-
-                    break;
-                }
-            case 2:
-                {
-                    channel=lpn%channel_num;
-                    chip=(lpn/(plane_num*channel_num))%chip_num;
-                    die=(lpn/(plane_num*chip_num*channel_num))%die_num;
-                    plane=(lpn/channel_num)%plane_num;
-                    break;
-                }
-            case 3:
-                {
-                    channel=lpn%channel_num;
-                    chip=(lpn/(die_num*channel_num))%chip_num;
-                    die=(lpn/channel_num)%die_num;
-                    plane=(lpn/(die_num*chip_num*channel_num))%plane_num;
-                    break;
-                }
-            case 4:  
-                {
-                    channel=lpn%channel_num;
-                    chip=(lpn/(plane_num*die_num*channel_num))%chip_num;
-                    die=(lpn/(plane_num*channel_num))%die_num;
-                    plane=(lpn/channel_num)%plane_num;
-
-                    break;
-                }
-            case 5:   
-                {
-                    channel=lpn%channel_num;
-                    chip=(lpn/(plane_num*die_num*channel_num))%chip_num;
-                    die=(lpn/channel_num)%die_num;
-                    plane=(lpn/(die_num*channel_num))%plane_num;
-
-                    break;
-                }
-            default : return 0;
-        }
+    int find_plane = find_first_bit(MT_bitmap,ssd->plane_num);
+    // if(find_plane >= ssd->plane_num){
+    //     find_plane = find_first_bit(LC_bitmap,ssd->plane_num);
+    //     if(find_plane >= ssd->plane_num){
+    //         find_plane = find_first_bit(NONE_bitmap,ssd->plane_num);
+    //         UNSET_BIT(NONE_bitmap,find_plane);
+    //         SET_BIT(LC_bitmap,find_plane);
+    //     }else{
+    //         UNSET_BIT(LC_bitmap,find_plane);
+    //         SET_BIT(NONE_bitmap,find_plane);
+    //         // 这里同时也将MT bitmap置为1，表示该plane有多余的MT位置可以存储数据
+    //         SET_BIT(MT_bitmap,find_plane);
+    //     }
+    //     type = LC_PAGE;
+    // }else{
+    //     type = MT_PAGE;
+    //     UNSET_BIT(MT_bitmap,find_plane);
+    //     SET_BIT(NONE_bitmap,find_plane);
+    // }
+    for(int i = 0;i < ssd->plane_num;i++){
+       switch (bitmap_table[i])
+       {
+       case LSB_PAGE:
+            type = bitmap_table[i] = CSB_PAGE;
+            break;
+        case CSB_PAGE:
+            type = bitmap_table[i] = MSB_PAGE;
+            break;
+        case MSB_PAGE:
+            type = bitmap_table[i] = TSB_PAGE;
+            break;
+        case TSB_PAGE:
+            type = bitmap_table[i] = LSB_PAGE;
+            break;
+        case NONE:
+            type = bitmap_table[i] = LSB_PAGE;
+            break;
+       default:
+            // maybe the plane is full
+            printf("pre process page error\n");
+        break;
+       }
+       if(type != NONE){
+            find_plane = i;
+            break;
+       }
     }
 
+    struct local* loc = get_loc_by_plane(ssd,find_plane);
+    channel = loc->channel;
+    chip = loc->chip;
+    die = loc->die;
+    plane = loc->plane;
+    
     /******************************************************************************
      *根据上述分配方法找到channel，chip，die，plane后，再在这个里面找到active_block
      *接着获得ppn
      ******************************************************************************/
-    if(find_active_block(ssd,channel,chip,die,plane)==FAILURE)
+    if(find_active_block_new(ssd,channel,chip,die,plane,type)==FAILURE)
     {
         printf("the read operation is expand the capacity of SSD\n");	
         return 0;
     }
     active_block=ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block;
-    if(write_page(ssd,channel,chip,die,plane,active_block,&ppn)==ERROR)
+    if(write_page_new(ssd,channel,chip,die,plane,active_block,&ppn,type)==ERROR)
     {
         return 0;
     }

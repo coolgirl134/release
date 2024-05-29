@@ -17,7 +17,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
  *****************************************************************************************************************************/
 
 #include "flash.h"
-
+#include "initialize.h"
 /**********************
  *这个函数只作用于写请求
  ***********************/
@@ -529,6 +529,60 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
     return ssd;
 }
 
+// 这里不更新字线的移动，到分配物理地址时再执行字线移动
+Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type){
+    int actblk_type = NONE;
+    int active_block = NONE;
+    int count = 0;
+    if(type == LSB_PAGE || type ==CSB_PAGE){
+        actblk_type = P_LC;		
+    }else{
+        actblk_type = P_MT;
+    }
+
+    // 刚开始默认为0
+    active_block = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[actblk_type];
+    int bit_type = type/2;
+    unsigned int free_page_num = 1;
+    // 这里的free_page_num指的是字线，当类型为LSB或MSB时，字线才需要移动
+    if(type % 2 != 0){
+        free_page_num = 1;
+    }else if(bit_type == 0){
+        free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
+    }else{
+        printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0]);
+        printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1]);
+        free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];
+        if(free_page_num == 0){
+            printf("%d\n",free_page_num + 1);
+        }
+    }
+
+    // 只有正向编程，不用再判断编程类型
+    while((free_page_num <= 0)&&(count < ssd->parameter->block_plane)){
+        active_block=(active_block+1)%ssd->parameter->block_plane;
+        if(bit_type == 0){
+            free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type];
+        }else{
+            free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];
+        }
+        count++;
+    }
+    // 将找到的active_block更新到当前plane登记的成员变量中
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block=active_block;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[actblk_type] = active_block;
+    if(count<ssd->parameter->block_plane)
+    {
+        return SUCCESS;
+    }
+    else
+    {
+        printf("plane is full\n");
+        return FAILURE;
+    }
+    
+}
+
 /**************************************************************************************
  *函数的功能是寻找活跃快，应为每个plane中都只有一个活跃块，只有这个活跃块中才能进行操作
  ***************************************************************************************/
@@ -556,6 +610,32 @@ Status  find_active_block(struct ssd_info *ssd,unsigned int channel,unsigned int
     {
         return FAILURE;
     }
+}
+
+Status write_page_new(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,unsigned int active_block,unsigned int *ppn,int type){
+    int cell = 0;
+    int bit_type = type/2;
+    // LSB MSB情况需要移动字线
+    if(type % 2 == 0){
+        cell = ++(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type]);
+    }
+    if(cell>=(int)(ssd->parameter->page_block))
+    {
+        ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type]=NONE;
+        printf("error! the last write page larger than 64!!\n");
+        return ERROR;
+    }
+    int page = 0;
+    // page对应的是块内的bit偏移量
+    page = cell * BITS_PER_CELL + type;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].free_page_num--; 
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page--;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].page_head[page].written_count++;
+    ssd->write_flash_count++; 
+    // 这里修改了块的bit数量
+    *ppn=find_ppn(ssd,channel,chip,die,plane,active_block,page);
+
+    return SUCCESS;
 }
 
 /*************************************************
