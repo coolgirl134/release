@@ -222,13 +222,14 @@ struct blk_info * initialize_block(struct blk_info * p_block,struct parameter_va
 
     p_block->free_page_num = parameter->page_block;	// all pages are free
     p_block->last_write_page = -1;	// no page has been programmed
+    int page_block = parameter->page_block * BITS_PER_CELL;
 
-    p_block->page_head = (struct page_info *)malloc(parameter->page_block * sizeof(struct page_info));
+    p_block->page_head = (struct page_info *)malloc(page_block * sizeof(struct page_info));
     alloc_assert(p_block->page_head,"p_block->page_head");
-    memset(p_block->page_head,0,parameter->page_block * sizeof(struct page_info));
+    memset(p_block->page_head,0,page_block * sizeof(struct page_info));
     p_block->LCMT_number[P_LC] = p_block->LCMT_number[P_MT] = NONE;
 
-    for(i = 0; i<parameter->page_block; i++)
+    for(i = 0; i<page_block; i++)
     {
         p_page = &(p_block->page_head[i]);
         initialize_page(p_page );
@@ -242,7 +243,7 @@ struct plane_info * initialize_plane(struct plane_info * p_plane,struct paramete
     unsigned int i;
     struct blk_info * p_block;
     p_plane->add_reg_ppn = -1;  //plane 里面的额外寄存器additional register -1 表示无数据
-    p_plane->free_page=parameter->block_plane*parameter->page_block;
+    p_plane->free_page=parameter->block_plane*parameter->page_block*BITS_PER_CELL;
 
     p_plane->blk_head = (struct blk_info *)malloc(parameter->block_plane * sizeof(struct blk_info));
     alloc_assert(p_plane->blk_head,"p_plane->blk_head");
@@ -333,6 +334,10 @@ struct ssd_info * initialize_channels(struct ssd_info * ssd )
             p_chip = &(p_channel->chip_head[j]);
             initialize_chip(p_chip,ssd->parameter,ssd->current_time );
         }
+    }
+    ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[5].page_head[242].lpn = 1;
+    if(ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[5].page_head[242].lpn == ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[6].page_head[177].lpn){
+        printf("address same\n");
     }
 
     return ssd;

@@ -20,6 +20,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 
 #include "ssd.h"
 #include "initialize.h"
+#include "pagemap.h"
 
 /********************************************************************************************************************************
   1，main函数中initiatio()函数用来初始化ssd,；2，make_aged()函数使SSD成为aged，aged的ssd相当于使用过一段时间的ssd，里面有失效页，
@@ -47,11 +48,15 @@ int  main()
     // 刚开始，所有的plane buffer类型都为NONE
     ssd->plane_num = ssd->parameter->channel_number * ssd->parameter->chip_channel[0] * ssd->parameter->die_chip * ssd->parameter->plane_die;
     for(int i = 0;i < ssd->plane_num;i++){
-        SET_BIT(NONE_bitmap,i);
         bitmap_table[i] = NONE;
     }
     make_aged(ssd);
     pre_process_page(ssd);
+    for(int i = 0;i < ssd->plane_num;i++){
+        if(bitmap_table[i] != NONE){
+            bitmap_table[i] /= 2;
+        }
+    }
 
     for (i=0;i<ssd->parameter->channel_number;i++)
     {
@@ -115,7 +120,6 @@ struct ssd_info *simulate(struct ssd_info *ssd)
 
         if(flag == 1)
         {   
-            //printf("once\n");
             if (ssd->parameter->dram_capacity!=0)
             {
                 buffer_management(ssd);  
@@ -354,7 +358,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
             ssd->total_read++; 
             key.group=lpn;
             buffer_node= (struct buffer_group*)avlTreeFind(ssd->dram->buffer, (TREE_NODE *)&key);		// buffer node 
-
+            ssd->dram->map->map_entry[lpn].read_count++;
             while((buffer_node!=NULL)&&(lsn<(lpn+1)*ssd->parameter->subpage_page)&&(lsn<=(new_request->lsn+new_request->size-1)))             			
             {             	
                 lsn_flag=full_page;
@@ -413,6 +417,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
     {
         while(lpn<=last_lpn)           	
         {	
+            ssd->dram->map->map_entry[lpn].write_count++;
             ssd->total_write++;
             need_distb_flag=full_page;
             mask=~(0xffffffff<<(ssd->parameter->subpage_page));
@@ -1144,7 +1149,7 @@ struct ssd_info *make_aged(struct ssd_info *ssd)
                                 ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].free_page--;
                                 flag++;
 
-                                ppn=find_ppn(ssd,i,j,k,l,m,n);
+                                ppn=find_ppn_new(ssd,i,j,k,l,m,n);
 
                             }
                         } 

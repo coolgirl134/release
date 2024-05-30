@@ -121,6 +121,9 @@ typedef int Status;
 #define MSB_PAGE 2
 #define TSB_PAGE 3
 
+#define HOTREAD 5
+#define HOTPROG 5
+
 #define P_LC 0
 #define P_MT 1
 
@@ -422,6 +425,8 @@ struct sub_request{
     unsigned int state;              //使用state的最高位表示该子请求是否是一对多映射关系中的一个，是的话，需要读到buffer中。1表示是一对多，0表示不用写到buffer
     //读请求不需要这个成员，lsn加size就可以分辨出该页的状态;但是写请求需要这个成员，大部分写子请求来自于buffer写回操作，可能有类似子页不连续的情况，所以需要单独维持该成员
 
+    int bit_type;                   //记录该子请求存储应当存储的bit类型，P_LC或者P_MT
+
     int64_t begin_time;               //子请求开始时间
     int64_t complete_time;            //记录该子请求的处理时间,既真正写入或者读出数据的时间
 
@@ -512,6 +517,8 @@ struct parameter_value{
 struct entry{                       
     unsigned int pn;                //物理号，既可以表示物理页号，也可以表示物理子页号，也可以表示物理块号
     int state;                      //十六进制表示的话是0000-FFFF，每位表示相应的子页是否有效（页映射）。比如在这个页中，0，1号子页有效，2，3无效，这个应该是0x0003.
+    int read_count;
+    int write_count;
 };
 
 
