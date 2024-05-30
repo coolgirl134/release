@@ -78,6 +78,17 @@ int  main()
     printf("\n");
     printf("the simulation is completed!\n");
 
+    for (i=0;i<ssd->parameter->channel_number;i++)
+    {
+        for (j=0;j<ssd->parameter->die_chip;j++)
+        {
+            for (k=0;k<ssd->parameter->plane_die;k++)
+            {
+                printf("%d,0,%d,%d:  %5d\n",i,j,k,ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].free_page);
+            }
+        }
+    }
+
     return 1;
     /* 	_CrtDumpMemoryLeaks(); */
 }

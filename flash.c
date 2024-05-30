@@ -403,6 +403,9 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
     unsigned int free_page_num = 1;
     // 这里的free_page_num指的是字线，当类型为LSB或MSB时，字线才需要移动
     if(bit_type == 0){
+        if( ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] == 63){
+            printf("here\n");
+        }
         free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
     }else{
         // printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0]);
@@ -433,7 +436,7 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
         }
         active_block=(active_block+1)%ssd->parameter->block_plane;
         if(bit_type == 0){
-            free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type];
+            free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
         }else{
             free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];
         }
@@ -498,7 +501,7 @@ Status write_page_new(struct ssd_info *ssd,unsigned int channel,unsigned int chi
     if(cell>=(int)(ssd->parameter->page_block))
     {
         ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type]=NONE;
-        printf("error! the last write page larger than 64!!\n");
+        printf("error pre process! the last write page larger than 64!!\n");
         return ERROR;
     }
     int page = 0;
