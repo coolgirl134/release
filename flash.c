@@ -403,9 +403,9 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
     unsigned int free_page_num = 1;
     // 这里的free_page_num指的是字线，当类型为LSB或MSB时，字线才需要移动
     if(bit_type == 0){
-        if( ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] == 63){
-            printf("here\n");
-        }
+        // if( ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] == 63){
+        //     printf("here\n");
+        // }
         free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
     }else{
         // printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0]);
@@ -430,20 +430,21 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
     // 如果MT没有位置，存储到LC中
     // TODO:当ssd中的LC位置用完
     while((free_page_num <= 0)&&(count < ssd->parameter->block_plane)){
-        if(free_page_num <= 0 && bit_type == P_MT){
+        if(free_page_num <= 0 && bit_type == P_MT && ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[P_LC] != (ssd->parameter->page_block - 1)){
             type = LSB_PAGE;
             bit_type = P_LC;
         }
         active_block=(active_block+1)%ssd->parameter->block_plane;
-        if(bit_type == 0){
+        if(bit_type == P_LC){
             free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
         }else{
             free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];
         }
         count++;
-        if(count > 5){
-            printf("here\n");
-        }
+        // if(count > 2045){
+        //     printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type]);
+        //     printf("%d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1]);
+        // }
     }
     // 将找到的active_block更新到当前plane登记的成员变量中
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block=active_block;
@@ -454,7 +455,8 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
     }
     else
     {
-        printf("plane is full\n");
+        printf("plane is full and its free page is %d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page);
+        
         return NONE;
     }
     

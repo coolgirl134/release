@@ -1,5 +1,5 @@
 parameter file: page.parameters
-trace file: hm.csv
+trace file: ./workloads/hm.csv
 -----------------------parameter file----------------------
 #parameter file
 dram capacity = 131074;     #the unit is B
