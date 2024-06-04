@@ -115,6 +115,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 typedef int Status;    
 
 #define NONE -1
+#define FULL 8
 
 #define LSB_PAGE 0
 #define CSB_PAGE 1
@@ -130,9 +131,9 @@ typedef int Status;
 #define BITS_PER_CELL 4
 
 // 保存每个请求的延迟时间，不包括dram
-unsigned int latency[1000];
+extern unsigned int latency[3993316];
 // 保存latency偏移量的索引
-int latency_index;
+extern int latency_index;
 
 
 /*****************************************
@@ -140,10 +141,10 @@ int latency_index;
  *NONE_bitmap LC_bitmap MT_bitmap
  *对应bit置1表示当前plane buffer的类型
  ******************************************/
-bitchunk_t NONE_bitmap[1];
-bitchunk_t LC_bitmap[1];
-bitchunk_t MT_bitmap[1];
-char bitmap_table[16];
+extern bitchunk_t NONE_bitmap[1];
+extern bitchunk_t LC_bitmap[1];
+extern bitchunk_t MT_bitmap[1];
+extern char bitmap_table[16];
 
 struct ac_time_characteristics{
     int tPROG;     //program time
@@ -311,6 +312,7 @@ struct die_info{
 struct plane_info{
     int add_reg_ppn;                    //read，write时把地址传送到该变量，该变量代表地址寄存器。die由busy变为idle时，清除地址 //有可能因为一对多的映射，在一个读请求时，有多个相同的lpn，所以需要用ppn来区分  
     unsigned int free_page;             //该plane中有多少free page
+    unsigned int allocated_page;        //标识当前plane被分配了多少页
     unsigned int ers_invalid;           //记录该plane中擦除失效的块数
     unsigned int active_block;          //if a die has a active block, 该项表示其物理块号
     int can_erase_block;                //记录在一个plane中准备在gc操作中被擦除操作的块,-1表示还没有找到合适的块

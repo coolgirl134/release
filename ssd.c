@@ -31,7 +31,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
  *********************************************************************************************************************************/
 int  main()
 {
-    unsigned  int i,j,k;
+    unsigned  int i,j,k,t;
     struct ssd_info *ssd;
 
 #ifdef DEBUG
@@ -45,6 +45,20 @@ int  main()
 
     ssd=initiation(ssd);
 
+    for (i=0;i<ssd->parameter->channel_number;i++)
+    {
+        for(t=0;t < ssd->parameter->chip_channel[0];t++){
+            for (j=0;j<ssd->parameter->die_chip;j++)
+            {
+                for (k=0;k<ssd->parameter->plane_die;k++)
+                {
+                    printf("%d,%d,%d,%d:  %5d\n",i,t,j,k,ssd->channel_head[i].chip_head[t].die_head[j].plane_head[k].free_page);
+                }
+            }
+        }
+        
+    }
+
     // 刚开始，所有的plane buffer类型都为NONE
     ssd->plane_num = ssd->parameter->channel_number * ssd->parameter->chip_channel[0] * ssd->parameter->die_chip * ssd->parameter->plane_die;
     for(int i = 0;i < ssd->plane_num;i++){
@@ -53,20 +67,23 @@ int  main()
     make_aged(ssd);
     pre_process_page(ssd);
     for(int i = 0;i < ssd->plane_num;i++){
-        if(bitmap_table[i] != NONE){
+        if(bitmap_table[i] != NONE && bitmap_table[i] != FULL){
             bitmap_table[i] /= 2;
         }
     }
 
     for (i=0;i<ssd->parameter->channel_number;i++)
     {
-        for (j=0;j<ssd->parameter->die_chip;j++)
-        {
-            for (k=0;k<ssd->parameter->plane_die;k++)
+        for(t=0;t < ssd->parameter->chip_channel[0];t++){
+            for (j=0;j<ssd->parameter->die_chip;j++)
             {
-                printf("%d,0,%d,%d:  %5d\n",i,j,k,ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].free_page);
+                for (k=0;k<ssd->parameter->plane_die;k++)
+                {
+                    printf("%d,%d,%d,%d:  %5d\n",i,t,j,k,ssd->channel_head[i].chip_head[t].die_head[j].plane_head[k].free_page);
+                }
             }
         }
+        
     }
     fprintf(ssd->outputfile,"\t\t\t\t\t\t\t\t\tOUTPUT\n");
     fprintf(ssd->outputfile,"****************** TRACE INFO ******************\n");
@@ -80,15 +97,17 @@ int  main()
 
     for (i=0;i<ssd->parameter->channel_number;i++)
     {
-        for (j=0;j<ssd->parameter->die_chip;j++)
-        {
-            for (k=0;k<ssd->parameter->plane_die;k++)
+        for(t=0;t < ssd->parameter->chip_channel[0];t++){
+            for (j=0;j<ssd->parameter->die_chip;j++)
             {
-                printf("%d,0,%d,%d:  %5d\n",i,j,k,ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].free_page);
+                for (k=0;k<ssd->parameter->plane_die;k++)
+                {
+                    printf("%d,%d,%d,%d:  %5d\n",i,t,j,k,ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].free_page);
+                }
             }
         }
+        
     }
-
     return 1;
     /* 	_CrtDumpMemoryLeaks(); */
 }
@@ -124,26 +143,33 @@ struct ssd_info *simulate(struct ssd_info *ssd)
     fprintf(ssd->outputfile,"      arrive           lsn     size ope     begin time    response time    process time\n");	
     fflush(ssd->outputfile);
     int t = 0;
+    int sq = 0;
     while(flag!=100)      
     {
-
         flag=get_requests(ssd);
+        struct sub_request* sub1 = ssd->channel_head[0].subs_r_head;
 
         if(flag == 1)
         {   
             if (ssd->parameter->dram_capacity!=0)
             {
-                buffer_management(ssd);  
+                buffer_management(ssd);
+                sub1 = ssd->channel_head[0].subs_r_head;  
                 distribute(ssd); 
+                sub1 = ssd->channel_head[0].subs_r_head;
             } 
             else
             {
                 no_buffer_distribute(ssd);
             }		
         }
+        sq++;
+        sub1 = ssd->channel_head[0].subs_r_head;
         
         process(ssd);    
+        sub1 = ssd->channel_head[0].subs_r_head;
         trace_output(ssd);
+        sub1 = ssd->channel_head[0].subs_r_head;
         // printf("%d\n",t++);
         if(flag == 0 && ssd->request_queue == NULL)
             flag = 100;
@@ -192,12 +218,9 @@ int get_requests(struct ssd_info *ssd)
     // sscanf(buffer,"%lld %d %d %d %d",&time_t,&device,&lsn,&size,&ope);
     int response;
     sscanf(buffer,"%lld %d %d %lld %d %d",&time_t,&device,&ope,&lsn,&size,&response);
-    // if(time_t == 128166386567537563){
-    //     printf("here\n");
-    // }
-    // if(time_t == 128166386567693269){
-    //     printf("last by ont\n");
-    // }
+    if(ope != READ && ope != WRITE){
+        printf("ope is error\n");
+    }
     size /= SECTOR;
 
     if ((device<0)&&(lsn<0)&&(size<0)&&(ope<0))
@@ -214,7 +237,7 @@ int get_requests(struct ssd_info *ssd)
      *large_lsn: channel下面有多少个subpage，即多少个sector。overprovide系数：SSD中并不是所有的空间都可以给用户使用，
      *比如32G的SSD可能有10%的空间保留下来留作他用，所以乘以1-provide
      ***********************************************************************************************************/
-    large_lsn=(int)((ssd->parameter->subpage_page*ssd->parameter->page_block*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num)*(1-ssd->parameter->overprovide));
+    large_lsn=(int)((ssd->parameter->subpage_page*ssd->parameter->page_block*BITS_PER_CELL*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num)*(1-ssd->parameter->overprovide));
     lsn = lsn%large_lsn;
 
     nearest_event_time=find_nearest_event(ssd);
@@ -350,10 +373,13 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
     new_request=ssd->request_tail;
     lsn=new_request->lsn;
     lpn=new_request->lsn/ssd->parameter->subpage_page;
+    if(lpn == 1583729184){
+        printf("lpn 1583729184 location is NULL\n");
+    }
     last_lpn=(new_request->lsn+new_request->size-1)/ssd->parameter->subpage_page;
     first_lpn=new_request->lsn/ssd->parameter->subpage_page;
-
-    new_request->need_distr_flag=(unsigned int*)malloc(sizeof(unsigned int)*((last_lpn-first_lpn+1)*ssd->parameter->subpage_page/32+1));
+    int capacity = sizeof(unsigned int)*((last_lpn-first_lpn+1)*ssd->parameter->subpage_page/32+1);
+    new_request->need_distr_flag=(unsigned int*)malloc(capacity);
     alloc_assert(new_request->need_distr_flag,"new_request->need_distr_flag");
     memset(new_request->need_distr_flag, 0, sizeof(unsigned int)*((last_lpn-first_lpn+1)*ssd->parameter->subpage_page/32+1));
 
@@ -365,6 +391,9 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
              *need_distb_flag表示是否需要执行distribution函数，1表示需要执行，buffer中没有，0表示不需要执行
              *即1表示需要分发，0表示不需要分发，对应点初始全部赋为1
              *************************************************************************************************/
+            if(lpn == 1583729184){
+                printf("lpn 1583729184 location is NULL\n");
+            }
             need_distb_flag=full_page;  
             ssd->total_read++; 
             key.group=lpn;
@@ -433,6 +462,9 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
             need_distb_flag=full_page;
             mask=~(0xffffffff<<(ssd->parameter->subpage_page));
             state=mask;
+            if(lpn == 1583729184){
+                printf("lpn 1583729184 location is NULL\n");
+            }
 
             if(lpn==first_lpn)
             {
@@ -543,6 +575,9 @@ struct ssd_info *distribute(struct ssd_info *ssd)
                         if (k !=0)
                         {
                             lpn = start/ssd->parameter->subpage_page+ ((end-start)/32-i)*32/ssd->parameter->subpage_page + j;
+                            if(lpn == 1583729184){
+                                printf("this lpn location is NULL\n");
+                            }
                             sub_size=transfer_size(ssd,k,lpn,req);    
                             if (sub_size==0) 
                             {
@@ -600,6 +635,7 @@ void trace_output(struct ssd_info* ssd){
         end_time = 0;
         if(req->response_time != 0)
         {
+            // 表示该请求在dram中执行
             fprintf(ssd->outputfile,"%16lld %10d %6d %2d %16lld %16lld %10lld\n",req->time,req->lsn, req->size, req->operation, req->begin_time, req->response_time, req->response_time-req->time);
             fflush(ssd->outputfile);
 
@@ -619,7 +655,7 @@ void trace_output(struct ssd_info* ssd){
                 ssd->write_request_count++;
                 ssd->write_avg=ssd->write_avg+(req->response_time-req->time);
             }
-
+            // 请求的前一个节点可能不为空
             if(pre_node == NULL)
             {
                 if(req->next_node == NULL)
@@ -669,6 +705,7 @@ void trace_output(struct ssd_info* ssd){
         }
         else
         {
+            // 说明执行了flash操作
             flag=1;
             while(sub != NULL)
             {
@@ -692,6 +729,7 @@ void trace_output(struct ssd_info* ssd){
 
             if (flag == 1)
             {		
+                // 表示大请求中的所有子请求都完成了操作
                 //fprintf(ssd->outputfile,"%10I64u %10u %6u %2u %16I64u %16I64u %10I64u\n",req->time,req->lsn, req->size, req->operation, start_time, end_time, end_time-req->time);
                 fprintf(ssd->outputfile,"%16lld %10d %6d %2d %16lld %16lld %10lld\n",req->time,req->lsn, req->size, req->operation, start_time, end_time, end_time-req->time);
                 fflush(ssd->outputfile);
@@ -727,8 +765,12 @@ void trace_output(struct ssd_info* ssd){
                     if (tmp->update!=NULL)
                     {
                         free(tmp->update->location);
+                        //node change here
                         tmp->update->location=NULL;
                         free(tmp->update);
+                        // if(tmp->update->lpn == 1583729184){
+                        //     printf("here lpn is 1583729184\n");
+                        // }
                         tmp->update=NULL;
                     }
                     free(tmp->location);
@@ -1198,6 +1240,9 @@ struct ssd_info *no_buffer_distribute(struct ssd_info *ssd)
     req=ssd->request_tail;       
     lsn=req->lsn;
     lpn=req->lsn/ssd->parameter->subpage_page;
+    if(lpn == 1583729184){
+        printf("lpn 1583729184 locaton is NULL\n");
+    }
     last_lpn=(req->lsn+req->size-1)/ssd->parameter->subpage_page;
     first_lpn=req->lsn/ssd->parameter->subpage_page;
 

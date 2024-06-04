@@ -334,6 +334,9 @@ struct ssd_info *pre_process_page(struct ssd_info *ssd)
 struct local* get_loc_by_plane(struct ssd_info* ssd,int plane){
     struct local* loc;
     loc=(struct local *)malloc(sizeof(struct local));
+    if(loc == NULL){
+        printf("loc is NULL\n");
+    }
     int plane_die = ssd->parameter->plane_die;
     int plane_chip = ssd->parameter->die_chip * plane_die;
     int plane_channel = ssd->parameter->chip_channel[0] * plane_chip;
@@ -367,70 +370,62 @@ unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn)
     plane_num=ssd->parameter->plane_die;
     lpn=lsn/ssd->parameter->subpage_page;
 
-    int find_plane;
-    // if(find_plane >= ssd->plane_num){
-    //     find_plane = find_first_bit(LC_bitmap,ssd->plane_num);
-    //     if(find_plane >= ssd->plane_num){
-    //         find_plane = find_first_bit(NONE_bitmap,ssd->plane_num);
-    //         UNSET_BIT(NONE_bitmap,find_plane);
-    //         SET_BIT(LC_bitmap,find_plane);
-    //     }else{
-    //         UNSET_BIT(LC_bitmap,find_plane);
-    //         SET_BIT(NONE_bitmap,find_plane);
-    //         // 这里同时也将MT bitmap置为1，表示该plane有多余的MT位置可以存储数据
-    //         SET_BIT(MT_bitmap,find_plane);
-    //     }
-    //     type = LC_PAGE;
-    // }else{
-    //     type = MT_PAGE;
-    //     UNSET_BIT(MT_bitmap,find_plane);
-    //     SET_BIT(NONE_bitmap,find_plane);
-    // }
-    for(int i = 0;i < ssd->plane_num;i++){
-       switch (bitmap_table[i])
-       {
-       case LSB_PAGE:
-            type = bitmap_table[i] = CSB_PAGE;
-            break;
-        case CSB_PAGE:
-            type = bitmap_table[i] = MSB_PAGE;
-            break;
-        case MSB_PAGE:
-            type = bitmap_table[i] = TSB_PAGE;
-            break;
-        case TSB_PAGE:
-            type = bitmap_table[i] = LSB_PAGE;
-            break;
-        case NONE:
-            type = bitmap_table[i] = LSB_PAGE;
-            break;
-       default:
-            // maybe the plane is full
-            printf("pre process page error\n");
-        break;
-       }
-       if(type != NONE){
-            find_plane = i;
-            break;
-       }
+    static int find_plane;
+    while(type == NONE){
+        for(int i = find_plane;i < ssd->plane_num;i++){
+            switch (bitmap_table[i])
+            {
+                case LSB_PAGE:
+                    type = bitmap_table[i] = CSB_PAGE;
+                    break;
+                case CSB_PAGE:
+                    type = bitmap_table[i] = MSB_PAGE;
+                    break;
+                case MSB_PAGE:
+                    type = bitmap_table[i] = TSB_PAGE;
+                    break;
+                case TSB_PAGE:
+                    type = bitmap_table[i] = LSB_PAGE;
+                    break;
+                case NONE:
+                    type = bitmap_table[i] = LSB_PAGE;
+                    break;
+                case FULL:
+                    // the plane is full
+                    printf("plane %d is full\n",i);
+                    break;
+                default:
+                    printf("get_ppn_for_pre_process error\n");
+            }
+            if(type != NONE){
+                find_plane = i;
+                break;
+            }
+        }
+        if(type == NONE){
+            // 当执行到这里表示所有plane的空间都满了
+             printf("the read operation is expand the capacity of SSD\n");
+             return NONE;
+        }
+        struct local* loc = get_loc_by_plane(ssd,find_plane);
+        channel = loc->channel;
+        chip = loc->chip;
+        die = loc->die;
+        plane = loc->plane;
+        free(loc);
+        loc = NULL;
+        type = find_active_block_new(ssd,channel,chip,die,plane,type); 
+        if(type==NONE)
+        {
+            bitmap_table[find_plane] = FULL;	
+        }
     }
-
-    struct local* loc = get_loc_by_plane(ssd,find_plane);
-    channel = loc->channel;
-    chip = loc->chip;
-    die = loc->die;
-    plane = loc->plane;
-    free(loc);
-    type = find_active_block_new(ssd,channel,chip,die,plane,type); 
+    
     /******************************************************************************
      *根据上述分配方法找到channel，chip，die，plane后，再在这个里面找到active_block
      *接着获得ppn
      ******************************************************************************/
-    if(type==NONE)
-    {
-        printf("the read operation is expand the capacity of SSD\n");	
-        return 0;
-    }
+    
     active_block=ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block;
     if(write_page_new(ssd,channel,chip,die,plane,active_block,&ppn,type)==ERROR)
     {
@@ -439,6 +434,20 @@ unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn)
 
 
     return ppn;
+}
+
+// struct ssd_info* get_ppn_newget_ppn(struct ssd_info *ssd,unsigned int* channel,unsigned int* chip,unsigned int* die,unsigned int* plane,struct sub_request *sub){
+
+// }
+
+int get_index_by_loc(struct ssd_info* ssd ,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane){
+    int plane_die = ssd->parameter->plane_die;
+    int plane_chip = ssd->parameter->die_chip * plane_die;
+    int plane_channel = ssd->parameter->chip_channel[0] * plane_chip;
+
+    int index;
+    index = plane_channel * channel + plane_chip * chip + plane_die * die + plane;
+    return index;
 }
 
 
@@ -457,6 +466,7 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
     struct local *location;
     struct direct_erase *direct_erase_node,*new_direct_erase;
     struct gc_operation *gc_node;
+    int type = sub->bit_type;
 
     unsigned int i=0,j=0,k=0,l=0,m=0,n=0;
 
@@ -466,16 +476,78 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
 
     full_page=~(0xffffffff<<(ssd->parameter->subpage_page));
     lpn=sub->lpn;
-    sub->bit_type = find_active_block_new(ssd,channel,chip,die,plane,sub->bit_type);
-    /*************************************************************************************
-     *利用函数find_active_block在channel，chip，die，plane找到活跃block
-     *并且修改这个channel，chip，die，plane，active_block下的last_write_page和free_page_num
-     **************************************************************************************/
-    // TODO:在这里处理，当某类型的page用完时，需要切换到下一个plane
-    if(sub->bit_type==NONE)                      
-    {
-        printf("ERROR :there is no free page in channel:%d, chip:%d, die:%d, plane:%d\n",channel,chip,die,plane);	
-        return ssd;
+    // if(ssd->dram->map->map_entry[lpn].pn == 1570813){
+    //     printf("here\n");
+    // }
+    if(sub->next_node != NULL && sub->next_node->lpn == 5082338){
+        printf("next is 5082338 and verify here whether MSB change to LSB\n");
+    } 
+    // if(channel == 0 && chip == 1 && die == 0 && plane == 0){
+    //     printf("here index is 4\n");
+    // }
+    if(lpn == 5082338){
+        printf("here 5082338\n");
+    }
+    if(lpn == 7273906){
+        printf("here 7273906\n");
+    }
+    if(sub->bit_type> TSB_PAGE || sub->bit_type < LSB_PAGE){
+        printf("bit type is error\n");
+    }
+    // if(sub->next_node != NULL && sub->next_node->lpn == 4343016){
+    //     printf("next is 4343016 and verify here is MSB change to TSB\n");
+    // } 
+    if(lpn == 5175727){
+        printf("here 5175727\n");
+    }
+    if(lpn == 5181874){
+        printf("here 5181874\n");
+    }
+    int index = get_index_by_loc(ssd,channel,chip,die,plane);
+    // 传的是sub->bit_type值为P_LC 或 P_MT,返回具体的LSB CSB MSB TSB
+    if(bitmap_table[index] != FULL){
+        type = find_active_block_new(ssd,channel,chip,die,plane,sub->bit_type);
+    }
+    while(bitmap_table[index] == FULL || type == NONE){
+        /*************************************************************************************
+         *利用函数find_active_block在channel，chip，die，plane找到活跃block
+        *并且修改这个channel，chip，die，plane，active_block下的last_write_page和free_page_num
+        **************************************************************************************/
+        // TODO:在这里处理，当某类型的page用完时，需要切换到下一个plane
+        index = get_index_by_loc(ssd,channel,chip,die,plane);
+        bitmap_table[index] = FULL;
+        index = NONE;
+        for(int i = 0;i < ssd->plane_num;i ++){
+            int bit_type = bitmap_table[i];
+            int sub_bit_type = sub->bit_type / 2;
+            // bitmap_table 值不为NONE，表示page buffer被占据，为NONE表示现在page buffer空闲
+            if(bit_type == sub_bit_type || bit_type == NONE){
+                index = i;
+                if(bit_type == NONE){
+                    bitmap_table[i] = sub_bit_type;
+                    sub->bit_type = sub_bit_type;
+                }else{
+                    bitmap_table[i] = NONE;
+                    sub->bit_type = bit_type * 2 + 1;
+                }
+                break;
+            }
+        }
+        if(index == NONE){
+            printf("ERROR :there is no free page in channel:%d, chip:%d, die:%d, plane:%d\n",channel,chip,die,plane);
+            return ssd;
+        }
+        struct local* loc = get_loc_by_plane(ssd,index);
+        channel = sub->location->channel = loc->channel;
+        chip = sub->location->chip = loc->chip;
+        die = sub->location->die = loc->die;
+        plane = sub->location->plane = loc->plane;
+        free(loc);
+        loc = NULL;
+        type = find_active_block_new(ssd,channel,chip,die,plane,sub->bit_type);
+    }
+    if(type != NONE && type != sub->bit_type){
+        sub->bit_type = type;
     }
     int cell = 0;
     int bit_type = sub->bit_type/2;
@@ -483,6 +555,7 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
 
     active_block=ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block;
     // ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].last_write_page++;	
+    
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].free_page_num--;
 
     // 当为LSB 或 MSB时需要移动字线
@@ -491,15 +564,25 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
     }else{
         cell = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type];
     }
+    // if(active_block == 2038 && die == 1 && cell == 62){
+    //     printf("here block is 2038\n");
+    //     printf("LC is %d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0]);
+    //     printf("MT activeblk is %d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[1]);
+    // }
 
     if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type]>63)
     {
-        printf("error! the LCMT number larger than 64!!\n");
+        int a= 0,b = 2;
+        printf("a + b = %d\n",a + b);
+        printf("error! the plane %d LCMT number larger than 64!!\n",index);
         while(1){}
     }
 
     block=active_block;	
-    page = cell * BITS_PER_CELL + sub->bit_type;	
+    page = cell * BITS_PER_CELL + sub->bit_type;
+    // if(channel == 0 &&  chip == 0 && die == 1 && plane == 0 & active_block ==0 && page == 255){
+    //     printf("here\n");
+    // }
 
     if(ssd->dram->map->map_entry[lpn].state==0)                                       /*this is the first logical page*/
     {
@@ -514,6 +597,9 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
     {
         ppn=ssd->dram->map->map_entry[lpn].pn;
         location=find_location(ssd,ppn);
+        /* if(location->channel != sub->location->channel && location->chip != sub->location->chip && location->die != sub->location->die && location->plane != sub->location->plane){
+            printf("error here\n");
+        } */
         
         if(	ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].page_head[location->page].lpn!=lpn)
         {
@@ -528,13 +614,16 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
 
         ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].page_head[location->page].valid_state=0;             /*表示某一页失效，同时标记valid和free状态都为0*/
         ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].page_head[location->page].free_state=0;              /*表示某一页失效，同时标记valid和free状态都为0*/
+        // if(ppn == 1048829){
+        //     printf("here ppn is 7524562\n");
+        // }
         ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].page_head[location->page].lpn=0;
         ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].invalid_page_num++;
 
         /*******************************************************************************************
          *该block中全是invalid的页，可以直接删除，就在创建一个可擦除的节点，挂在location下的plane下面
          ********************************************************************************************/
-        if (ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].invalid_page_num==ssd->parameter->page_block)    
+        if (ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].invalid_page_num==(ssd->parameter->page_block * BITS_PER_CELL))    
         {
             new_direct_erase=(struct direct_erase *)malloc(sizeof(struct direct_erase));
             alloc_assert(new_direct_erase,"new_direct_erase");
@@ -562,17 +651,27 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
 
 
     sub->ppn=ssd->dram->map->map_entry[lpn].pn;                                      /*修改sub子请求的ppn，location等变量*/
+    // if(sub->ppn == 983312){
+    //     printf("here ppn is 983312\n");
+    //     printf("MT cell is %d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1]);
+    // }
     sub->location->channel=channel;
     sub->location->chip=chip;
     sub->location->die=die;
     sub->location->plane=plane;
     sub->location->block=active_block;
     sub->location->page=page;
+    if(sub->location == NULL){
+        printf("NULL\n");
+    }
 
     ssd->program_count++;                                                           /*修改ssd的program_count,free_page等变量*/
     ssd->channel_head[channel].program_count++;
     ssd->channel_head[channel].chip_head[chip].program_count++;
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page--;
+    if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page == 0){
+        printf("\nchannel %d chip %d die %d plane %d free page is %d\n",channel,chip,die,plane,ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page);
+    }
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].page_head[page].lpn=lpn;	
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].page_head[page].valid_state=sub->state;
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].page_head[page].free_state=((~(sub->state))&full_page);

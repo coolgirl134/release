@@ -27,6 +27,22 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define ACTIVE_FIXED 0
 #define ACTIVE_ADJUST 1
 
+// 保存每个请求的延迟时间，不包括dram
+unsigned int latency[3993316];
+// 保存latency偏移量的索引
+int latency_index;
+
+
+/*****************************************
+ *三种plane类型的bitmap
+ *NONE_bitmap LC_bitmap MT_bitmap
+ *对应bit置1表示当前plane buffer的类型
+ ******************************************/
+bitchunk_t NONE_bitmap[1];
+bitchunk_t LC_bitmap[1];
+bitchunk_t MT_bitmap[1];
+char bitmap_table[16];
+
 
 /************************************************************************
  * Compare function for AVL Tree                                        
@@ -97,9 +113,9 @@ struct ssd_info *initiation(struct ssd_info *ssd)
       strcpy_s(ssd->statisticfilename2 ,16,"statistic2.dat");*/
 
     strncpy(ssd->parameterfilename,"page.parameters",16);
-    //strncpy(ssd->tracefilename,"example.ascii",25);
-    printf("\ninput trace file name:");
-    scanf("%s",ssd->tracefilename);
+    strncpy(ssd->tracefilename,"./workloads/hm.csv",35);
+    // printf("\ninput trace file name:");
+    // scanf("%s",ssd->tracefilename);
     strncpy(ssd->outputfilename,"ex.out",7);
     strncpy(ssd->statisticfilename,"statistic10.dat",16);
     strncpy(ssd->statisticfilename2,"statistic2.dat",15);
@@ -197,7 +213,7 @@ struct dram_info * initialize_dram(struct ssd_info * ssd)
     alloc_assert(dram->map,"dram->map");
     memset(dram->map,0, sizeof(struct map_info));
 
-    page_num = ssd->parameter->page_block*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num;
+    page_num = ssd->parameter->page_block*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num * BITS_PER_CELL;
 
     dram->map->map_entry = (struct entry *)malloc(sizeof(struct entry) * page_num); //每个物理页和逻辑页都有对应关系
     alloc_assert(dram->map->map_entry,"dram->map->map_entry");
