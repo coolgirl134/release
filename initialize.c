@@ -31,7 +31,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 unsigned int latency[3993316];
 // 保存latency偏移量的索引
 int latency_index;
-
+int trace_count = 524288;
 
 /*****************************************
  *三种plane类型的bitmap
@@ -351,10 +351,9 @@ struct ssd_info * initialize_channels(struct ssd_info * ssd )
             initialize_chip(p_chip,ssd->parameter,ssd->current_time );
         }
     }
-    ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[5].page_head[242].lpn = 1;
-    if(ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[5].page_head[242].lpn == ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[6].page_head[177].lpn){
-        printf("address same\n");
-    }
+    // if(ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[5].page_head[242].lpn == ssd->channel_head[0].chip_head[0].die_head[0].plane_head[0].blk_head[6].page_head[177].lpn){
+    //     printf("address same\n");
+    // }
 
     return ssd;
 }
