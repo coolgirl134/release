@@ -50,6 +50,8 @@ struct ssd_info *un_greed_interleave_copyback(struct ssd_info *,unsigned int,uns
 struct ssd_info *un_greed_copyback(struct ssd_info *,unsigned int,unsigned int,unsigned int,struct sub_request *);
 int  find_active_block(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane);
 Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
+Status find_open_block(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
+int get_plane(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,struct sub_request* sub);
 int write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,unsigned int active_block,unsigned int *ppn);
 int allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req);
 int typeofdata(struct ssd_info* ssd,unsigned int lpn);

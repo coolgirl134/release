@@ -1,3 +1,4 @@
 *.csv
 *.ascii
 workloads/
+*.out

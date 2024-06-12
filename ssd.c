@@ -62,15 +62,17 @@ int  main()
     // 刚开始，所有的plane buffer类型都为NONE
     ssd->plane_num = ssd->parameter->channel_number * ssd->parameter->chip_channel[0] * ssd->parameter->die_chip * ssd->parameter->plane_die;
     for(int i = 0;i < ssd->plane_num;i++){
-        bitmap_table[i] = NONE;
+        // 刚开始的bitmap_table都初始化为MT_FULL，表示为当前没有空闲的MT位置
+        bitmap_table[i] = MT_FULL;
+        current_buffer[i] = NONE;
     }
     make_aged(ssd);
     pre_process_page(ssd);
-    for(int i = 0;i < ssd->plane_num;i++){
-        if(bitmap_table[i] != NONE && bitmap_table[i] != FULL){
-            bitmap_table[i] /= 2;
-        }
-    }
+    // for(int i = 0;i < ssd->plane_num;i++){
+    //     if(bitmap_table[i] != NONE && bitmap_table[i] != FULL){
+    //         bitmap_table[i] /= 2;
+    //     }
+    // }
 
     for (i=0;i<ssd->parameter->channel_number;i++)
     {
@@ -102,7 +104,7 @@ int  main()
             {
                 for (k=0;k<ssd->parameter->plane_die;k++)
                 {
-                    printf("%d,%d,%d,%d:  %5d\n",i,t,j,k,ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].free_page);
+                    printf("%d,%d,%d,%d:  %5d\n",i,t,j,k,ssd->channel_head[i].chip_head[t].die_head[j].plane_head[k].free_page);
                 }
             }
         }
@@ -165,7 +167,9 @@ struct ssd_info *simulate(struct ssd_info *ssd)
         }
         sq++;
         sub1 = ssd->channel_head[0].subs_r_head;
-        
+        if(sq == 27803756){
+            printf("here 27803756\n");
+        }
         process(ssd);    
         sub1 = ssd->channel_head[0].subs_r_head;
         trace_output(ssd);
@@ -751,7 +755,7 @@ void trace_output(struct ssd_info* ssd){
                     ssd->write_avg=ssd->write_avg+(end_time-req->time);
                 }
                 // 在这里计算尾延迟
-                int64_t tail = end_time - req->time;
+                unsigned long long tail = end_time - req->time;
                 if(tail > ssd->tail_latency){
                     ssd->tail_latency = tail;
                 }
@@ -878,7 +882,8 @@ void statistic_output(struct ssd_info *ssd)
         latency_array[i] = 0;
     }
     for(int i = 0;i <= latency_index;i++){
-        int range = ssd->tail_latency / size;
+        unsigned long long range = ssd->tail_latency / size;
+        // printf("range is %d\n",range);
         int j = latency[i] / range;
         latency_array[j]++;
     }
@@ -892,7 +897,7 @@ void statistic_output(struct ssd_info *ssd)
     if(total == latency_index){
         printf("It's right!\n");
     }else{
-        printf("total is %d\n",total);
+        printf("total is %d and latency index is %d\n",total,latency_index);
     }
     
     fprintf(ssd->outputfile,"\n");
@@ -936,9 +941,10 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->outputfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
     fprintf(ssd->outputfile,"tail latency: %13d\n",ssd->tail_latency);
     fprintf(ssd->outputfile,"---------------------------Space utilization rate---------------------------\n");
-    fprintf(ssd->outputfile,"real written pagenums: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
+    // TODO:目前这里还没有空白页无效
+    fprintf(ssd->outputfile,"Space utilization rate: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
     fprintf(ssd->outputfile,"---------------------------WA---------------------------\n");
-    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->gc_rewrite));
+    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->write_request_count/(ssd->real_written + ssd->gc_rewrite));
     fprintf(ssd->outputfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->outputfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->outputfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);

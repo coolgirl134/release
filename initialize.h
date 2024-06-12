@@ -115,7 +115,10 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 typedef int Status;    
 
 #define NONE -1
+#define MTNONE -2
 #define FULL 8
+#define LC_FULL 10
+#define MT_FULL 11
 
 #define LSB_PAGE 0
 #define CSB_PAGE 1
@@ -131,7 +134,7 @@ typedef int Status;
 #define BITS_PER_CELL 4
 
 // 保存每个请求的延迟时间，不包括dram
-extern unsigned int latency[3993316];
+extern unsigned long long latency[3993316];
 // 保存latency偏移量的索引
 extern int latency_index;
 extern int trace_count;
@@ -146,6 +149,7 @@ extern bitchunk_t NONE_bitmap[1];
 extern bitchunk_t LC_bitmap[1];
 extern bitchunk_t MT_bitmap[1];
 extern char bitmap_table[16];
+extern char current_buffer[16];
 
 struct ac_time_characteristics{
     int tPROG;     //program time
@@ -205,7 +209,7 @@ struct ssd_info{
 
     unsigned int total_write;           //记录基于子�?�求的写操作�?�?
     unsigned int total_read;            //记录基于子�?�求的�?�操作个�?
-    unsigned int tail_latency;          // 记录尾延�?
+    unsigned long long tail_latency;          // 记录尾延�?
 
     int gc_rewrite;                  //记录gc产生的�?�余的写入量
     unsigned int real_written;          //记录写�?�求产生的写入量
@@ -320,6 +324,8 @@ struct plane_info{
     struct direct_erase *erase_node;    //用来记录�?以直接删除的块号,在获取新的ppn时，每当出现invalid_page_num==64时，将其添加到这�?指针上，供GC操作时直接删�?
     struct blk_info *blk_head;
     int activeblk[2];                   //分别记录LC MT对应的活跃块
+    unsigned int free_LC;
+    unsigned int free_MT;
 };
 
 

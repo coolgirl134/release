@@ -80,7 +80,7 @@ gc threshold=0.30;                    #GC operation begins when this threshold i
 buffer management=0;                  #record buffer scheme
 scheduling algorithm=1;               #1:FCFS recordscheduling algorithm mode, 1 means FCFS
 gc hard threshold=0.10;          #
-allocation=1;                   #0 for dynamic allocation, 1 for static allocation
+allocation=0;                   #0 for dynamic allocation, 1 for static allocation
 static_allocation=2;            #record static allocation mode like all static allocation modes0-6 in ICS2011 paper
 dynamic_allocation=0;           #record dynamic allocation mode, 0 for all dynamic, 1 for fixed channel and dynamic package, die, plane
 advanced command=0;             #advanced command indicator, 0 for no advanced command, bin number 00001 for random, 00010 for copyback, 00100 for two-plane-program, 01000 for interleave, 10000 for two-plane-read, 11111 for using all£»
@@ -90,3 +90,56 @@ greed MPW command=0;            #1 for using multi-plane write greedily, 0 for n
 aged=0;                         #1 for making SSD aged, 0 for keeping SSD non-aged
 aged ratio=0.7;                #If we need to make SSD aged, set the aged ratio in advance
 -----------------------simulation output----------------------
+the 0 channel, 0 die, 0 plane, 2048 blocks has :             0 erase operations
+the 0 channel, 0 die, 1 plane, 2048 blocks has :          4181 erase operations
+the 0 channel, 1 die, 0 plane, 2048 blocks has :           653 erase operations
+the 0 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 0 die, 0 plane, 2048 blocks has :          4245 erase operations
+the 1 channel, 0 die, 1 plane, 2048 blocks has :           509 erase operations
+the 1 channel, 1 die, 0 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
+---------------------------latency array distribute---------------------------
+total latency num is 2807064
+rang 0 request num is 2343292
+rang 1 request num is 128336
+rang 2 request num is 84819
+rang 3 request num is 37234
+rang 4 request num is 21739
+rang 5 request num is 44437
+rang 6 request num is 51605
+rang 7 request num is 20610
+rang 8 request num is 37795
+rang 9 request num is 37197
+
+
+---------------------------static data---------------------------
+min lsn:         24576
+max lsn: 4293935104
+read count:       3466341
+program count:      16825756
+---------------------------read & program sub rate---------------------------
+total program sub:      11254481
+total read sub:       5439162
+read rate: 0.325822
+program rate: 0.674178
+---------------------------read & program request rate---------------------------
+read request count:       1417747
+write request count:       2575568
+read request rate: 0.355030
+write request rate: 0.644970
+read request average size:     14.708714
+write request average size:     16.607300
+---------------------------read & program & total & tail latency---------------------------
+read request average response time: 1472800472
+write request average response time: 415572580
+total request average response time: 790920298
+tail latency:    1606727597
+---------------------------Space utilization rate---------------------------
+real written pagenums: 1.000000
+---------------------------WA---------------------------
+Write amplification: 0.937269
+buffer read hits:        530811
+buffer read miss:            63
+buffer write hits:       5050820
+buffer write miss:      30313245
+erase:          9588

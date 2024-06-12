@@ -28,7 +28,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define ACTIVE_ADJUST 1
 
 // 保存每个请求的延迟时间，不包括dram
-unsigned int latency[3993316];
+unsigned long long latency[3993316];
 // 保存latency偏移量的索引
 int latency_index;
 int trace_count = 524288;
@@ -42,6 +42,7 @@ bitchunk_t NONE_bitmap[1];
 bitchunk_t LC_bitmap[1];
 bitchunk_t MT_bitmap[1];
 char bitmap_table[16];
+char current_buffer[16];
 
 
 /************************************************************************
@@ -260,7 +261,8 @@ struct plane_info * initialize_plane(struct plane_info * p_plane,struct paramete
     struct blk_info * p_block;
     p_plane->add_reg_ppn = -1;  //plane 里面的额外寄存器additional register -1 表示无数据
     p_plane->free_page=parameter->block_plane*parameter->page_block*BITS_PER_CELL;
-
+    p_plane->free_LC=p_plane->free_MT=p_plane->free_page/2;
+    
     p_plane->blk_head = (struct blk_info *)malloc(parameter->block_plane * sizeof(struct blk_info));
     alloc_assert(p_plane->blk_head,"p_plane->blk_head");
     memset(p_plane->blk_head,0,parameter->block_plane * sizeof(struct blk_info));
