@@ -951,10 +951,10 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->outputfile,"---------------------------read & program & total & tail latency---------------------------\n");
     fprintf(ssd->outputfile,"read request average size: %13f\n",ssd->ave_read_size);
     fprintf(ssd->outputfile,"write request average size: %13f\n",ssd->ave_write_size);
-    fprintf(ssd->outputfile,"read request average response time: %lld\n",ssd->read_avg/ssd->read_request_count);
-    fprintf(ssd->outputfile,"write request average response time: %lld\n",ssd->write_avg/ssd->write_request_count);
+    fprintf(ssd->outputfile,"read request average response time: %llu\n",ssd->read_avg/ssd->read_request_count);
+    fprintf(ssd->outputfile,"write request average response time: %llu\n",ssd->write_avg/ssd->write_request_count);
     fprintf(ssd->outputfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
-    fprintf(ssd->outputfile,"tail latency: %13d\n",ssd->tail_latency);
+    fprintf(ssd->outputfile,"tail latency: %llu\n",ssd->tail_latency);
     fprintf(ssd->outputfile,"---------------------------Space utilization rate---------------------------\n");
     // TODO:�?前这里还没有空白页无�?
     fprintf(ssd->outputfile,"Space utilization rate: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
