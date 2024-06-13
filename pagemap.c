@@ -23,6 +23,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #include "initialize.h"
 #include "flash.h"
 #include <math.h>
+#include "string.h"
 
 /************************************************
  *断言,当打开文件失败时，输出“open 文件名 error”
@@ -235,12 +236,20 @@ struct ssd_info *pre_process_page(struct ssd_info *ssd)
     /*计算出这个ssd的最大逻辑扇区号*/
     largest_lsn=(unsigned int )((ssd->parameter->chip_num*ssd->parameter->die_chip*ssd->parameter->plane_die*ssd->parameter->block_plane*ssd->parameter->page_block*ssd->parameter->subpage_page)*(1-ssd->parameter->overprovide));
     int response;
+    char workload[4];
+    char type[5];
     while(fgets(buffer_request,200,ssd->tracefile))
     {
         // sscanf(buffer_request,"%lld %d %d %d %d",&time,&device,&lsn,&size,&ope);
-        sscanf(buffer_request,"%lld %d %d %lld %d %d",&time,&device,&ope,&lsn,&size,&response);
+        // sscanf(buffer_request,"%lld %d %d %lld %d %d",&time,&device,&ope,&lsn,&size,&response);
+        sscanf(buffer_request,"%lld,%[^,],%d,%[^,],%lld,%d,%d",&time,workload,&device,type,&lsn,&size,&response);        
         size /= SECTOR;
         fl++;
+        if(type!= NULL && strstr(type,"Read")){
+            ope = 1;
+        }else{
+            ope = 0;
+        }
         trace_assert(time,device,lsn,size,ope);                         /*断言，当读到的time，device，lsn，size，ope不合法时就会处理*/
 
         add_size=0;                                                     /*add_size是这个请求已经预处理的大小*/
@@ -694,6 +703,9 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
                 index = i;
                 if(bit_type == NONE){
                     bitmap_table[i] = sub_bit_type;
+                    if(bitmap_table[i] > 12 || bitmap_table[i] < -1){
+                        printf("here bitmap_table error\n");
+                    }
                     sub->bit_type = sub_bit_type*2;
                 }else{
                     bitmap_table[i] = NONE;
@@ -893,85 +905,93 @@ unsigned int get_ppn_for_gc_new(struct ssd_info *ssd,unsigned int channel,unsign
     int index = get_index_by_loc(ssd,channel,chip,die,plane);
     int flag = FAILURE;
     int bit_type = current_buffer[index];
+    int type1 = NONE;
+    int old_buffertype;
+    old_buffertype = current_buffer[index];
     // 传的是sub->bit_type值为P_LC 或 P_MT,返回具体的LSB CSB MSB TSB
-    if(type == P_LC){
-        switch (bit_type)
-        {
-        case P_LC:
-            type = CSB_PAGE;
-            current_buffer[index] = MTNONE;
-            break;
-        case NONE:
-            if(bitmap_table[index] != LC_FULL){
-                type = LSB_PAGE;
-                current_buffer[index] = P_LC;
-            }else if(bitmap_table[index] != FULL){
-                // 如果LC满 则存入MT
-                type = MSB_PAGE;
-                current_buffer[index] = P_MT;
+    while(type1 == NONE){
+        if(type == P_LC){
+            switch (bit_type)
+            {
+            case P_LC:
+                type1 = CSB_PAGE;
+                current_buffer[index] = MTNONE;
+                break;
+            case NONE:
+                if(bitmap_table[index] != LC_FULL){
+                    type1 = LSB_PAGE;
+                    current_buffer[index] = P_LC;
+                }else if(bitmap_table[index] != FULL){
+                    // 如果LC满 则存入MT
+                    type1 = MSB_PAGE;
+                    current_buffer[index] = P_MT;
+                }
+                break;
+            case MTNONE:
+                if(bitmap_table[index] != LC_FULL){
+                    type1 = LSB_PAGE;
+                    current_buffer[index] = P_LC;
+                }else{
+                    // 不应该出现这种情况，当plane当中的page低于阈值时应该触发GC
+                // printf("LC is full\n");
+                    type1 = MSB_PAGE;
+                    current_buffer[index] = P_MT;
+                }
+                break;
+            case P_MT:
+                // 这里采取存为TSB
+                // TODO:后期这里思考一下如何存入空白页
+                type1 = TSB_PAGE;
+                current_buffer[index] = NONE;
+                break;
+            default:
+                printf("current buffer is error in get_ppn_for_gc_new\n");
+                break;
             }
-            break;
-        case MTNONE:
-            if(bitmap_table[index] != LC_FULL){
-                type = LSB_PAGE;
-                current_buffer[index] = P_LC;
-            }else{
-                // 不应该出现这种情况，当plane当中的page低于阈值时应该触发GC
-               // printf("LC is full\n");
-                type = MSB_PAGE;
+        }else{
+            switch (bit_type)
+            {
+            case P_LC:
+                // 转为CSB
+                type1 = CSB_PAGE;
+                current_buffer[index] = MTNONE;
+                break;
+            case NONE:
+                if(bitmap_table[index] != MT_FULL){
+                    type1 = MSB_PAGE;
+                    current_buffer[index] = P_MT;
+                }else{
+                    // 没有剩余的MT位置时，转为LSB
+                    type1 = LSB_PAGE;
+                    current_buffer[index] = P_LC;
+                }
+                break;
+            case MTNONE:
+                type1 = MSB_PAGE;
                 current_buffer[index] = P_MT;
+                break;
+            case P_MT:
+                type1 = TSB_PAGE;
+                current_buffer[index] = NONE;
+                break;
+            default:
+                printf("current buffer is error in get_ppn_for_gc_new\n");
+                break;
             }
-            break;
-        case P_MT:
-            // 这里采取存为TSB
-            // TODO:后期这里思考一下如何存入空白页
-            type = TSB_PAGE;
-            current_buffer[index] = NONE;
-            break;
-        default:
-            printf("current buffer is error in get_ppn_for_gc_new\n");
-            break;
         }
-    }else{
-        switch (bit_type)
+        type1 = find_open_block(ssd,channel,chip,die,plane,type1);
+        if(type1==NONE)
         {
-        case P_LC:
-            // 转为CSB
-            type = CSB_PAGE;
-            current_buffer[index] = MTNONE;
-            break;
-        case NONE:
-            if(bitmap_table[index] != MT_FULL){
-                type = MSB_PAGE;
-                current_buffer[index] = P_MT;
-            }else{
-                // 没有剩余的MT位置时，转为LSB
-                type = LSB_PAGE;
-                current_buffer[index] = P_LC;
-            }
-            break;
-        case MTNONE:
-            type = MSB_PAGE;
-            current_buffer[index] = P_MT;
-            break;
-        case P_MT:
-            type = TSB_PAGE;
-            current_buffer[index] = NONE;
-            break;
-        default:
-            printf("current buffer is error in get_ppn_for_gc_new\n");
-            break;
+            printf("\n\n refind page \n",type1);
+            current_buffer[index] = old_buffertype;
         }
     }
-    int type_new = find_open_block(ssd,channel,chip,die,plane,type);
+    type = type1;
+    
 
     // TODO:如果plane满了，这里可能需要切换plane,这里需要修改plane
     // type = find_active_block_new(ssd,channel,chip,die,plane,type)/;
-    if(type_new==NONE || type_new != type)
-    {
-        printf("\n\n Error int get_ppn_for_gc_new(). and type_new is %d type is %d \n",type_new,type);
-        return 0xffffffff;
-    }
+    
     bit_type = type/2;
 
     active_block = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block;
@@ -1401,7 +1421,9 @@ int move_page(struct ssd_info * ssd, struct local *location, unsigned int * tran
     
     old_ppn=find_ppn_new(ssd,location->channel,location->chip,location->die,location->plane,location->block,location->page);      /*记录这个有效移动页的ppn，对比map或者额外映射关系中的ppn，进行删除和添加操作*/
     int type = typeofdata(ssd,lpn);
-    
+    if(lpn == 914315){
+        printf("here 914315\n");
+    }
     ppn=get_ppn_for_gc_new(ssd,location->channel,location->chip,location->die,location->plane,type);                /*找出来的ppn一定是在发生gc操作的plane中,才能使用copyback操作，为gc操作获取ppn*/
     unsigned int prog_time=0;
     prog_time=get_prog_time(ppn);
@@ -1534,7 +1556,6 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
         }
         if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[i].valid_state>0) /*该页是有效页，需要copyback操作*/		
         {	
-            ssd->gc_rewrite++;      //由于gc操作产生的额外的写操作数量
             location=(struct local * )malloc(sizeof(struct local ));
             alloc_assert(location,"location");
             memset(location,0, sizeof(struct local));

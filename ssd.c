@@ -21,13 +21,14 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #include "ssd.h"
 #include "initialize.h"
 #include "pagemap.h"
+#include "string.h"
 
 /********************************************************************************************************************************
-  1，main函数中initiatio()函数用来初始化ssd,；2，make_aged()函数使SSD成为aged，aged的ssd相当于使用过一段时间的ssd，里面有失效页，
-  non_aged的ssd是新的ssd，无失效页，失效页的比例可以在初始化参数中设置；3，pre_process_page()函数提前扫一遍读请求，把读请求
-  的lpn<--->ppn映射关系事先建立好，写请求的lpn<--->ppn映射关系在写的时候再建立，预处理trace防止读请求是读不到数据；4，simulate()是
-  核心处理函数，trace文件从读进来到处理完成都由这个函数来完成；5，statistic_output()函数将ssd结构中的信息输出到输出文件，输出的是
-  统计数据和平均数据，输出文件较小，trace_output文件则很大很详细；6，free_all_node()函数释放整个main函数中申请的节点
+  1，main函数中initiatio()函数用来初�?�化ssd,�?2，make_aged()函数使SSD成为aged，aged的ssd相当于使用过一段时间的ssd，里面有失效页，
+  non_aged的ssd�?新的ssd，无失效页，失效页的比例�?以在初�?�化参数�?设置�?3，pre_process_page()函数提前�?一遍�?��?�求，把读�?�求
+  的lpn<--->ppn映射关系事先建立好，写�?�求的lpn<--->ppn映射关系在写的时候再建立，�?��?�理trace防�?��?��?�求�?读不到数�?�?4，simulate()�?
+  核心处理函数，trace文件从�?�进来到处理完成都由这个函数来完成；5，statistic_output()函数将ssd结构�?的信�?输出到输出文件，输出的是
+  统�?�数�?和平均数�?，输出文件较小，trace_output文件则很大很详细�?6，free_all_node()函数释放整个main函数�?申�?�的节点
  *********************************************************************************************************************************/
 int  main()
 {
@@ -116,11 +117,11 @@ int  main()
 
 
 /******************simulate() *********************************************************************
- *simulate()是核心处理函数，主要实现的功能包括
- *1,从trace文件中获取一条请求，挂到ssd->request
- *2，根据ssd是否有dram分别处理读出来的请求，把这些请求处理成为读写子请求，挂到ssd->channel或者ssd上
- *3，按照事件的先后来处理这些读写子请求。
- *4，输出每条请求的子请求都处理完后的相关信息到outputfile文件中
+ *simulate()�?核心处理函数，主要实现的功能包括
+ *1,从trace文件�?获取一条�?�求，挂到ssd->request
+ *2，根据ssd�?否有dram分别处理读出来的请求，把这些请求处理成为读写子�?�求，挂到ssd->channel或者ssd�?
+ *3，按照事件的先后来�?�理这些读写子�?�求�?
+ *4，输出每条�?�求的子请求都�?�理完后的相关信�?到outputfile文件�?
  **************************************************************************************************/
 struct ssd_info *simulate(struct ssd_info *ssd)
 {
@@ -148,6 +149,11 @@ struct ssd_info *simulate(struct ssd_info *ssd)
     int sq = 0;
     while(flag!=100)      
     {
+        for(int i = 0;i < ssd->plane_num;i ++){
+            if(bitmap_table[i] > 11 || bitmap_table[i] < -1){
+                printf("here error \n");
+            }
+        }
         flag=get_requests(ssd);
         struct sub_request* sub1 = ssd->channel_head[0].subs_r_head;
 
@@ -190,10 +196,10 @@ struct ssd_info *simulate(struct ssd_info *ssd)
  *	return	0: reach the end of the trace
  *			-1: no request has been added
  *			1: add one request to list
- *SSD模拟器有三种驱动方式:时钟驱动(精确，太慢) 事件驱动(本程序采用) trace驱动()，
- *两种方式推进事件：channel/chip状态改变、trace文件请求达到。
- *channel/chip状态改变和trace文件请求到达是散布在时间轴上的点，每次从当前状态到达
- *下一个状态都要到达最近的一个状态，每到达一个点执行一次process
+ *SSD模拟器有三�?�驱动方�?:时钟驱动(精确，太�?) 事件驱动(�?程序采用) trace驱动()�?
+ *两�?�方式推进事件：channel/chip状态改变、trace文件请求达到�?
+ *channel/chip状态改变和trace文件请求到达�?散布在时间轴上的点，每�?�从当前状态到�?
+ *下一�?状态都要到达最近的一�?状态，每到达一�?点执行一�?process
  ********************************************************************************/
 int get_requests(struct ssd_info *ssd)  
 {  
@@ -210,7 +216,7 @@ int get_requests(struct ssd_info *ssd)
     printf("enter get_requests,  current time:%lld\n",ssd->current_time);
 #endif
 
-    // 修改了这里，对ssd->current_time进行更新，否则当运行完工作负载时，ssd->current_time一直不动，导致后面请求一直卡住
+    // �?改了这里，�?�ssd->current_time进�?�更新，否则当运行完工作负载时，ssd->current_time一直不�?，�?�致后面请求一直卡�?
     if(feof(ssd->tracefile)){
         ssd->current_time = find_nearest_event(ssd);
         return 0;
@@ -221,7 +227,16 @@ int get_requests(struct ssd_info *ssd)
     fgets(buffer, 200, ssd->tracefile); 
     // sscanf(buffer,"%lld %d %d %d %d",&time_t,&device,&lsn,&size,&ope);
     int response;
-    sscanf(buffer,"%lld %d %d %lld %d %d",&time_t,&device,&ope,&lsn,&size,&response);
+    char workload[4];
+    char type[5];
+    // sscanf(buffer,"%lld %d %d %lld %d %d",&time_t,&device,&ope,&lsn,&size,&response);
+    sscanf(buffer,"%lld,%[^,],%d,%[^,],%lld,%d,%d",&time_t,workload,&device,type,&lsn,&size,&response);        
+    
+    if(type!= NULL && strstr(type,"Read")){
+        ope = 1;
+    }else{
+        ope = 0;
+    }
     if(ope != READ && ope != WRITE){
         printf("ope is error\n");
     }
@@ -236,10 +251,10 @@ int get_requests(struct ssd_info *ssd)
     if (lsn>ssd->max_lsn)
         ssd->max_lsn=lsn;
     /******************************************************************************************************
-     *上层文件系统发送给SSD的任何读写命令包括两个部分（LSN，size） LSN是逻辑扇区号，对于文件系统而言，它所看到的存
-     *储空间是一个线性的连续空间。例如，读请求（260，6）表示的是需要读取从扇区号为260的逻辑扇区开始，总共6个扇区。
-     *large_lsn: channel下面有多少个subpage，即多少个sector。overprovide系数：SSD中并不是所有的空间都可以给用户使用，
-     *比如32G的SSD可能有10%的空间保留下来留作他用，所以乘以1-provide
+     *上层文件系统发送给SSD的任何�?�写命令包括两个部分（LSN，size�? LSN�?逻辑扇区号，对于文件系统而言，它所看到的存
+     *储空间是一�?线性的连续空间。例如，读�?�求�?260�?6）表示的�?需要�?�取从扇区号�?260的逻辑扇区开始，总共6�?扇区�?
+     *large_lsn: channel下面有�?�少个subpage，即多少个sector。overprovide系数：SSD�?并不�?所有的空间都可以给用户使用�?
+     *比�??32G的SSD�?能有10%的空间保留下来留作他�?，所以乘�?1-provide
      ***********************************************************************************************************/
     large_lsn=(int)((ssd->parameter->subpage_page*ssd->parameter->page_block*BITS_PER_CELL*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num)*(1-ssd->parameter->overprovide));
     lsn = lsn%large_lsn;
@@ -249,7 +264,7 @@ int get_requests(struct ssd_info *ssd)
     {
         ssd->current_time=time_t;           
 
-        //if (ssd->request_queue_length>ssd->parameter->queue_length)    //如果请求队列的长度超过了配置文件中所设置的长度                     
+        //if (ssd->request_queue_length>ssd->parameter->queue_length)    //如果请求队列的长度超过了配置文件�?所设置的长�?                     
         //{
         //printf("error in get request , the queue length is too long\n");
         //}
@@ -259,12 +274,12 @@ int get_requests(struct ssd_info *ssd)
         if(nearest_event_time<time_t)
         {
             /*******************************************************************************
-             *回滚，即如果没有把time_t赋给ssd->current_time，则trace文件已读的一条记录回滚
-             *filepoint记录了执行fgets之前的文件指针位置，回滚到文件头+filepoint处
-             *int fseek(FILE *stream, long offset, int fromwhere);函数设置文件指针stream的位置。
-             *如果执行成功，stream将指向以fromwhere（偏移起始位置：文件头0，当前位置1，文件尾2）为基准，
-             *偏移offset（指针偏移量）个字节的位置。如果执行失败(比如offset超过文件自身大小)，则不改变stream指向的位置。
-             *文本文件只能采用文件头0的定位方式，本程序中打开文件方式是"r":以只读方式打开文本文件	
+             *回滚，即如果没有把time_t赋给ssd->current_time，则trace文件已�?�的一条�?�录回滚
+             *filepoint记录了执行fgets之前的文件指针位�?，回滚到文件�?+filepoint�?
+             *int fseek(FILE *stream, long offset, int fromwhere);函数设置文件指针stream的位�?�?
+             *如果执�?�成功，stream将指向以fromwhere（偏移起始位�?：文件头0，当前位�?1，文件尾2）为基准�?
+             *偏移offset（指针偏移量）个字节的位�?。�?�果执�?�失�?(比�?�offset超过文件�?�?大小)，则不改变stream指向的位�?�?
+             *文本文件�?能采用文件头0的定位方式，�?程序�?打开文件方式�?"r":以只读方式打开文本文件	
              **********************************************************************************/
             fseek(ssd->tracefile,filepoint,0); 
             if(ssd->current_time<=nearest_event_time)
@@ -329,7 +344,7 @@ int get_requests(struct ssd_info *ssd)
         ssd->request_queue_length++;
     }
 
-    if (request1->operation==1)             //计算平均请求大小 1为读 0为写
+    if (request1->operation==1)             //计算平均请求大小 1为�?? 0为写
     {
         ssd->ave_read_size=(ssd->ave_read_size*ssd->read_request_count+request1->size)/(ssd->read_request_count+1);
     } 
@@ -340,7 +355,7 @@ int get_requests(struct ssd_info *ssd)
 
 
     filepoint = ftell(ssd->tracefile);	
-    fgets(buffer, 200, ssd->tracefile);    //寻找下一条请求的到达时间
+    fgets(buffer, 200, ssd->tracefile);    //寻找下一条�?�求的到达时�?
     // sscanf(buffer,"%lld %d %d %d %d",&time_t,&device,&lsn,&size,&ope);
     sscanf(buffer,"%lld %d %d %lld %d %d",&time_t,&device,&ope,&lsn,&size,&response);
     ssd->next_request_time=time_t;
@@ -350,14 +365,14 @@ int get_requests(struct ssd_info *ssd)
 }
 
 /**********************************************************************************************************************************************
- *首先buffer是个写buffer，就是为写请求服务的，因为读flash的时间tR为20us，写flash的时间tprog为200us，所以为写服务更能节省时间
- *  读操作：如果命中了buffer，从buffer读，不占用channel的I/O总线，没有命中buffer，从flash读，占用channel的I/O总线，但是不进buffer了
- *  写操作：首先request分成sub_request子请求，如果是动态分配，sub_request挂到ssd->sub_request上，因为不知道要先挂到哪个channel的sub_request上
- *          如果是静态分配则sub_request挂到channel的sub_request链上,同时不管动态分配还是静态分配sub_request都要挂到request的sub_request链上
- *		   因为每处理完一个request，都要在traceoutput文件中输出关于这个request的信息。处理完一个sub_request,就将其从channel的sub_request链
- *		   或ssd的sub_request链上摘除，但是在traceoutput文件输出一条后再清空request的sub_request链。
- *		   sub_request命中buffer则在buffer里面写就行了，并且将该sub_page提到buffer链头(LRU)，若没有命中且buffer满，则先将buffer链尾的sub_request
- *		   写入flash(这会产生一个sub_request写请求，挂到这个请求request的sub_request链上，同时视动态分配还是静态分配挂到channel或ssd的
+ *首先buffer�?�?写buffer，就�?为写请求服务的，因为读flash的时间tR�?20us，写flash的时间tprog�?200us，所以为写服务更能节省时�?
+ *  读操作：如果命中了buffer，从buffer读，不占用channel的I/O总线，没有命中buffer，从flash读，占用channel的I/O总线，但�?不进buffer�?
+ *  写操作：首先request分成sub_request子�?�求，�?�果�?动态分配，sub_request挂到ssd->sub_request上，因为不知道�?�先挂到�?个channel的sub_request�?
+ *          如果�?静态分配则sub_request挂到channel的sub_request链上,同时不�?�动态分配还�?静态分配sub_request都�?�挂到request的sub_request链上
+ *		   因为每�?�理完一个request，都要在traceoutput文件�?输出关于这个request的信�?。�?�理完一个sub_request,就将其从channel的sub_request�?
+ *		   或ssd的sub_request链上摘除，但�?在traceoutput文件输出一条后再清空request的sub_request链�?
+ *		   sub_request命中buffer则在buffer里面写就行了，并且将�?sub_page提到buffer链头(LRU)，若没有命中且buffer满，则先将buffer链尾的sub_request
+ *		   写入flash(这会产生一个sub_request写�?�求，挂到这�?请求request的sub_request链上，同时�?�动态分配还�?静态分配挂到channel或ssd�?
  *		   sub_request链上),在将要写的sub_page写入buffer链头
  ***********************************************************************************************************************************************/
 struct ssd_info *buffer_management(struct ssd_info *ssd)
@@ -392,12 +407,9 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
         while(lpn<=last_lpn)      		
         {
             /************************************************************************************************
-             *need_distb_flag表示是否需要执行distribution函数，1表示需要执行，buffer中没有，0表示不需要执行
-             *即1表示需要分发，0表示不需要分发，对应点初始全部赋为1
+             *need_distb_flag表示�?否需要执行distribution函数�?1表示需要执行，buffer�?没有�?0表示不需要执�?
+             *�?1表示需要分发，0表示不需要分发，对应点初始全部赋�?1
              *************************************************************************************************/
-            if(lpn == 1583729184){
-                printf("lpn 1583729184 location is NULL\n");
-            }
             need_distb_flag=full_page;  
             ssd->total_read++; 
             key.group=lpn;
@@ -419,7 +431,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
                 }
 
                 if(flag==1)				
-                {	//如果该buffer节点不在buffer的队首，需要将这个节点提到队首，实现了LRU算法，这个是一个双向队列。		       		
+                {	//如果�?buffer节点不在buffer的队首，需要将这个节点提到队�?�，实现了LRU算法，这�?�?一�?双向队列�?		       		
                     if(ssd->dram->buffer->buffer_head!=buffer_node)     
                     {		
                         if(ssd->dram->buffer->buffer_tail==buffer_node)								
@@ -466,9 +478,6 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
             need_distb_flag=full_page;
             mask=~(0xffffffff<<(ssd->parameter->subpage_page));
             state=mask;
-            if(lpn == 1583729184){
-                printf("lpn 1583729184 location is NULL\n");
-            }
 
             if(lpn==first_lpn)
             {
@@ -495,8 +504,8 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
     }
 
     /*************************************************************
-     *如果请求已经被全部由buffer服务，该请求可以被直接响应，输出结果
-     *这里假设dram的服务时间为1000ns
+     *如果请求已经�?全部由buffer服务，�?��?�求�?以�??直接响应，输出结�?
+     *这里假�?�dram的服务时间为1000ns
      **************************************************************/
     if((complete_flag == 1)&&(new_request->subs==NULL))               
     {
@@ -508,7 +517,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
 }
 
 /*****************************
- *lpn向ppn的转换
+ *lpn向ppn的转�?
  ******************************/
 unsigned int lpn2ppn(struct ssd_info *ssd,unsigned int lsn)
 {
@@ -523,9 +532,9 @@ unsigned int lpn2ppn(struct ssd_info *ssd,unsigned int lsn)
 }
 
 /**********************************************************************************
- *读请求分配子请求函数，这里只处理读请求，写请求已经在buffer_management()函数中处理了
- *根据请求队列和buffer命中的检查，将每个请求分解成子请求，将子请求队列挂在channel上，
- *不同的channel有自己的子请求队列
+ *读�?�求分配子�?�求函数，这里只处理读�?�求，写请求已经在buffer_management()函数�?处理�?
+ *根据请求队列和buffer命中的�?�查，将每�?请求分解成子请求，将子�?�求队列挂在channel上，
+ *不同的channel有自己的子�?�求队列
  **********************************************************************************/
 
 struct ssd_info *distribute(struct ssd_info *ssd) 
@@ -555,7 +564,7 @@ struct ssd_info *distribute(struct ssd_info *ssd)
     {
         if(req->distri_flag == 0)
         {
-            //如果还有一些读请求需要处理
+            //如果还有一些�?��?�求需要�?�理
             if(req->complete_lsn_count != ssd->request_tail->size)
             {		
                 first_lsn = req->lsn;				
@@ -568,10 +577,10 @@ struct ssd_info *distribute(struct ssd_info *ssd)
                 while(i >= 0)
                 {	
                     /*************************************************************************************
-                     *一个32位的整型数据的每一位代表一个子页，32/ssd->parameter->subpage_page就表示有多少页，
-                     *这里的每一页的状态都存放在了 req->need_distr_flag中，也就是complt中，通过比较complt的
-                     *每一项与full_page，就可以知道，这一页是否处理完成。如果没处理完成则通过creat_sub_request
-                     函数创建子请求。
+                     *一�?32位的整型数据的每一位代表一�?子页�?32/ssd->parameter->subpage_page就表示有多少页，
+                     *这里的每一页的状态都存放在了 req->need_distr_flag�?，也就是complt�?，通过比较complt�?
+                     *每一项与full_page，就�?以知道，这一页是否�?�理完成。�?�果没�?�理完成则通过creat_sub_request
+                     函数创建子�?�求�?
                      *************************************************************************************/
                     for(j=0; j<32/ssd->parameter->subpage_page; j++)
                     {	
@@ -610,8 +619,8 @@ struct ssd_info *distribute(struct ssd_info *ssd)
 
 
 /**********************************************************************
- *trace_output()函数是在每一条请求的所有子请求经过process()函数处理完后，
- *打印输出相关的运行结果到outputfile文件中，这里的结果主要是运行的时间
+ *trace_output()函数�?在每一条�?�求的所有子请求经过process()函数处理完后�?
+ *打印输出相关的运行结果到outputfile文件�?，这里的结果主�?�是运�?�的时间
  **********************************************************************/
 void trace_output(struct ssd_info* ssd){
     int flag = 1;	
@@ -639,7 +648,7 @@ void trace_output(struct ssd_info* ssd){
         end_time = 0;
         if(req->response_time != 0)
         {
-            // 表示该请求在dram中执行
+            // 表示该�?�求在dram�?执�??
             fprintf(ssd->outputfile,"%16lld %10d %6d %2d %16lld %16lld %10lld\n",req->time,req->lsn, req->size, req->operation, req->begin_time, req->response_time, req->response_time-req->time);
             fflush(ssd->outputfile);
 
@@ -648,6 +657,12 @@ void trace_output(struct ssd_info* ssd){
                 printf("the response time is 0?? \n");
                 getchar();
             }
+            // unsigned long long tail = req->response_time-req->begin_time;
+            // if(tail > ssd->tail_latency){
+            //     ssd->tail_latency = tail;
+            // }
+            // latency[latency_index] = tail;
+            // latency_index++;
 
             if (req->operation==READ)
             {
@@ -659,7 +674,7 @@ void trace_output(struct ssd_info* ssd){
                 ssd->write_request_count++;
                 ssd->write_avg=ssd->write_avg+(req->response_time-req->time);
             }
-            // 请求的前一个节点可能不为空
+            // 请求的前一�?节点�?能不为空
             if(pre_node == NULL)
             {
                 if(req->next_node == NULL)
@@ -709,7 +724,7 @@ void trace_output(struct ssd_info* ssd){
         }
         else
         {
-            // 说明执行了flash操作
+            // 说明执�?�了flash操作
             flag=1;
             while(sub != NULL)
             {
@@ -733,7 +748,7 @@ void trace_output(struct ssd_info* ssd){
 
             if (flag == 1)
             {		
-                // 表示大请求中的所有子请求都完成了操作
+                // 表示大�?�求�?的所有子请求都完成了操作
                 //fprintf(ssd->outputfile,"%10I64u %10u %6u %2u %16I64u %16I64u %10I64u\n",req->time,req->lsn, req->size, req->operation, start_time, end_time, end_time-req->time);
                 fprintf(ssd->outputfile,"%16lld %10d %6d %2d %16lld %16lld %10lld\n",req->time,req->lsn, req->size, req->operation, start_time, end_time, end_time-req->time);
                 fflush(ssd->outputfile);
@@ -754,7 +769,7 @@ void trace_output(struct ssd_info* ssd){
                     ssd->write_request_count++;
                     ssd->write_avg=ssd->write_avg+(end_time-req->time);
                 }
-                // 在这里计算尾延迟
+                // 在这里�?�算尾延�?
                 unsigned long long tail = end_time - req->time;
                 if(tail > ssd->tail_latency){
                     ssd->tail_latency = tail;
@@ -843,10 +858,10 @@ void trace_output(struct ssd_info* ssd){
 
 
 /*******************************************************************************
- *statistic_output()函数主要是输出处理完一条请求后的相关处理信息。
- *1，计算出每个plane的擦除次数即plane_erase和总的擦除次数即erase
- *2，打印min_lsn，max_lsn，read_count，program_count等统计信息到文件outputfile中。
- *3，打印相同的信息到文件statisticfile中
+ *statistic_output()函数主�?�是输出处理完一条�?�求后的相关处理信息�?
+ *1，�?�算出每个plane的擦除�?�数即plane_erase和总的擦除次数即erase
+ *2，打印min_lsn，max_lsn，read_count，program_count等统计信�?到文件outputfile�?�?
+ *3，打印相同的信息到文件statisticfile�?
  *******************************************************************************/
 void statistic_output(struct ssd_info *ssd)
 {
@@ -941,10 +956,10 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->outputfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
     fprintf(ssd->outputfile,"tail latency: %13d\n",ssd->tail_latency);
     fprintf(ssd->outputfile,"---------------------------Space utilization rate---------------------------\n");
-    // TODO:目前这里还没有空白页无效
+    // TODO:�?前这里还没有空白页无�?
     fprintf(ssd->outputfile,"Space utilization rate: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
     fprintf(ssd->outputfile,"---------------------------WA---------------------------\n");
-    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->write_request_count/(ssd->real_written + ssd->gc_rewrite));
+    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->program_count/ssd->real_written);
     fprintf(ssd->outputfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->outputfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->outputfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
@@ -1016,7 +1031,7 @@ void statistic_output(struct ssd_info *ssd)
 
 
 /***********************************************************************************
- *根据每一页的状态计算出每一需要处理的子页的数目，也就是一个子请求需要处理的子页的页数
+ *根据每一页的状态�?�算出每一需要�?�理的子页的数目，也就是一�?子�?�求需要�?�理的子页的页数
  ************************************************************************************/
 unsigned int size(unsigned int stored)
 {
@@ -1038,10 +1053,10 @@ unsigned int size(unsigned int stored)
 
 
 /*********************************************************
- *transfer_size()函数的作用就是计算出子请求的需要处理的size
- *函数中单独处理了first_lpn，last_lpn这两个特别情况，因为这
- *两种情况下很有可能不是处理一整页而是处理一页的一部分，因
- *为lsn有可能不是一页的第一个子页。
+ *transfer_size()函数的作用就�?计算出子请求的需要�?�理的size
+ *函数�?单独处理了first_lpn，last_lpn这两�?特别情况，因为这
+ *两�?�情况下很有�?能不�?处理一整页而是处理一页的一部分，因
+ *为lsn有可能不�?一页的�?一�?子页�?
  *********************************************************/
 unsigned int transfer_size(struct ssd_info *ssd,int need_distribute,unsigned int lpn,struct request *req)
 {
@@ -1072,11 +1087,11 @@ unsigned int transfer_size(struct ssd_info *ssd,int need_distribute,unsigned int
 
 /**********************************************************************************************************  
  *int64_t find_nearest_event(struct ssd_info *ssd)       
- *寻找所有子请求的最早到达的下个状态时间,首先看请求的下一个状态时间，如果请求的下个状态时间小于等于当前时间，
- *说明请求被阻塞，需要查看channel或者对应die的下一状态时间。Int64是有符号 64 位整数数据类型，值类型表示值介于
- *-2^63 ( -9,223,372,036,854,775,808)到2^63-1(+9,223,372,036,854,775,807 )之间的整数。存储空间占 8 字节。
- *channel,die是事件向前推进的关键因素，三种情况可以使事件继续向前推进，channel，die分别回到idle状态，die中的
- *读数据准备好了
+ *寻找所有子请求的最早到达的下个状态时�?,首先看�?�求的下一�?状态时间，如果请求的下�?状态时间小于等于当前时间，
+ *说明请求�?阻�?�，需要查看channel或者�?�应die的下一状态时间。Int64�?有�?�号 64 位整数数�?类型，值类型表示值介�?
+ *-2^63 ( -9,223,372,036,854,775,808)�?2^63-1(+9,223,372,036,854,775,807 )之间的整数。存储空间占 8 字节�?
+ *channel,die�?事件向前推进的关�?因素，三种情况可以使事件继续向前推进，channel，die分别回到idle状态，die�?�?
+ *读数�?准�?�好�?
  ***********************************************************************************************************/
 int64_t find_nearest_event(struct ssd_info *ssd) 
 {
@@ -1101,18 +1116,18 @@ int64_t find_nearest_event(struct ssd_info *ssd)
     } 
 
     /*****************************************************************************************************
-     *time为所有 A.下一状态为CHANNEL_IDLE且下一状态预计时间大于ssd当前时间的CHANNEL的下一状态预计时间
-     *           B.下一状态为CHIP_IDLE且下一状态预计时间大于ssd当前时间的DIE的下一状态预计时间
-     *		     C.下一状态为CHIP_DATA_TRANSFER且下一状态预计时间大于ssd当前时间的DIE的下一状态预计时间
-     *CHIP_DATA_TRANSFER读准备好状态，数据已从介质传到了register，下一状态是从register传往buffer中的最小值 
-     *注意可能都没有满足要求的time，这时time返回0x7fffffffffffffff 。
+     *time为所�? A.下一状态为CHANNEL_IDLE且下一状态�?��?�时间大于ssd当前时间的CHANNEL的下一状态�?��?�时�?
+     *           B.下一状态为CHIP_IDLE且下一状态�?��?�时间大于ssd当前时间的DIE的下一状态�?��?�时�?
+     *		     C.下一状态为CHIP_DATA_TRANSFER且下一状态�?��?�时间大于ssd当前时间的DIE的下一状态�?��?�时�?
+     *CHIP_DATA_TRANSFER读准备好状态，数据已从介质传到了register，下一状态是从register传往buffer�?的最小�? 
+     *注意�?能都没有满足要求的time，这时time返回0x7fffffffffffffff �?
      *****************************************************************************************************/
     time=(time1>time2)?time2:time1;
     return time;
 }
 
 /***********************************************
- *free_all_node()函数的作用就是释放所有申请的节点
+ *free_all_node()函数的作用就�?释放所有申请的节点
  ************************************************/
 void free_all_node(struct ssd_info *ssd)
 {
@@ -1173,8 +1188,8 @@ void free_all_node(struct ssd_info *ssd)
 
 
 /*****************************************************************************
- *make_aged()函数的作用就死模拟真实的用过一段时间的ssd，
- *那么这个ssd的相应的参数就要改变，所以这个函数实质上就是对ssd中各个参数的赋值。
+ *make_aged()函数的作用就死模拟真实的用过一段时间的ssd�?
+ *那么这个ssd的相应的参数就�?�改变，所以这�?函数实质上就�?对ssd�?各个参数的赋值�?
  ******************************************************************************/
 struct ssd_info *make_aged(struct ssd_info *ssd)
 {
@@ -1183,7 +1198,7 @@ struct ssd_info *make_aged(struct ssd_info *ssd)
 
     if (ssd->parameter->aged==1)
     {
-        //threshold表示一个plane中有多少页需要提前置为失效
+        //threshold表示一个plane�?有�?�少页需要提前置为失�?
         threshould=(int)(ssd->parameter->block_plane*ssd->parameter->page_block*ssd->parameter->aged_ratio);  
         for (i=0;i<ssd->parameter->channel_number;i++)
             for (j=0;j<ssd->parameter->chip_channel[i];j++)
@@ -1199,9 +1214,9 @@ struct ssd_info *make_aged(struct ssd_info *ssd)
                             }
                             for (n=0;n<(ssd->parameter->page_block*ssd->parameter->aged_ratio+1);n++)
                             {  
-                                ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].page_head[n].valid_state=0;        //表示某一页失效，同时标记valid和free状态都为0
-                                ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].page_head[n].free_state=0;         //表示某一页失效，同时标记valid和free状态都为0
-                                ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].page_head[n].lpn=0;  //把valid_state free_state lpn都置为0表示页失效，检测的时候三项都检测，单独lpn=0可以是有效页
+                                ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].page_head[n].valid_state=0;        //表示某一页失效，同时标�?�valid和free状态都�?0
+                                ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].page_head[n].free_state=0;         //表示某一页失效，同时标�?�valid和free状态都�?0
+                                ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].page_head[n].lpn=0;  //把valid_state free_state lpn都置�?0表示页失效，检测的时候三项都检测，单独lpn=0�?以是有效�?
                                 ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].free_page_num--;
                                 ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].invalid_page_num++;
                                 ssd->channel_head[i].chip_head[j].die_head[k].plane_head[l].blk_head[m].last_write_page++;
@@ -1224,8 +1239,8 @@ struct ssd_info *make_aged(struct ssd_info *ssd)
 
 
 /*********************************************************************************************
- *no_buffer_distribute()函数是处理当ssd没有dram的时候，
- *这是读写请求就不必再需要在buffer里面寻找，直接利用creat_sub_request()函数创建子请求，再处理。
+ *no_buffer_distribute()函数�?处理当ssd没有dram的时候，
+ *这是读写请求就不必再需要在buffer里面寻找，直接利用creat_sub_request()函数创建子�?�求，再处理�?
  *********************************************************************************************/
 struct ssd_info *no_buffer_distribute(struct ssd_info *ssd)
 {

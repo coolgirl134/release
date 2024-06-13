@@ -28,7 +28,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define ACTIVE_ADJUST 1
 
 // 保存每个请求的延迟时间，不包括dram
-unsigned long long latency[3993316];
+unsigned long long latency[236397450];
 // 保存latency偏移量的索引
 int latency_index;
 int trace_count = 524288;
@@ -114,9 +114,9 @@ struct ssd_info *initiation(struct ssd_info *ssd)
       strcpy_s(ssd->statisticfilename2 ,16,"statistic2.dat");*/
 
     strncpy(ssd->parameterfilename,"page.parameters",16);
-    strncpy(ssd->tracefilename,"./workloads/hm.csv",35);
-    // printf("\ninput trace file name:");
-    // scanf("%s",ssd->tracefilename);
+    // strncpy(ssd->tracefilename,"./workloads/hm_0.csv",35);
+    printf("\ninput trace file name:");
+    scanf("%s",ssd->tracefilename);
     strncpy(ssd->outputfilename,"ex.out",7);
     strncpy(ssd->statisticfilename,"statistic10.dat",16);
     strncpy(ssd->statisticfilename2,"statistic2.dat",15);

@@ -161,6 +161,9 @@ Status allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req)
                 find_plane = i;
                 if(bit_type == NONE){
                     bitmap_table[i] = sub_req->bit_type;
+                    if(bitmap_table[i] > 12 || bitmap_table[i] < -1){
+                        printf("here bitmap_table error\n");
+                    }
                     sub_req->bit_type *= 2;
                 }else{
                     bitmap_table[i] = NONE;
@@ -1968,7 +1971,6 @@ int get_plane(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,
     int end = channel*plane_channel + plane_chip * (chip_token + 1);
     int flag = FAILURE;
     int find_plane = NONE;
-    
     for(int i = start;i < end;i ++){
         if(bitmap_table[i] != FULL){
             switch (current_buffer[i])
@@ -1984,13 +1986,27 @@ int get_plane(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,
                     }
                     break;
                 case MTNONE:
-                    if(MTNONE_index == NONE){
-                        if(sub->bit_type == P_LC){
-                            if(bitmap_table[i] != LC_FULL)
-                                MTNONE_index = i;
-                        }else{
+                    // if(MTNONE_index == NONE){
+                    //     if(sub->bit_type == P_LC){
+                    //         if(bitmap_table[i] != LC_FULL)
+                    //             MTNONE_index = i;
+                    //         else{
+                    //             sub->bit_type = MSB_PAGE;
+                    //             MTNONE_index = i;
+                    //         }
+                    //     }else{
+                    //         MTNONE_index = i;
+                    //     }
+                    // }
+                    if(sub->bit_type == P_LC){
+                        if(bitmap_table[i] != LC_FULL){
+                            MTNONE_index = i;
+                            flag = SUCCESS;
+                        }else if(flag == FAILURE){
                             MTNONE_index = i;
                         }
+                    }else{
+                        MTNONE_index = i;
                     }
                     break;
                 case NONE:
@@ -2129,7 +2145,9 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                             if(sub->current_state==SR_WAIT)
                             {
                                 // sq：在这里处理die和plane的分配
-                                
+                                if(sub->lpn == 8388865){
+                                    printf("here\n");
+                                }
                                 find_plane = get_plane(ssd,channel,chip_token,sub);   
                                 struct local* loc = get_loc_by_plane(ssd,find_plane);
                                 die_token = loc->die;

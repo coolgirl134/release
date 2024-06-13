@@ -3,6 +3,7 @@
     "terminal.integrated.enableMultiLinePasteWarning": "never",
     "files.associations": {
         "const.h": "c",
-        "bitmap.h": "c"
+        "bitmap.h": "c",
+        "string.h": "c"
     }
 }
