@@ -286,6 +286,7 @@ struct ssd_info *pre_process_page(struct ssd_info *ssd)
                      ***************************************************************/
                     ppn=get_ppn_for_pre_process(ssd,lsn);                  
                     location=find_location(ssd,ppn);
+                    ssd->dram->map->map_entry[lpn].write_count++;
                     ssd->program_count++;	
                     ssd->channel_head[location->channel].program_count++;
                     ssd->channel_head[location->channel].chip_head[location->chip].program_count++;		

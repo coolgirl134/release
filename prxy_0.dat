@@ -1,5 +1,5 @@
 parameter file: page.parameters
-trace file: ./workloads/unzip/hm_0.csv
+trace file: ./workloads/unzip/prxy_0.csv
 -----------------------parameter file----------------------
 #parameter file
 dram capacity = 131074;     #the unit is B
@@ -90,98 +90,98 @@ greed MPW command=0;            #1 for using multi-plane write greedily, 0 for n
 aged=0;                         #1 for making SSD aged, 0 for keeping SSD non-aged
 aged ratio=0.7;                #If we need to make SSD aged, set the aged ratio in advance
 -----------------------simulation output----------------------
-the 0 channel, 0 die, 0 plane, 2048 blocks has :             0 erase operations
-the 0 channel, 0 die, 1 plane, 2048 blocks has :          1475 erase operations
-the 0 channel, 1 die, 0 plane, 2048 blocks has :           572 erase operations
-the 0 channel, 1 die, 1 plane, 2048 blocks has :          1712 erase operations
-the 1 channel, 0 die, 0 plane, 2048 blocks has :          1089 erase operations
-the 1 channel, 0 die, 1 plane, 2048 blocks has :             0 erase operations
-the 1 channel, 1 die, 0 plane, 2048 blocks has :            70 erase operations
-the 1 channel, 1 die, 1 plane, 2048 blocks has :          1569 erase operations
+the 0 channel, 0 die, 0 plane, 2048 blocks has :         25146 erase operations
+the 0 channel, 0 die, 1 plane, 2048 blocks has :          3521 erase operations
+the 0 channel, 1 die, 0 plane, 2048 blocks has :           333 erase operations
+the 0 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 0 die, 0 plane, 2048 blocks has :         24996 erase operations
+the 1 channel, 0 die, 1 plane, 2048 blocks has :          3131 erase operations
+the 1 channel, 1 die, 0 plane, 2048 blocks has :           354 erase operations
+the 1 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
 ---------------------------latency array distribute---------------------------
-total latency num is 2807065
-0.833452
-0.051448
-0.021017
-0.012390
-0.007026
-0.005913
-0.018155
-0.020019
-0.013162
-0.017416
+total latency num is 9459568
+0.903835
+0.015943
+0.014529
+0.014570
+0.013241
+0.009698
+0.006718
+0.007023
+0.007322
+0.007121
 
 
 ---------------------------static data---------------------------
 min lsn:             0
-max lsn: 4293935104
-read count:       3464087
-program count:      16202857
+max lsn: 4292874240
+read count:      18865951
+program count:      37856476
 ---------------------------read & program sub rate---------------------------
-total program sub:       9786479
-total read sub:       5136470
-read rate: 0.344199
-program rate: 0.655801
+total program sub:      31732485
+total read sub:       1601887
+read rate: 0.048055
+program rate: 0.951945
 ---------------------------read & program request rate---------------------------
-read request count:       1417748
-write request count:       2575568
-read request rate: 0.355030
-write request rate: 0.644970
-read request average size:     14.707805
-write request average size:     16.606195
+read request count:        383524
+write request count:      12135444
+read request rate: 0.030635
+write request rate: 0.969365
+read request average size:     16.659588
+write request average size:      8.373541
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 1030876406
-write request average response time: 277881451
-total request average response time: 545217443
-tail latency: 9355605376
+read request average response time: 4384356863
+write request average response time: 4361592989
+total request average response time: 4362290370
+tail latency: 125701051549
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.067929
-buffer read hits:        530811
-buffer read miss:            63
-buffer write hits:       5050820
-buffer write miss:      30313245
-erase:          6487
-Read 0: count is 0.594468
-Read 1: count is 0.138523
-Read 2: count is 0.077855
-Read 3: count is 0.046147
-Read 4: count is 0.031187
-Read 5: count is 0.022179
-Read 6: count is 0.018554
-Read 7: count is 0.013839
-Read 8: count is 0.009293
-Read 9: count is 0.047956
+Write amplification: 1.138924
+buffer read hits:          9661
+buffer read miss:            37
+buffer write hits:       5177006
+buffer write miss:      93080172
+erase:         57481
+Read 0: count is 0.888003
+Read 1: count is 0.021050
+Read 2: count is 0.020583
+Read 3: count is 0.028662
+Read 4: count is 0.005562
+Read 5: count is 0.003866
+Read 6: count is 0.005846
+Read 7: count is 0.002677
+Read 8: count is 0.001959
+Read 9: count is 0.021792
 Write 0: count is 0.000000
-Write 1: count is 0.347501
-Write 2: count is 0.151064
-Write 3: count is 0.111352
-Write 4: count is 0.079750
-Write 5: count is 0.057520
-Write 6: count is 0.044194
-Write 7: count is 0.035873
-Write 8: count is 0.030659
-Write 9: count is 0.142087
+Write 1: count is 0.239276
+Write 2: count is 0.096005
+Write 3: count is 0.077780
+Write 4: count is 0.050357
+Write 5: count is 0.032312
+Write 6: count is 0.023971
+Write 7: count is 0.017464
+Write 8: count is 0.012656
+Write 9: count is 0.450180
 READ
-1036818
-241600
-135787
-80485
-54393
-38683
-32361
-24136
-16208
-83640
+1086234
+25749
+25178
+35060
+6804
+4729
+7151
+3274
+2396
+26657
 WRITE
 0
-606080
-263473
-194210
-139092
-100322
-77080
-62566
-53472
-247816
+292690
+117436
+95143
+61598
+39525
+29322
+21362
+15481
+550675

@@ -33,17 +33,62 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 int  main()
 {
     unsigned  int i,j,k,t;
-    struct ssd_info *ssd;
+    
 
 #ifdef DEBUG
     printf("enter main\n"); 
 #endif
 
-    ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
-    alloc_assert(ssd,"ssd");
-    memset(ssd,0, sizeof(struct ssd_info));
     
-
+    for(int index_i = 0;index_i < 10;index_i ++){
+        struct ssd_info *ssd;
+        ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
+        alloc_assert(ssd,"ssd");
+        memset(ssd,0, sizeof(struct ssd_info));
+        switch (index_i)
+        {
+        case 0:
+            strncpy(ssd->tracefilename,"./workloads/unzip/hm_0.csv",45);
+            strncpy(ssd->statisticfilename,"hm_0.dat",16);
+            break;
+        case 1:
+            strncpy(ssd->tracefilename,"./workloads/unzip/hm_1.csv",45);
+            strncpy(ssd->statisticfilename,"hm_1.dat",16);
+            break;
+        case 2:
+             strncpy(ssd->tracefilename,"./workloads/unzip/src2_0.csv",45);
+            strncpy(ssd->statisticfilename,"src2_0.dat",16);
+            break;
+        case 3:
+             strncpy(ssd->tracefilename,"./workloads/unzip/stg_0.csv",45);
+            strncpy(ssd->statisticfilename,"stg_0.dat",16);
+            break;
+        case 4:
+             strncpy(ssd->tracefilename,"./workloads/unzip/usr_0.csv",45);
+            strncpy(ssd->statisticfilename,"usr_0.dat",16);
+            break;
+        case 5:
+            strncpy(ssd->tracefilename,"./workloads/unzip/wdev_0.csv",45);
+            strncpy(ssd->statisticfilename,"wdev_0.dat",16);
+            break;
+        case 6:
+            strncpy(ssd->tracefilename,"./workloads/unzip/prxy_0.csv",45);
+            strncpy(ssd->statisticfilename,"prxy_0.dat",16);
+            break;
+        case 7:
+            strncpy(ssd->tracefilename,"./workloads/unzip/proj_3.csv",45);
+            strncpy(ssd->statisticfilename,"proj_3.dat",16);
+            break;
+        case 8:
+            strncpy(ssd->tracefilename,"./workloads/rsrch/rsrch_0.csv",45);
+            strncpy(ssd->statisticfilename,"rsrch_0.dat",16);
+            break;
+        case 9:
+            strncpy(ssd->tracefilename,"./workloads/rsrch/rsrch_1.csv",45);
+            strncpy(ssd->statisticfilename,"rsrch_1.dat",16);
+        default:
+            break;
+        }
     ssd=initiation(ssd);
 
     for (i=0;i<ssd->parameter->channel_number;i++)
@@ -111,6 +156,11 @@ int  main()
         }
         
     }
+    free(ssd);
+    ssd = NULL;
+    }
+
+    
     return 1;
     /* 	_CrtDumpMemoryLeaks(); */
 }
@@ -411,7 +461,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
              *�?1表示需要分发，0表示不需要分发，对应点初始全部赋�?1
              *************************************************************************************************/
             need_distb_flag=full_page;  
-            ssd->total_read++; 
+            // ssd->total_read++; 
             key.group=lpn;
             buffer_node= (struct buffer_group*)avlTreeFind(ssd->dram->buffer, (TREE_NODE *)&key);		// buffer node 
             ssd->dram->map->map_entry[lpn].read_count++;
@@ -474,7 +524,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
         while(lpn<=last_lpn)           	
         {	
             ssd->dram->map->map_entry[lpn].write_count++;
-            ssd->total_write++;
+            // ssd->total_write++;
             need_distb_flag=full_page;
             mask=~(0xffffffff<<(ssd->parameter->subpage_page));
             state=mask;
@@ -900,6 +950,7 @@ void statistic_output(struct ssd_info *ssd)
         unsigned long long range = ssd->tail_latency / size;
         // printf("range is %d\n",range);
         int j = latency[i] / range;
+        latency[i] = 0;
         latency_array[j]++;
     }
     fprintf(ssd->outputfile,"---------------------------latency array distribute---------------------------\n");
@@ -959,7 +1010,7 @@ void statistic_output(struct ssd_info *ssd)
     // TODO:�?前这里还没有空白页无�?
     fprintf(ssd->outputfile,"Space utilization rate: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
     fprintf(ssd->outputfile,"---------------------------WA---------------------------\n");
-    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->program_count/ssd->real_written);
+    fprintf(ssd->outputfile,"Write amplification: %f\n",(float)ssd->real_written/ssd->total_write);
     fprintf(ssd->outputfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->outputfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->outputfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
@@ -972,7 +1023,7 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"---------------------------latency array distribute---------------------------\n");
     fprintf(ssd->statisticfile,"total latency num is %d\n",latency_index);
     for(int i = 0;i < size; i++){
-        fprintf(ssd->statisticfile,"rang %d request num is %d\n",i,latency_array[i]);
+        fprintf(ssd->statisticfile,"%f\n",i,(float)latency_array[i]/latency_index);
     }
     fprintf(ssd->statisticfile,"\n");
     fprintf(ssd->statisticfile,"\n");
@@ -1011,19 +1062,60 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"read request average size: %13f\n",ssd->ave_read_size);
     fprintf(ssd->statisticfile,"write request average size: %13f\n",ssd->ave_write_size);
     fprintf(ssd->statisticfile,"---------------------------read & program & total & tail latency---------------------------\n");
-    fprintf(ssd->statisticfile,"read request average response time: %lld\n",ssd->read_avg/ssd->read_request_count);
-    fprintf(ssd->statisticfile,"write request average response time: %lld\n",ssd->write_avg/ssd->write_request_count);
-    fprintf(ssd->statisticfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
-    fprintf(ssd->statisticfile,"tail latency: %13d\n",ssd->tail_latency);
-     fprintf(ssd->statisticfile,"---------------------------Space utilization rate---------------------------\n");
-    fprintf(ssd->statisticfile,"real written pagenums: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->free_invalid));
+    fprintf(ssd->statisticfile,"read request average response time: %llu\n",ssd->read_avg/ssd->read_request_count);
+    fprintf(ssd->statisticfile,"write request average response time: %llu\n",ssd->write_avg/ssd->write_request_count);
+    fprintf(ssd->statisticfile,"total request average response time: %llu\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
+    fprintf(ssd->statisticfile,"tail latency: %llu\n",ssd->tail_latency);
+    fprintf(ssd->statisticfile,"---------------------------Space utilization rate---------------------------\n");
+    fprintf(ssd->statisticfile,"real written pagenums: %d\n",ssd->free_invalid);
     fprintf(ssd->statisticfile,"---------------------------WA---------------------------\n");
-    fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)ssd->real_written/(ssd->real_written + ssd->gc_rewrite));
+    fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)ssd->real_written/ssd->total_write);
     fprintf(ssd->statisticfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->statisticfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->statisticfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
     fprintf(ssd->statisticfile,"buffer write miss: %13d\n",ssd->dram->buffer->write_miss_hit);
     fprintf(ssd->statisticfile,"erase: %13d\n",erase);
+    unsigned int page_num = ssd->parameter->page_block*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num * BITS_PER_CELL;
+    unsigned int read_array[10],prog_array[10];
+    unsigned int totalnum =0;
+    for(int i = 0;i < 10;i ++){
+        read_array[i] = 0;
+        prog_array[i] = 0;
+    }
+    for(int i = 0;i < page_num;i ++){
+        if(ssd->dram->map->map_entry[i].pn != 0){
+            totalnum++;
+            int read_count = ssd->dram->map->map_entry[i].read_count;
+            int prog_count = ssd->dram->map->map_entry[i].write_count;
+            if(prog_count == 0){
+                printf("here\n");
+            }
+            if(read_count < 10){
+                read_array[read_count]++;
+            }else{
+                read_array[9]++;
+            }
+            if(prog_count < 10){
+                prog_array[prog_count]++;
+            }else{
+                prog_array[9]++;
+            }
+        }
+    }
+    for(int i = 0;i < 10; i++){
+       fprintf(ssd->statisticfile,"Read %d: count is %f\n",i,(float)read_array[i]/totalnum);
+    }
+    for(int i = 0;i < 10; i++){
+       fprintf(ssd->statisticfile,"Write %d: count is %f\n",i,(float)prog_array[i]/totalnum);
+    }
+    fprintf(ssd->statisticfile,"READ\n");
+    for(int i = 0;i < 10; i++){
+       fprintf(ssd->statisticfile,"%u\n",read_array[i]);
+    }
+    fprintf(ssd->statisticfile,"WRITE\n");
+    for(int i = 0;i < 10; i++){
+       fprintf(ssd->statisticfile,"%u\n",prog_array[i]);
+    }
     fflush(ssd->statisticfile);
 
     fclose(ssd->statisticfile);

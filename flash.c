@@ -715,6 +715,8 @@ Status find_open_block(struct ssd_info *ssd,unsigned int channel,unsigned int ch
                 }
             }
         }
+        // 验证是否freepage是否正确
+        printf("LC free page %d MT free page %d\n",ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_LC,ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_MT);
         printf("LSB %d CSB %d MSB %d TSB %d\n",count_LSB,count_CSB,count_MSB,count_TSB);
         return NONE;
     }
@@ -1194,6 +1196,7 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
         if(loc == NULL){
             printf("read loc is NULL\n");
         }
+        ssd->total_read++;
         sub->location=loc;
         sub->begin_time = ssd->current_time;
         sub->current_state = SR_WAIT;
@@ -1249,6 +1252,7 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
     else if(operation == WRITE)
     {                                
         sub->ppn=0;
+        ssd->total_write++;
         sub->operation = WRITE;
         sub->location=(struct local *)malloc(sizeof(struct local));
         alloc_assert(sub->location,"sub->location");
@@ -1914,7 +1918,7 @@ int get_prog_time(unsigned int ppn){
  ******************/
 Status static_write(struct ssd_info * ssd, unsigned int channel,unsigned int chip, unsigned int die,struct sub_request * sub)
 {
-    ssd->real_written++;        //写请求总写入flash的数量
+    
     long long time=0;
     // if(sub->lpn == 1473148){
     //     printf("lpn is %d from static write\n",sub->lpn);

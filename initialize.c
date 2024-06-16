@@ -115,10 +115,10 @@ struct ssd_info *initiation(struct ssd_info *ssd)
 
     strncpy(ssd->parameterfilename,"page.parameters",16);
     // strncpy(ssd->tracefilename,"./workloads/hm_0.csv",35);
-    printf("\ninput trace file name:");
-    scanf("%s",ssd->tracefilename);
+    // printf("\ninput trace file name:");
+    // scanf("%s",ssd->tracefilename);
     strncpy(ssd->outputfilename,"ex.out",7);
-    strncpy(ssd->statisticfilename,"statistic10.dat",16);
+    // strncpy(ssd->statisticfilename,"statistic10.dat",16);
     strncpy(ssd->statisticfilename2,"statistic2.dat",15);
 
     //导入ssd的配置文件
@@ -219,6 +219,10 @@ struct dram_info * initialize_dram(struct ssd_info * ssd)
     dram->map->map_entry = (struct entry *)malloc(sizeof(struct entry) * page_num); //每个物理页和逻辑页都有对应关系
     alloc_assert(dram->map->map_entry,"dram->map->map_entry");
     memset(dram->map->map_entry,0,sizeof(struct entry) * page_num);
+    for(int i = 0;i < page_num;i ++){
+        dram->map->map_entry[i].read_count = 0;
+        dram->map->map_entry[i].write_count = 0;
+    }
 
     return dram;
 }
