@@ -106,8 +106,8 @@ total latency num is 1504501
 0.008582
 0.009137
 0.008225
-0.007907
-0.007481
+0.007908
+0.007480
 0.012837
 0.009428
 
@@ -130,19 +130,19 @@ write request rate: 0.848129
 read request average size:     49.839466
 write request average size:     18.382408
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 19819373276
-write request average response time: 764754282
-total request average response time: 3658597460
-tail latency: 104332323046
+read request average response time: 19819179510
+write request average response time: 764743848
+total request average response time: 3658559184
+tail latency: 104331563296
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.081499
+Write amplification: 1.003006
 buffer read hits:          7978
 buffer read miss:            28
 buffer write hits:       4941129
 buffer write miss:      20883063
-erase:          2193
+erase:          3699
 Read 0: count is 0.242496
 Read 1: count is 0.266508
 Read 2: count is 0.211654

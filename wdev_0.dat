@@ -137,7 +137,7 @@ tail latency: 1743870035
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.064767
+Write amplification: 1.000000
 buffer read hits:         10250
 buffer read miss:             2
 buffer write hits:       3014561

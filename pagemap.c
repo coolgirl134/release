@@ -423,6 +423,7 @@ unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn)
         free(loc);
         loc = NULL;
         type = find_open_block(ssd,channel,chip,die,plane,type); 
+        ssd->real_written--;
         if(type==NONE)
         {
             bitmap_table[find_plane] = FULL;	

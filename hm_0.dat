@@ -91,58 +91,58 @@ aged=0;                         #1 for making SSD aged, 0 for keeping SSD non-ag
 aged ratio=0.7;                #If we need to make SSD aged, set the aged ratio in advance
 -----------------------simulation output----------------------
 the 0 channel, 0 die, 0 plane, 2048 blocks has :             0 erase operations
-the 0 channel, 0 die, 1 plane, 2048 blocks has :          1475 erase operations
-the 0 channel, 1 die, 0 plane, 2048 blocks has :           572 erase operations
-the 0 channel, 1 die, 1 plane, 2048 blocks has :          1712 erase operations
-the 1 channel, 0 die, 0 plane, 2048 blocks has :          1089 erase operations
+the 0 channel, 0 die, 1 plane, 2048 blocks has :          1486 erase operations
+the 0 channel, 1 die, 0 plane, 2048 blocks has :           568 erase operations
+the 0 channel, 1 die, 1 plane, 2048 blocks has :          1709 erase operations
+the 1 channel, 0 die, 0 plane, 2048 blocks has :          1088 erase operations
 the 1 channel, 0 die, 1 plane, 2048 blocks has :             0 erase operations
-the 1 channel, 1 die, 0 plane, 2048 blocks has :            70 erase operations
-the 1 channel, 1 die, 1 plane, 2048 blocks has :          1569 erase operations
+the 1 channel, 1 die, 0 plane, 2048 blocks has :            84 erase operations
+the 1 channel, 1 die, 1 plane, 2048 blocks has :          1585 erase operations
 ---------------------------latency array distribute---------------------------
 total latency num is 2807065
-0.833452
-0.051448
-0.021017
-0.012390
-0.007026
-0.005913
-0.018155
-0.020019
-0.013162
-0.017416
+0.833317
+0.051601
+0.021063
+0.012320
+0.007033
+0.005950
+0.018126
+0.020158
+0.012981
+0.017450
 
 
 ---------------------------static data---------------------------
 min lsn:             0
 max lsn: 4293935104
-read count:       3464087
-program count:      16202857
+read count:       3464074
+program count:      16202672
 ---------------------------read & program sub rate---------------------------
 total program sub:       9786479
-total read sub:       5136470
-read rate: 0.344199
-program rate: 0.655801
+total read sub:       5136518
+read rate: 0.344202
+program rate: 0.655798
 ---------------------------read & program request rate---------------------------
 read request count:       1417748
 write request count:       2575568
 read request rate: 0.355030
 write request rate: 0.644970
-read request average size:     14.707805
-write request average size:     16.606195
+read request average size:     14.708190
+write request average size:     16.606939
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 1030876406
-write request average response time: 277881451
-total request average response time: 545217443
-tail latency: 9355605376
+read request average response time: 1031452487
+write request average response time: 277877058
+total request average response time: 545419135
+tail latency: 9359048016
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.067929
+Write amplification: 1.012068
 buffer read hits:        530811
 buffer read miss:            63
 buffer write hits:       5050820
 buffer write miss:      30313245
-erase:          6487
+erase:         11600
 Read 0: count is 0.594468
 Read 1: count is 0.138523
 Read 2: count is 0.077855

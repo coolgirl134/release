@@ -119,7 +119,7 @@ read count:       2679908
 program count:       4854461
 ---------------------------read & program sub rate---------------------------
 total program sub:        261900
-total read sub:       4279243
+total read sub:       4279239
 read rate: 0.942327
 program rate: 0.057673
 ---------------------------read & program request rate---------------------------
@@ -137,7 +137,7 @@ tail latency: 14817625276
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.387931
+Write amplification: 1.000000
 buffer read hits:        224824
 buffer read miss:             0
 buffer write hits:         89089

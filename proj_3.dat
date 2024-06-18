@@ -100,26 +100,26 @@ the 1 channel, 1 die, 0 plane, 2048 blocks has :             0 erase operations
 the 1 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
 ---------------------------latency array distribute---------------------------
 total latency num is 2229299
-0.786656
-0.062933
-0.047353
-0.042573
-0.032664
-0.021270
-0.003192
-0.001450
-0.000873
-0.001036
+0.787019
+0.066416
+0.044625
+0.042441
+0.032073
+0.021299
+0.002795
+0.001433
+0.000864
+0.001034
 
 
 ---------------------------static data---------------------------
 min lsn:             0
 max lsn: 4292365824
-read count:       5248738
-program count:      12572093
+read count:       5255571
+program count:      12571946
 ---------------------------read & program sub rate---------------------------
 total program sub:       1346993
-total read sub:       9561943
+total read sub:       9561935
 read rate: 0.876524
 program rate: 0.123476
 ---------------------------read & program request rate---------------------------
@@ -127,17 +127,17 @@ read request count:       2128303
 write request count:        116341
 read request rate: 0.948170
 write request rate: 0.051830
-read request average size:     17.999859
-write request average size:     47.348740
+read request average size:     18.001152
+write request average size:     47.348995
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 844368665
-write request average response time: 217770868
-total request average response time: 811891793
-tail latency: 11067443322
+read request average response time: 835576158
+write request average response time: 217545323
+total request average response time: 803543316
+tail latency: 11075631130
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.433949
+Write amplification: 1.057344
 buffer read hits:          5140
 buffer read miss:             0
 buffer write hits:        121727

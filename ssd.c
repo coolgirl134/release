@@ -40,7 +40,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 0;index_i < 10;index_i ++){
+    for(int index_i = 10;index_i < 11;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -86,6 +86,9 @@ int  main()
         case 9:
             strncpy(ssd->tracefilename,"./workloads/rsrch/rsrch_1.csv",45);
             strncpy(ssd->statisticfilename,"rsrch_1.dat",16);
+        case 10:
+            strncpy(ssd->tracefilename,"./workloads/unzip/proj_1.csv",45);
+            strncpy(ssd->statisticfilename,"proj_1.dat",16);
         default:
             break;
         }
@@ -211,10 +214,8 @@ struct ssd_info *simulate(struct ssd_info *ssd)
         {   
             if (ssd->parameter->dram_capacity!=0)
             {
-                buffer_management(ssd);
-                sub1 = ssd->channel_head[0].subs_r_head;  
+                buffer_management(ssd);  
                 distribute(ssd); 
-                sub1 = ssd->channel_head[0].subs_r_head;
             } 
             else
             {
@@ -462,6 +463,9 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
              *************************************************************************************************/
             need_distb_flag=full_page;  
             // ssd->total_read++; 
+            if(lpn == 5277084){
+                printf("here\n");
+            }
             key.group=lpn;
             buffer_node= (struct buffer_group*)avlTreeFind(ssd->dram->buffer, (TREE_NODE *)&key);		// buffer node 
             ssd->dram->map->map_entry[lpn].read_count++;
@@ -638,9 +642,6 @@ struct ssd_info *distribute(struct ssd_info *ssd)
                         if (k !=0)
                         {
                             lpn = start/ssd->parameter->subpage_page+ ((end-start)/32-i)*32/ssd->parameter->subpage_page + j;
-                            if(lpn == 1583729184){
-                                printf("this lpn location is NULL\n");
-                            }
                             sub_size=transfer_size(ssd,k,lpn,req);    
                             if (sub_size==0) 
                             {
@@ -934,6 +935,9 @@ void statistic_output(struct ssd_info *ssd)
                     {
                         erase=erase+ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].blk_head[m].erase_count;
                         plane_erase+=ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].blk_head[m].erase_count;
+                    }else if(ssd->channel_head[i].chip_head[1].die_head[j].plane_head[k].blk_head[m].erase_count>0){
+                        erase=erase+ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].blk_head[m].erase_count;
+                        plane_erase+=ssd->channel_head[i].chip_head[0].die_head[j].plane_head[k].blk_head[m].erase_count;
                     }
                 }
                 fprintf(ssd->outputfile,"the %d channel, %d die, %d plane, %d block has : %13d erase operations\n",i,j,k,m,plane_erase);
@@ -1074,7 +1078,7 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->statisticfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
     fprintf(ssd->statisticfile,"buffer write miss: %13d\n",ssd->dram->buffer->write_miss_hit);
-    fprintf(ssd->statisticfile,"erase: %13d\n",erase);
+    fprintf(ssd->statisticfile,"erase: %13d\n",ssd->erase_count);
     unsigned int page_num = ssd->parameter->page_block*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num * BITS_PER_CELL;
     unsigned int read_array[10],prog_array[10];
     unsigned int totalnum =0;

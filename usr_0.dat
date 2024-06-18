@@ -130,19 +130,19 @@ write request rate: 0.595832
 read request average size:     81.820328
 write request average size:     20.566910
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 992135492
-write request average response time: 93532731
-total request average response time: 456719163
+read request average response time: 992135948
+write request average response time: 93532768
+total request average response time: 456719369
 tail latency: 16523128857
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------
-Write amplification: 1.138835
+Write amplification: 1.048799
 buffer read hits:         33884
 buffer read miss:           299
 buffer write hits:       6861355
 buffer write miss:      17419412
-erase:          2793
+erase:          3163
 Read 0: count is 0.525571
 Read 1: count is 0.148839
 Read 2: count is 0.058903
