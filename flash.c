@@ -1211,6 +1211,9 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
 
         p_ch = &ssd->channel_head[loc->channel];	
         sub->ppn = ssd->dram->map->map_entry[lpn].pn;
+        if(sub->ppn == 0){
+            printf("hre\n");
+        }
         sub->operation = READ;
         sub->state=(ssd->dram->map->map_entry[lpn].state&0x7fffffff);
         sub_r=p_ch->subs_r_head;                                                      /*一下几行包括flag用于判断该读子请求队列中是否有与这个子请求相同的，有的话，将新的子请求直接赋为完成*/
