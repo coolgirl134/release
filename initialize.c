@@ -32,6 +32,10 @@ unsigned long long latency[236397450];
 // 保存latency偏移量的索引
 int latency_index;
 int trace_count = 524288;
+char chip_busy[4];
+char channel_busy[2];
+unsigned long long channel_time;
+unsigned long long chip_time;
 
 /*****************************************
  *三种plane类型的bitmap
@@ -94,6 +98,7 @@ struct ssd_info *initiation(struct ssd_info *ssd)
     latency_index = 0;
     ssd->real_written = 0;
     ssd->gc_rewrite = 0;
+    // ssd->write_avg = ssd->read_avg = 0;
 
     /*printf("input parameter file name:");
       gets(ssd->parameterfilename);
@@ -319,6 +324,7 @@ struct chip_info * initialize_chip(struct chip_info * p_chip,struct parameter_va
     p_chip->read_count = 0;
     p_chip->program_count = 0;
     p_chip->erase_count = 0;
+    p_chip->update_time = 0;
 
     p_chip->die_head = (struct die_info *)malloc(parameter->die_chip * sizeof(struct die_info));
     alloc_assert(p_chip->die_head,"p_chip->die_head");
@@ -346,6 +352,7 @@ struct ssd_info * initialize_channels(struct ssd_info * ssd )
         p_channel->chip = ssd->parameter->chip_channel[i];
         p_channel->current_state = CHANNEL_IDLE;
         p_channel->next_state = CHANNEL_IDLE;
+        p_channel->update_time = 0;
 
         p_channel->chip_head = (struct chip_info *)malloc(ssd->parameter->chip_channel[i]* sizeof(struct chip_info));
         alloc_assert(p_channel->chip_head,"p_channel->chip_head");

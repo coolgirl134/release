@@ -67,6 +67,9 @@ Status allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req)
                 update->next_state = SR_R_C_A_TRANSFER;
                 update->next_state_predict_time=MAX_INT64;
                 update->lpn = sub_req->lpn;
+                update->lsn = sub_req->lsn;
+                update->req_id = sub_req->req_id;
+                update->req_begin_time = sub_req->req_begin_time;
                 update->state=((ssd->dram->map->map_entry[sub_req->lpn].state^sub_req->state)&0x7fffffff);
                 update->size=size(update->state);
                 update->ppn = ssd->dram->map->map_entry[sub_req->lpn].pn;
@@ -332,7 +335,13 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
                 sub_req_size=size(ssd->dram->buffer->buffer_tail->stored);
                 sub_req_lpn=ssd->dram->buffer->buffer_tail->group;
                 sub_req=creat_sub_request(ssd,sub_req_lpn,sub_req_size,sub_req_state,req,WRITE);
-
+                sub_req->lsn = req->lsn;
+                sub_req->req_id = req->id;
+                sub_req->req_begin_time = req->time;
+                if(sub_req->update != NULL){
+                    sub_req->update->lsn = req->lsn;
+                    sub_req->update->req_begin_time = req->time;
+                }
                 /**********************************************************************************
                  *req不为空，表示这个insert2buffer函数是在buffer_management中调用，传递了request进来
                  *req为空，表示这个函数是在process函数中处理一对多映射关系的读的时候，需要将这个读出
@@ -474,7 +483,8 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
                         sub_req_size=size(ssd->dram->buffer->buffer_tail->stored);
                         sub_req_lpn=ssd->dram->buffer->buffer_tail->group;
                         sub_req=creat_sub_request(ssd,sub_req_lpn,sub_req_size,sub_req_state,req,WRITE);
-
+                        sub_req->lsn = req->lsn;
+                        sub_req->req_begin_time = req->time;
                         if(req!=NULL)           
                         {
 
@@ -655,6 +665,10 @@ Status find_open_block(struct ssd_info *ssd,unsigned int channel,unsigned int ch
             }
         }
         free_page_num = 1;
+    }else{
+        if(free_page_num == 1 && bit_type == P_MT && ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[0] == active_block){
+            bitmap_table[index] = MT_FULL;
+        }
     }
 
     while(free_page_num <=0 && count < ssd->parameter->block_plane){
@@ -751,18 +765,6 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
     }
     int cell = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type];
     int page = cell*BITS_PER_CELL + type;
-    if(plane == 1 && active_block == 987 &&  ssd->channel_head[0].chip_head[0].die_head[0].plane_head[1].blk_head[987].page_head[255].lpn == NONE){
-        if(page >= 252){
-            printf("here\n");
-            printf("%d\n",ssd->channel_head[0].chip_head[0].die_head[0].plane_head[1].blk_head[987].page_head[254].lpn);
-        }
-    }
-    // if(plane == 1 && active_block == 1 && page == 2){
-    //     printf("here\n");
-    // }
-    //  if(plane == 1 && active_block == 1 && page == 3){
-    //     printf("here\n");
-    // }
     switch (type)
     {
     case LSB_PAGE:
@@ -1053,9 +1055,6 @@ Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned 
             }
         }
         printf("count is %d\n",count);
-        if(num == ssd->parameter->block_plane*ssd->parameter->page_block*BITS_PER_CELL){
-            printf("here\n");
-        }
         // if(zero_flag == 1){
         //     printf("all page is not free\n");
         // }
@@ -1184,6 +1183,10 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
     {
         sub->next_subs = req->subs;
         req->subs = sub;
+        req->sub_nums++;
+        sub->lsn = req->lsn;
+        sub->req_id = req->id;
+        sub->req_begin_time = req->time;
     }
 
     /*************************************************************************************
@@ -1269,7 +1272,7 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
         sub->begin_time=ssd->current_time;
         // 在这里完成决定数据的存储类型：P_LC P_MT
         sub->bit_type = typeofdata(ssd,lpn);
-
+        
         // 在这里进行plane的分配
         if (allocate_location(ssd ,sub)==ERROR)
         {
@@ -1279,6 +1282,9 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
             free(sub);
             sub=NULL;
             return NULL;
+        }
+        if(sub->update != NULL){
+            req->update_nums++;
         }
 
     }
@@ -1353,12 +1359,14 @@ struct sub_request * find_read_sub_request(struct ssd_info * ssd, unsigned int c
     return NULL;
 }
 
+
 /*******************************************************************************
- *函数的功能是寻找写子请求。
+*修改 
+*函数的功能是根据类型寻找写子请求。
  *分两种情况1，要是是完全动态分配就在ssd->subs_w_head队列上找
  *2，要是不是完全动态分配那么就在ssd->channel_head[channel].subs_w_head队列上查找
  ********************************************************************************/
-struct sub_request * find_write_sub_request(struct ssd_info * ssd, unsigned int channel)
+struct sub_request * find_write_sub_request(struct ssd_info * ssd, unsigned int channel,int type)
 {
     struct sub_request * sub=NULL,* p=NULL;
     if ((ssd->parameter->allocation_scheme==0)&&(ssd->parameter->dynamic_allocation==0))    /*是完全的动态分配*/
@@ -1369,6 +1377,14 @@ struct sub_request * find_write_sub_request(struct ssd_info * ssd, unsigned int 
         {
             if(sub->current_state==SR_WAIT)								
             {
+                if(type != NONE && sub->bit_type != type){
+                    // 这里是要寻找类型相同的子请求
+                    // 如果type为NONE，则直接寻找即可
+                    // 如果type不为NONE，则需要类型相同
+                    p=sub;
+                    sub=sub->next_node;	
+                    continue;
+                }
                 if (sub->update!=NULL)                                                      /*如果有需要提前读出的页*/
                 {
                     if ((sub->update->current_state==SR_COMPLETE)||((sub->update->next_state==SR_COMPLETE)&&(sub->update->next_state_predict_time<=ssd->current_time)))   //被更新的页已经被读出
@@ -1526,7 +1542,7 @@ Status services_2_r_data_trans(struct ssd_info * ssd,unsigned int channel,unsign
     struct sub_request * sub_interleave_one=NULL, * sub_interleave_two=NULL;
     for(chip=0;chip<ssd->channel_head[channel].chip;chip++)           			    
     {				       		      
-        if((ssd->channel_head[channel].chip_head[chip].current_state==CHIP_WAIT)||((ssd->channel_head[channel].chip_head[chip].next_state==CHIP_DATA_TRANSFER)&&
+        if((ssd->channel_head[channel].chip_head[chip].current_state==CHIP_DATA_TRANSFER)||((ssd->channel_head[channel].chip_head[chip].next_state==CHIP_DATA_TRANSFER)&&
                     (ssd->channel_head[channel].chip_head[chip].next_state_predict_time<=ssd->current_time)))					       					
         {
             for(die=0;die<ssd->parameter->die_chip;die++)
@@ -1904,12 +1920,14 @@ int get_prog_time(unsigned int ppn){
     {
     case LSB_PAGE:
     case CSB_PAGE:
-        return 800;
+    // 1000 us 切换为ns
+        return 1000000;
     case MSB_PAGE:
     case TSB_PAGE:
-        return 1200;
+    // 1630*4 - 1000 us 切换为ns,这里的时间包含了将前两页读出来的时间
+        return 5520000;
     default:
-        break;
+        return 0;
     }
 }
 
@@ -2094,6 +2112,45 @@ int get_plane(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,
     return find_plane;
 }
 
+int get_plane_new(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,struct sub_request* sub){
+    int plane_die = ssd->parameter->plane_die;
+    int plane_chip = ssd->parameter->die_chip * plane_die;
+    int plane_channel = ssd->parameter->chip_channel[0] * plane_chip;
+    int start = channel*plane_channel + plane_chip * chip_token;
+    int end = channel*plane_channel + plane_chip * (chip_token + 1);
+    int flag = FAILURE;
+    int find_plane = NONE;
+    // 这里表示随机产生一个planeindex，避免都集中都某个plane中进行写操作
+    find_plane = ssd->total_write%plane_chip + start;
+    int count = 0;
+    while(count < 2){
+        for(int i = 0;i < plane_chip;i++){
+            if(bitmap_table[find_plane] != FULL){
+                if(sub->bit_type == P_LC){
+                    if(bitmap_table[find_plane] != LC_FULL){
+                        return find_plane;
+                    }
+                }else{
+                    if(bitmap_table[find_plane] != MT_FULL){
+                        return find_plane;
+                    }
+                }
+            }
+            find_plane = (find_plane + 1)% plane_chip + start;
+        }
+        // 如果找不到，则需要进行切换类型
+        if(sub->bit_type == P_LC){
+            sub->bit_type = P_MT;
+            // printf("switch type to MT\n");
+        }else{
+            sub->bit_type = P_LC;
+            // printf("switch type to LC\n");
+        }
+    }  
+    printf("error ,find no plane\n"); 
+    return NONE;
+}
+
 /********************
   写子请求的处理函数
  *********************/
@@ -2106,7 +2163,7 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
     unsigned int  die=0,plane=0;
     long long time=0;
     int find_plane = NONE;
-    struct sub_request * sub=NULL, * p=NULL;
+    struct sub_request * sub=NULL, * p=NULL,*sub_other = NULL;
     struct sub_request * sub_twoplane_one=NULL, * sub_twoplane_two=NULL;
     struct sub_request * sub_interleave_one=NULL, * sub_interleave_two=NULL;
 
@@ -2140,19 +2197,22 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                             // 不执行高级命令
 
                             // 这里的作用是找到已完成update请求的读操作，并将其从总请求队列中移除并插入到channel上待处理请求队列中
-                            sub=find_write_sub_request(ssd,channel);
+                            sub=find_write_sub_request(ssd,channel,NONE);
                             if(sub==NULL)
                             {
                                 break;
                             }
+                            // 根据上一个子请求类型找到第二个sub
+                            sub_other = find_write_sub_request(ssd,channel,sub->bit_type);
 
                             if(sub->current_state==SR_WAIT)
                             {
                                 // sq：在这里处理die和plane的分配
-                                if(sub->lpn == 8388865){
-                                    printf("here\n");
-                                }
-                                find_plane = get_plane(ssd,channel,chip_token,sub);   
+                                find_plane = get_plane_new(ssd,channel,chip_token,sub); 
+                                if(find_plane == NONE){
+                                    printf("error in findplane\n");
+                                    while(1){}
+                                }  
                                 struct local* loc = get_loc_by_plane(ssd,find_plane);
                                 die_token = loc->die;
                                 plane_token = loc->plane;
@@ -2162,8 +2222,12 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 }
                                 free(loc);
                                 loc = NULL;
-
-                                get_ppn_new(ssd,channel,chip_token,die_token,plane_token,sub);
+                                sub->bit_type = sub->bit_type*2;
+                                if(sub_other != NULL){
+                                    sub_other->bit_type = sub->bit_type + 1;
+                                }
+                                get_ppn_for_2_write(ssd,channel,chip_token,die_token,plane_token,sub,sub_other);
+                                
 
                                 ssd->channel_head[channel].chip_head[chip_token].die_head[die_token].token=(ssd->channel_head[channel].chip_head[chip_token].die_head[die_token].token+1)%ssd->parameter->plane_die;
 
@@ -2173,9 +2237,11 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 {
                                     ssd->real_time_subreq--;
                                 }
-                                go_one_step(ssd,sub,NULL,SR_W_TRANSFER,NORMAL);       /*执行普通的状态的转变。*/
+                                go_one_step(ssd,sub,sub_other,SR_W_TRANSFER,NORMAL);       /*执行普通的状态的转变。*/
                                 delete_w_sub_request(ssd,channel,sub);                /*删掉处理完后的写子请求*/
-
+                                if(sub_other != NULL){
+                                    delete_w_sub_request(ssd,channel,sub_other);
+                                }
                                 *channel_busy_flag=1;
                                 /**************************************************************************
                                  *跳出for循环前，修改令牌
@@ -2186,6 +2252,44 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 ssd->channel_head[channel].token=(ssd->channel_head[channel].token+1)%ssd->parameter->chip_channel[channel];
                                 break;
                             }
+                            
+                            // if(sub->current_state==SR_WAIT)
+                            // {
+                            //     // sq：在这里处理die和plane的分配
+                            //     find_plane = get_plane(ssd,channel,chip_token,sub);   
+                            //     struct local* loc = get_loc_by_plane(ssd,find_plane);
+                            //     die_token = loc->die;
+                            //     plane_token = loc->plane;
+                            //     if(loc->channel != channel && loc->chip != chip_token){
+                            //         printf("error in find bitmap plane\n");
+                            //         while(1){}
+                            //     }
+                            //     free(loc);
+                            //     loc = NULL;
+
+                            //     get_ppn_new(ssd,channel,chip_token,die_token,plane_token,sub);
+
+                            //     ssd->channel_head[channel].chip_head[chip_token].die_head[die_token].token=(ssd->channel_head[channel].chip_head[chip_token].die_head[die_token].token+1)%ssd->parameter->plane_die;
+
+                            //     *change_current_time_flag=0;
+
+                            //     if(ssd->parameter->ad_priority2==0)
+                            //     {
+                            //         ssd->real_time_subreq--;
+                            //     }
+                            //     go_one_step(ssd,sub,NULL,SR_W_TRANSFER,NORMAL);       /*执行普通的状态的转变。*/
+                            //     delete_w_sub_request(ssd,channel,sub);                /*删掉处理完后的写子请求*/
+
+                            //     *channel_busy_flag=1;
+                            //     /**************************************************************************
+                            //      *跳出for循环前，修改令牌
+                            //      *这里的token的变化完全取决于在这个channel chip die plane下写是否成功 
+                            //      *成功了就break 没成功token就要变化直到找到能写成功的channel chip die plane
+                            //      ***************************************************************************/
+                            //     ssd->channel_head[channel].chip_head[chip_token].token=(ssd->channel_head[channel].chip_head[chip_token].token+1)%ssd->parameter->die_chip;
+                            //     ssd->channel_head[channel].token=(ssd->channel_head[channel].token+1)%ssd->parameter->chip_channel[channel];
+                            //     break;
+                            // }
                         } 
                         else                                                          /*use advanced commands*/
                         {
@@ -2204,6 +2308,8 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
 
                         ssd->channel_head[channel].chip_head[chip_token].token=(ssd->channel_head[channel].chip_head[chip_token].token+1)%ssd->parameter->die_chip;
                     }
+                }else{
+                    printf("here to check ssd->current_time how to change\n");
                 }
 
                 ssd->channel_head[channel].token=(ssd->channel_head[channel].token+1)%ssd->parameter->chip_channel[channel];
@@ -2338,7 +2444,6 @@ struct ssd_info *process(struct ssd_info *ssd)
     }
     if(flag==1)
     {
-        // TODO:问题出现在gc这里，估计是迁移的时候移到相同的位置上
         ssd->flag=1;                                                                
         if (ssd->gc_request>0)                                                            /*SSD中有gc操作的请求*/
         {
@@ -2381,15 +2486,15 @@ struct ssd_info *process(struct ssd_info *ssd)
                     continue;
                 }
             }
-
+            
             sub=ssd->channel_head[i].subs_r_head;                                        /*先处理读请求*/
             services_2_r_wait(ssd,i,&flag,&chg_cur_time_flag);                           /*处理处于等待状态的读子请求*/
-
             if((flag==0)&&(ssd->channel_head[i].subs_r_head!=NULL))                      /*if there are no new read request and data is ready in some dies, send these data to controller and response this request*/		
             {		     
                 services_2_r_data_trans(ssd,i,&flag,&chg_cur_time_flag);                    
 
             }
+
             if(flag==0)                                                                  /*if there are no read request to take channel, we can serve write requests*/ 		
             {	
                 services_2_write(ssd,i,&flag,&chg_cur_time_flag);
@@ -2397,6 +2502,7 @@ struct ssd_info *process(struct ssd_info *ssd)
             }	
         }	
     }
+    
 
     return ssd;
 }
@@ -4239,6 +4345,51 @@ int get_read_time(unsigned int ppn){
     return NONE;
 }
 
+int get_read_time_new(int type){
+    switch (type)
+    {
+    case LSB_PAGE:
+        return 1;
+    case CSB_PAGE:
+        return 2;
+    case MSB_PAGE:
+        return 4;
+    case TSB_PAGE:
+        return 8;
+    default:
+        printf("error in get_read_time\n");
+        break;
+    }
+    return NONE;
+}
+
+void process_channel_reqlist(struct ssd_info* ssd,int channel,int chip,int id,int flag){
+    struct req_list* req_new;
+    
+    req_new = (struct req_list*)malloc(sizeof(struct req_list));
+    req_new->id = id;
+    req_new->time = ssd->channel_head[channel].chip_head[chip].current_time;
+    req_new->here2next = ssd->channel_head[channel].chip_head[chip].next_state_predict_time - ssd->channel_head[channel].chip_head[chip].current_time;
+    if(ssd->channel_head[channel].chip_head[chip].req == NULL){
+        ssd->channel_head[channel].chip_head[chip].req = req_new;
+    }else{
+        ssd->channel_head[channel].chip_head[chip].req->next = req_new;
+    }
+    req_new->next = NULL;
+    if(flag == 1){
+        struct req_list* req_new1;
+        req_new1 = (struct req_list*)malloc(sizeof(struct req_list));
+        req_new1->id = id;
+        req_new1->time = ssd->channel_head[channel].current_time;
+        req_new1->here2next = ssd->channel_head[channel].next_state_predict_time - ssd->channel_head[channel].current_time;
+        if(ssd->channel_head[channel].req == NULL){
+                ssd->channel_head[channel].req = req_new1;
+        }else{
+            ssd->channel_head[channel].req->next = req_new1;
+        } 
+        req_new1->next = NULL;
+    }
+}
 
 /**************************************************************************
  *这个函数非常重要，读子请求的状态转变，以及时间的计算都通过这个函数来处理
@@ -4247,7 +4398,9 @@ int get_read_time(unsigned int ppn){
 Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_request *sub2, unsigned int aim_state,unsigned int command)
 {
     unsigned int i=0,j=0,k=0,m=0;
-    long long time=0;
+    unsigned long long time=0;
+    int prog_time;
+    unsigned long long predict_time;
     struct sub_request * sub=NULL ; 
     struct sub_request * sub_twoplane_one=NULL, * sub_twoplane_two=NULL;
     struct sub_request * sub_interleave_one=NULL, * sub_interleave_two=NULL;
@@ -4256,7 +4409,25 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
     {
         return ERROR;
     }
+    location=sub1->location;
+    unsigned long long old_chip_time = ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time;
+    unsigned long long old_channle_time = ssd->channel_head[location->channel].next_state_predict_time;
+    unsigned long long chip_current_time = old_chip_time;
+    unsigned long long channel_current_time = old_channle_time;
+    if(ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time!=0&& ssd->current_time > ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time && ssd->current_time - ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time>10000000){
+        if(sub1->begin_time != sub1->req_begin_time){
+            printf("error %llu\n",ssd->current_time - ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time);
+        }
+        
+    }
+    if(ssd->channel_head[location->channel].next_state_predict_time!=0 && ssd->current_time > ssd->channel_head[location->channel].next_state_predict_time && ssd->current_time - ssd->channel_head[location->channel].next_state_predict_time > 10000000){
+        if(sub1->begin_time != sub1->req_begin_time){
+        printf("error %llu\n",ssd->current_time - ssd->channel_head[location->channel].next_state_predict_time);
+        }
+    }
 
+ 
+    
     /***************************************************************************************************
      *处理普通命令时，读子请求的目标状态分为以下几种情况SR_R_READ，SR_R_C_A_TRANSFER，SR_R_DATA_TRANSFER
      *写子请求的目标状态只有SR_W_TRANSFER
@@ -4264,7 +4435,7 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
     if(command==NORMAL)
     {
         sub=sub1;
-        location=sub1->location;
+        
         switch(aim_state)						
         {	
             case SR_R_READ:
@@ -4273,17 +4444,20 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                      *这个目标状态是指flash处于读数据的状态，sub的下一状态就应该是传送数据SR_R_DATA_TRANSFER
                      *这时与channel无关，只与chip有关所以要修改chip的状态为CHIP_READ_BUSY，下一个状态就是CHIP_DATA_TRANSFER
                      ******************************************************************************************************/
+                    
                     sub->current_time=ssd->current_time;
                     sub->current_state=SR_R_READ;
                     sub->next_state=SR_R_DATA_TRANSFER;
-                    int read_times = get_read_time(sub->ppn);
+                    int read_times = get_read_time_new(sub->bit_type);
+                    // 20000 40000 80000 160000
                     sub->next_state_predict_time=ssd->current_time+read_times * ssd->parameter->time_characteristics.tR;
 
                     ssd->channel_head[location->channel].chip_head[location->chip].current_state=CHIP_READ_BUSY;
                     ssd->channel_head[location->channel].chip_head[location->chip].current_time=ssd->current_time;
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state=CHIP_DATA_TRANSFER;
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=ssd->current_time+read_times * ssd->parameter->time_characteristics.tR;
-
+                    ssd->channel_head[location->channel].chip_head[location->chip].busy_time +=(ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time);
+                    ssd->channel_head[location->channel].chip_head[location->chip].update_time = 1;
                     break;
                 }
             case SR_R_C_A_TRANSFER:
@@ -4295,7 +4469,8 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                      *******************************************************************************************************/
                     sub->current_time=ssd->current_time;									
                     sub->current_state=SR_R_C_A_TRANSFER;									
-                    sub->next_state=SR_R_READ;									
+                    sub->next_state=SR_R_READ;
+                    // 175
                     sub->next_state_predict_time=ssd->current_time+7*ssd->parameter->time_characteristics.tWC;									
                     sub->begin_time=ssd->current_time;
 
@@ -4311,7 +4486,10 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                     ssd->channel_head[location->channel].chip_head[location->chip].current_time=ssd->current_time;						
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state=CHIP_READ_BUSY;							
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=ssd->current_time+7*ssd->parameter->time_characteristics.tWC;
-
+                    ssd->channel_head[location->channel].busy_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->current_time);
+                    ssd->channel_head[location->channel].chip_head[location->chip].busy_time +=(ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time);
+                    ssd->channel_head[location->channel].chip_head[location->chip].update_time = 1;
+                    ssd->channel_head[location->channel].update_time = 1;
                     break;
 
                 }
@@ -4324,10 +4502,18 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                      ***************************************************************************************************************/
                     sub->current_time=ssd->current_time;					
                     sub->current_state=SR_R_DATA_TRANSFER;		
-                    sub->next_state=SR_COMPLETE;				
+                    sub->next_state=SR_COMPLETE;	
+                    ssd->channel_head[location->channel].read_sub_nums++;
+                    ssd->channel_head[location->channel].chip_head[location->chip].read_sub_nums++;			
+                    // 2048*25 = 51200
                     sub->next_state_predict_time=ssd->current_time+(sub->size*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tRC;			
                     sub->complete_time=sub->next_state_predict_time;
-
+                    if(sub1->complete_time - sub1->begin_time > 1000000){
+                        printf("sub request%u\n",sub1->complete_time - sub1->begin_time);
+                        printf("big request %u\n",sub1->complete_time - sub1->req_begin_time);
+                    }
+                    
+                    ssd->request_queue->done_sub++;
                     ssd->channel_head[location->channel].current_state=CHANNEL_DATA_TRANSFER;		
                     ssd->channel_head[location->channel].current_time=ssd->current_time;		
                     ssd->channel_head[location->channel].next_state=CHANNEL_IDLE;	
@@ -4339,41 +4525,90 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=sub->next_state_predict_time;
 
                     ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].add_reg_ppn=-1;
-
+                    ssd->channel_head[location->channel].busy_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->current_time);
+                    ssd->channel_head[location->channel].chip_head[location->chip].busy_time +=(ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time);
+                    ssd->channel_head[location->channel].chip_head[location->chip].update_time = 1;
+                    ssd->channel_head[location->channel].update_time = 1;
                     break;
                 }
             case SR_W_TRANSFER:
                 {
                     /******************************************************************************************************
+                     *这里需要修改为同时写入两个子请求，但其中一个请求可能为空
                      *这是处理写子请求时，状态的转变以及时间的计算
                      *虽然写子请求的处理状态也像读子请求那么多，但是写请求都是从上往plane中传输数据
                      *这样就可以把几个状态当一个状态来处理，就当成SR_W_TRANSFER这个状态来处理，sub的下一个状态就是完成状态了
                      *此时channel，chip的当前状态变为CHANNEL_TRANSFER，CHIP_WRITE_BUSY
                      *下一个状态变为CHANNEL_IDLE，CHIP_IDLE
                      *******************************************************************************************************/
-                    int prog_time = get_prog_time(sub1->ppn);
-                    sub->current_time=ssd->current_time;
-                    sub->current_state=SR_W_TRANSFER;
-                    sub->next_state=SR_COMPLETE;
-                    sub->next_state_predict_time=ssd->current_time+7*ssd->parameter->time_characteristics.tWC+(sub->size*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tWC;
-                    sub->complete_time=sub->next_state_predict_time + prog_time;		
-                    time=sub->next_state_predict_time;
-
+                    prog_time = get_prog_time(sub1->ppn);
+                    sub = sub1;
+                    ssd->channel_head[location->channel].prog_sub_nums++;
+                    ssd->channel_head[location->channel].chip_head[location->chip].prog_sub_nums++;	
+                    while(sub != NULL){
+                        
+                        ssd->request_queue->done_sub++;
+                        sub->current_time=ssd->current_time;
+                        sub->current_state=SR_W_TRANSFER;
+                        sub->next_state=SR_COMPLETE;
+                        sub->begin_time = ssd->current_time;
+                        // 1000000 + 175 + 51200 = 1,051,375   5520000 + 175 + 51200 = 5,571,375
+                        sub->next_state_predict_time=sub->current_time+7*ssd->parameter->time_characteristics.tWC+(sub->size*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tWC + prog_time;
+                        sub->complete_time=sub->next_state_predict_time;		
+                        if(time < sub->next_state_predict_time){
+                            predict_time = sub->next_state_predict_time;
+                        }
+                        time=sub->next_state_predict_time;
+                        if(sub != sub2){
+                            sub = sub2;
+                        }else{
+                            sub = NULL;
+                        }
+                        
+                    }
+                    
                     ssd->channel_head[location->channel].current_state=CHANNEL_TRANSFER;										
                     ssd->channel_head[location->channel].current_time=ssd->current_time;										
                     ssd->channel_head[location->channel].next_state=CHANNEL_IDLE;										
-                    ssd->channel_head[location->channel].next_state_predict_time=time;
+                    ssd->channel_head[location->channel].next_state_predict_time=predict_time - prog_time;
 
                     ssd->channel_head[location->channel].chip_head[location->chip].current_state=CHIP_WRITE_BUSY;										
                     ssd->channel_head[location->channel].chip_head[location->chip].current_time=ssd->current_time;									
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state=CHIP_IDLE;										
-                    ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=time+prog_time;
-
+                    ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=predict_time;
+                  
+                    ssd->channel_head[location->channel].chip_head[location->chip].update_time = 1;
+                    ssd->channel_head[location->channel].update_time = 1;
+                    ssd->channel_head[location->channel].busy_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->current_time);
+                    ssd->channel_head[location->channel].chip_head[location->chip].busy_time +=(ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time);
                     break;
                 }
             default :  return ERROR;
 
-        }//switch(aim_state)	
+        }
+        if(old_chip_time!=0 && (old_chip_time > sub1->req_begin_time) && ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time > 5700000){
+            printf("error here %u\n",ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time);
+            printf("%u \n",sub1->current_time+7*ssd->parameter->time_characteristics.tWC+(4*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tWC + prog_time - old_chip_time);
+        }
+        
+        
+        if(aim_state == SR_R_READ){
+            int index = location->channel*2+location->chip;
+            chip_busy[index] = 1;
+            process_channel_reqlist(ssd,location->channel,location->chip,sub1->req_id,0);
+            chip_time += (ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->channel_head[location->channel].chip_head[location->chip].current_time);
+        }else{
+            int index = location->channel*2+location->chip;
+            chip_busy[index] = 1;
+            channel_busy[location->channel] = 1;
+            process_channel_reqlist(ssd,location->channel,location->chip,sub1->req_id,1);
+            if(sub2!=NULL && sub1->req_id != sub2->req_id){
+                process_channel_reqlist(ssd,location->channel,location->chip,sub2->req_id,1);
+            }
+            channel_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->channel_head[location->channel].current_time);
+            chip_time += (ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->channel_head[location->channel].chip_head[location->chip].current_time);
+        }
+        
     }//if(command==NORMAL)
     else if(command==TWO_PLANE)
     {   

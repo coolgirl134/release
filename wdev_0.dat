@@ -100,40 +100,40 @@ the 1 channel, 1 die, 0 plane, 2048 blocks has :             0 erase operations
 the 1 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
 ---------------------------latency array distribute---------------------------
 total latency num is 838538
-0.843625
-0.059496
-0.035760
-0.023298
-0.020269
-0.009855
-0.003504
-0.001785
-0.001587
-0.000820
+0.842789
+0.059400
+0.034035
+0.025290
+0.019604
+0.008822
+0.004820
+0.002417
+0.001994
+0.000826
 
 
 ---------------------------static data---------------------------
 min lsn:             0
 max lsn: 3969265664
-read count:        574164
+read count:        574358
 program count:       4605680
 ---------------------------read & program sub rate---------------------------
 total program sub:       3015466
-total read sub:       1441622
-read rate: 0.323445
-program rate: 0.676555
+total read sub:       1441614
+read rate: 0.323444
+program rate: 0.676556
 ---------------------------read & program request rate---------------------------
 read request count:        229529
 write request count:        913732
 read request rate: 0.200767
 write request rate: 0.799233
-read request average size:     25.139389
+read request average size:     25.139420
 write request average size:     16.403309
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 223616722
-write request average response time: 20333765
-total request average response time: 61146260
-tail latency: 1743870035
+read request average response time: 224282416
+write request average response time: 19893462
+total request average response time: 60928004
+tail latency: 1698276886
 ---------------------------Space utilization rate---------------------------
 real written pagenums: 0
 ---------------------------WA---------------------------

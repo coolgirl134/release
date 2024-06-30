@@ -33,7 +33,7 @@ page capacity = 2048;
 subpage capacity = 512;
 t_PROG = 200000;             #the unit is ns
 t_DBSY = 50;
-t_BERS = 1500000;
+t_BERS = 15000000;          #QLC erase time is 15ms
 t_CLS = 12;
 t_CLH = 5;
 t_CS = 20;
@@ -46,7 +46,7 @@ t_DH = 5;
 t_WC = 25;
 t_WH = 10;
 t_ADL = 70;
-t_R = 20000;
+t_R = 20000;            #time of page from nand cell to register is 20us
 t_AR = 10;
 t_CLR = 10;
 t_RR = 20;
@@ -90,98 +90,3 @@ greed MPW command=0;            #1 for using multi-plane write greedily, 0 for n
 aged=0;                         #1 for making SSD aged, 0 for keeping SSD non-aged
 aged ratio=0.7;                #If we need to make SSD aged, set the aged ratio in advance
 -----------------------simulation output----------------------
-the 0 channel, 0 die, 0 plane, 2048 blocks has :             0 erase operations
-the 0 channel, 0 die, 1 plane, 2048 blocks has :          1486 erase operations
-the 0 channel, 1 die, 0 plane, 2048 blocks has :           568 erase operations
-the 0 channel, 1 die, 1 plane, 2048 blocks has :          1709 erase operations
-the 1 channel, 0 die, 0 plane, 2048 blocks has :          1088 erase operations
-the 1 channel, 0 die, 1 plane, 2048 blocks has :             0 erase operations
-the 1 channel, 1 die, 0 plane, 2048 blocks has :            84 erase operations
-the 1 channel, 1 die, 1 plane, 2048 blocks has :          1585 erase operations
----------------------------latency array distribute---------------------------
-total latency num is 2807065
-0.833317
-0.051601
-0.021063
-0.012320
-0.007033
-0.005950
-0.018126
-0.020158
-0.012981
-0.017450
-
-
----------------------------static data---------------------------
-min lsn:             0
-max lsn: 4293935104
-read count:       3464074
-program count:      16202672
----------------------------read & program sub rate---------------------------
-total program sub:       9786479
-total read sub:       5136518
-read rate: 0.344202
-program rate: 0.655798
----------------------------read & program request rate---------------------------
-read request count:       1417748
-write request count:       2575568
-read request rate: 0.355030
-write request rate: 0.644970
-read request average size:     14.708190
-write request average size:     16.606939
----------------------------read & program & total & tail latency---------------------------
-read request average response time: 1031452487
-write request average response time: 277877058
-total request average response time: 545419135
-tail latency: 9359048016
----------------------------Space utilization rate---------------------------
-real written pagenums: 0
----------------------------WA---------------------------
-Write amplification: 1.012068
-buffer read hits:        530811
-buffer read miss:            63
-buffer write hits:       5050820
-buffer write miss:      30313245
-erase:         11600
-Read 0: count is 0.594468
-Read 1: count is 0.138523
-Read 2: count is 0.077855
-Read 3: count is 0.046147
-Read 4: count is 0.031187
-Read 5: count is 0.022179
-Read 6: count is 0.018554
-Read 7: count is 0.013839
-Read 8: count is 0.009293
-Read 9: count is 0.047956
-Write 0: count is 0.000000
-Write 1: count is 0.347501
-Write 2: count is 0.151064
-Write 3: count is 0.111352
-Write 4: count is 0.079750
-Write 5: count is 0.057520
-Write 6: count is 0.044194
-Write 7: count is 0.035873
-Write 8: count is 0.030659
-Write 9: count is 0.142087
-READ
-1036818
-241600
-135787
-80485
-54393
-38683
-32361
-24136
-16208
-83640
-WRITE
-0
-606080
-263473
-194210
-139092
-100322
-77080
-62566
-53472
-247816

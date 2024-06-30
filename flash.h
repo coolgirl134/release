@@ -2,7 +2,7 @@
   This project was supported by the National Basic Research 973 Program of China under Grant No.2011CB302301
   Huazhong University of Science and Technology (HUST)   Wuhan National Laboratory for Optoelectronics
 
-  FileNameï¼? flash.h
+  FileNameï¿½? flash.h
 Author: Hu Yang		Version: 2.1	Date:2011/12/02
 Description: 
 
@@ -39,7 +39,7 @@ struct sub_request *find_interleave_read_page(struct ssd_info *, struct sub_requ
 int find_twoplane_write_sub_request(struct ssd_info * ssd, unsigned int channel, struct sub_request * sub_twoplane_one,struct sub_request * sub_twoplane_two);
 int find_interleave_sub_request(struct ssd_info * ssd, unsigned int channel, struct sub_request * sub_interleave_one,struct sub_request * sub_interleave_two);
 struct sub_request * find_read_sub_request(struct ssd_info * ssd, unsigned int channel, unsigned int chip, unsigned int die);
-struct sub_request * find_write_sub_request(struct ssd_info * ssd, unsigned int channel);
+struct sub_request * find_write_sub_request(struct ssd_info * ssd, unsigned int channel,int type);
 struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,int size,unsigned int state,struct request * req,unsigned int operation);
 
 struct sub_request *find_interleave_twoplane_page(struct ssd_info *ssd, struct sub_request *onepage,unsigned int command);
@@ -51,6 +51,7 @@ struct ssd_info *un_greed_copyback(struct ssd_info *,unsigned int,unsigned int,u
 int  find_active_block(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane);
 Status find_active_block_new(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
 Status find_open_block(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
+Status find_open_block_for_2_write(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
 int get_plane(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,struct sub_request* sub);
 int write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,unsigned int active_block,unsigned int *ppn);
 int allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req);

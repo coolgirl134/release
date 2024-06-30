@@ -125,8 +125,8 @@ typedef int Status;
 #define MSB_PAGE 2
 #define TSB_PAGE 3
 
-#define HOTREAD 8
-#define HOTPROG 8
+#define HOTREAD 4
+#define HOTPROG 4
 #define COLD 2
 
 #define P_LC 0
@@ -139,6 +139,10 @@ extern unsigned long long latency[236397450];
 // 保存latency偏移量的索引
 extern int latency_index;
 extern int trace_count;
+extern char chip_busy[4];
+extern char channel_busy[2];
+extern unsigned long long channel_time;
+extern unsigned long long chip_time;
 
 
 /*****************************************
@@ -192,16 +196,24 @@ struct ac_time_characteristics{
 
 struct ssd_info{ 
     double ssd_energy;                   //SSD的能耗，�??时间和芯片数的函�??,能耗因�??
-    int64_t current_time;                //记录系统时间
-    int64_t next_request_time;
+    unsigned long long current_time;                //记录系统时间
+    unsigned long long next_request_time;
     unsigned int real_time_subreq;       //记录实时的写请求�??数，用在全动态分配时，channel优先的情�??
     int flag;
     int active_flag;                     //记录主动写是否阻塞，如果发现柱�?�，需要将时间向前推进,0表示没有阻�?�，1表示�??阻�?�，需要向前推进时�??
     unsigned int page;
     int plane_num;                      //记录当前总共有�?�少plane数量
-
+    unsigned long long first_time;
+    unsigned long long last_time;       //记录上一个请求的到达时间
+    unsigned long long biggest_time;
+    unsigned long long pre_time;        //记录请求到目前为止的处理时间
     unsigned int token;                  //在动态分配中，为防�?�每次分配在�??一个channel需要维持一�??令牌，每次从令牌所指的位置开始分�??
     unsigned int gc_request;             //记录在SSD�??，当前时刻有多少gc操作的�?�求
+    unsigned long long sub_read_avg;
+    unsigned long long sub_write_avg;
+    int error_times;
+
+    unsigned long long sub_total_time;
 
     unsigned int write_request_count;    //记录写操作的次数，基于大请求
     unsigned int read_request_count;     //记录读操作的次数,基于大�?�求
@@ -261,6 +273,13 @@ struct ssd_info{
     struct channel_info *channel_head;   //指向channel结构体数组的首地址
 };
 
+struct req_list{
+    unsigned int id;
+    unsigned long long time;
+    unsigned long long here2next;
+    struct req_list* next;
+};
+
 
 struct channel_info{
     int chip;                            //表示�?�??�总线上有多少颗粒
@@ -268,19 +287,23 @@ struct channel_info{
     unsigned long program_count;
     unsigned long erase_count;
     unsigned int token;                  //在动态分配中，为防�?�每次分配在�??一个chip需要维持一�??令牌，每次从令牌所指的位置开始分�??
-
+    char update_time;                   //记录空闲时间是否更新
     int current_state;                   //channel has serveral states, including idle, command/address transfer,data transfer,unknown
     int next_state;
-    int64_t current_time;                //记录该通道的当前时�??
-    int64_t next_state_predict_time;     //the predict time of next state, used to decide the sate at the moment
-
+    unsigned long long current_time;                //记录该通道的当前时�??
+    unsigned long long next_state_predict_time;     //the predict time of next state, used to decide the sate at the moment
+    unsigned int read_sub_nums;
+    unsigned int prog_sub_nums;
+    unsigned long long busy_time;
     struct event_node *event;
     struct sub_request *subs_r_head;     //channel上的读�?�求队列头，先服务�?�于队列头的子�?�求
     struct sub_request *subs_r_tail;     //channel上的读�?�求队列尾，新加进来的子请求加到队尾
     struct sub_request *subs_w_head;     //channel上的写�?�求队列头，先服务�?�于队列头的子�?�求
     struct sub_request *subs_w_tail;     //channel上的写�?�求队列，新加进来的子�?�求加到队尾
     struct gc_operation *gc_command;     //记录需要产生gc的位�??
-    struct chip_info *chip_head;        
+    struct chip_info *chip_head;  
+    
+    struct req_list* req;                  //记录占据channel的时间和对应id
 };
 
 
@@ -292,18 +315,22 @@ struct chip_info{
     unsigned int subpage_num_page;      //indicate how many subpage in a page
     unsigned int ers_limit;             //�??chip�??每块能�?��??擦除的�?�数
     unsigned int token;                 //在动态分配中，为防�?�每次分配在�??一个die需要维持一�??令牌，每次从令牌所指的位置开始分�??
-
+    unsigned int read_sub_nums;
+    unsigned int prog_sub_nums;
     int current_state;                  //channel has serveral states, including idle, command/address transfer,data transfer,unknown
     int next_state;
-    int64_t current_time;               //记录该通道的当前时�??
-    int64_t next_state_predict_time;    //the predict time of next state, used to decide the sate at the moment
-
+    char update_time;                   //记录空闲时间是否更新  是为1，否为0
+    unsigned long long current_time;               //记录该通道的当前时�??
+    unsigned long long next_state_predict_time;    //the predict time of next state, used to decide the sate at the moment
+    unsigned long long busy_time;
     unsigned long read_count;           //how many read count in the process of workload
     unsigned long program_count;
     unsigned long erase_count;
 
     struct ac_time_characteristics ac_timing;  
     struct die_info *die_head;
+
+    struct req_list* req;  
 };
 
 
@@ -407,6 +434,11 @@ struct request{
     unsigned int lsn;                  //请求的起始地址，逻辑地址
     unsigned int size;                 //请求的大小，�?�??�少�??扇区
     unsigned int operation;            //请求的�?�类�??1为�?�，0为写
+    int sub_nums;                       //记录大请求需要产生多少写回子请求
+    int update_nums;                    //记录该大请求产生多少read modify write请求
+    int done_sub;                       //记录执行了多少子请求
+
+    unsigned int id;
 
     unsigned int* need_distr_flag;
     unsigned int complete_lsn_count;   //record the count of lsn served by buffer
@@ -428,6 +460,8 @@ struct sub_request{
     unsigned int operation;            //表示该子请求的类型，除了�??1 �??0，还有擦除，two plane等操�?? 
     int size;
 
+    unsigned int req_id;
+
     unsigned int current_state;        //表示该子请求所处的状态，见宏定义sub request
     int64_t current_time;
     unsigned int next_state;
@@ -439,6 +473,8 @@ struct sub_request{
 
     int64_t begin_time;               //子�?�求开始时�??
     int64_t complete_time;            //记录该子请求的�?�理时间,既真正写入或者�?�出数据的时�??
+    unsigned int lsn;
+    unsigned long long req_begin_time;
 
     struct local *location;           //在静态分配和混合分配方式�??，已�??lpn就知道�??lpn该分配到那个channel，chip，die，plane，这�??结构体用来保存�?�算得到的地址
     struct sub_request *next_subs;    //指向属于同一个request的子请求

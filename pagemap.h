@@ -2,7 +2,7 @@
   This project was supported by the National Basic Research 973 Program of China under Grant No.2011CB302301
   Huazhong University of Science and Technology (HUST)   Wuhan National Laboratory for Optoelectronics
 
-  FileName£º pagemap.h
+  FileNameï¿½ï¿½ pagemap.h
 Author: Hu Yang		Version: 2.1	Date:2011/12/02
 Description: 
 
@@ -34,6 +34,7 @@ struct local* get_loc_by_plane(struct ssd_info* ssd,int plane);
 int get_index_by_loc(struct ssd_info* ssd ,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane);
 unsigned int get_ppn_for_pre_process(struct ssd_info *ssd,unsigned int lsn);
 struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,struct sub_request *sub);
+struct ssd_info *get_ppn_for_2_write(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,struct sub_request *sub,struct sub_request* sub_other);
 struct ssd_info *get_ppn_new(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,struct sub_request *sub);
 unsigned int gc(struct ssd_info *ssd,unsigned int channel, unsigned int flag);
 int gc_direct_erase(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane);

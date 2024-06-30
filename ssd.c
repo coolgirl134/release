@@ -23,6 +23,7 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #include "pagemap.h"
 #include "string.h"
 
+unsigned int request_id = 0;
 /********************************************************************************************************************************
   1，main函数中initiatio()函数用来初�?�化ssd,�?2，make_aged()函数使SSD成为aged，aged的ssd相当于使用过一段时间的ssd，里面有失效页，
   non_aged的ssd�?新的ssd，无失效页，失效页的比例�?以在初�?�化参数�?设置�?3，pre_process_page()函数提前�?一遍�?��?�求，把读�?�求
@@ -40,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 10;index_i < 11;index_i ++){
+    for(int index_i = 7;index_i < 8;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -138,7 +139,6 @@ int  main()
     }
     fprintf(ssd->outputfile,"\t\t\t\t\t\t\t\t\tOUTPUT\n");
     fprintf(ssd->outputfile,"****************** TRACE INFO ******************\n");
-
     ssd=simulate(ssd);
     statistic_output(ssd);  
     /*	free_all_node(ssd);*/
@@ -202,16 +202,14 @@ struct ssd_info *simulate(struct ssd_info *ssd)
     int sq = 0;
     while(flag!=100)      
     {
-        for(int i = 0;i < ssd->plane_num;i ++){
-            if(bitmap_table[i] > 11 || bitmap_table[i] < -1){
-                printf("here error \n");
-            }
-        }
         flag=get_requests(ssd);
-        struct sub_request* sub1 = ssd->channel_head[0].subs_r_head;
-
+        
         if(flag == 1)
         {   
+            if(sq == 0){
+                ssd->first_time = ssd->request_queue->time;
+                ssd->sub_total_time = 0;
+            }
             if (ssd->parameter->dram_capacity!=0)
             {
                 buffer_management(ssd);  
@@ -220,22 +218,40 @@ struct ssd_info *simulate(struct ssd_info *ssd)
             else
             {
                 no_buffer_distribute(ssd);
-            }		
+            }
+            printf("%d\n",t++);		
         }
         sq++;
-        sub1 = ssd->channel_head[0].subs_r_head;
-        if(sq == 27803756){
-            printf("here 27803756\n");
-        }
         process(ssd);    
-        sub1 = ssd->channel_head[0].subs_r_head;
         trace_output(ssd);
-        sub1 = ssd->channel_head[0].subs_r_head;
-        // printf("%d\n",t++);
+        // printf("%d\n",sq);
         if(flag == 0 && ssd->request_queue == NULL)
             flag = 100;
+        if(ssd->current_time > ssd->biggest_time){
+            ssd->biggest_time = ssd->current_time;
+        }
     }
+    printf("error times is %d\n",ssd->error_times);
     fclose(ssd->tracefile);
+    for(int i = 0;i < ssd->parameter->channel_number;i ++){
+        for(int j = 0;j < ssd->parameter->chip_channel[0];j++){
+            printf("channel %d chip %d busy time is %llu\n",i,j,ssd->channel_head[i].chip_head[j].busy_time);
+        }
+        printf("channel %d busy time is %llu\n",i,ssd->channel_head[i].busy_time);
+    }
+    printf("request gap time is %llu\n",ssd->last_time - ssd->first_time);
+    printf("simulate time is %llu\n",ssd->current_time - ssd->first_time);
+    printf("biggest time to first request is %llu\n",ssd->biggest_time - ssd->first_time);
+    for(int i = 0;i < ssd->parameter->channel_number;i++){
+        printf("channel %d prog_nums %llu\n",i,ssd->channel_head[i].prog_sub_nums);
+        printf("channel %d read_nums %llu\n",i,ssd->channel_head[i].read_sub_nums);
+        for(int j = 0;j < ssd->parameter->chip_channel[0];j++){
+            printf("channel %d chip %d prog_nums %llu\n",i,j,ssd->channel_head[i].chip_head[j].prog_sub_nums);
+            printf("channel %d chip %d read_nums %llu\n",i,j,ssd->channel_head[i].chip_head[j].read_sub_nums);
+        }
+    }
+    printf("channel busy time %llu\n",channel_busy);
+    printf("chip busy %llu\n",chip_time);
     return ssd;
 }
 
@@ -301,17 +317,48 @@ int get_requests(struct ssd_info *ssd)
         ssd->min_lsn=lsn;
     if (lsn>ssd->max_lsn)
         ssd->max_lsn=lsn;
+    
     /******************************************************************************************************
      *上层文件系统发送给SSD的任何�?�写命令包括两个部分（LSN，size�? LSN�?逻辑扇区号，对于文件系统而言，它所看到的存
      *储空间是一�?线性的连续空间。例如，读�?�求�?260�?6）表示的�?需要�?�取从扇区号�?260的逻辑扇区开始，总共6�?扇区�?
      *large_lsn: channel下面有�?�少个subpage，即多少个sector。overprovide系数：SSD�?并不�?所有的空间都可以给用户使用�?
      *比�??32G的SSD�?能有10%的空间保留下来留作他�?，所以乘�?1-provide
      ***********************************************************************************************************/
-    large_lsn=(int)((ssd->parameter->subpage_page*ssd->parameter->page_block*BITS_PER_CELL*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num)*(1-ssd->parameter->overprovide));
+    large_lsn=(unsigned int )((ssd->parameter->chip_num*ssd->parameter->die_chip*ssd->parameter->plane_die*ssd->parameter->block_plane*ssd->parameter->page_block*ssd->parameter->subpage_page)*(1-ssd->parameter->overprovide));
     lsn = lsn%large_lsn;
-
+    if(lsn == 1990232){
+        printf("here\n");
+    }
+    if(ssd->request_queue != NULL){
+        ssd->last_time = ssd->request_queue->time;
+    }
+    // nearest_event_time不为max表示有请求被阻塞，它的通道空闲时间比当前时间晚
     nearest_event_time=find_nearest_event(ssd);
-    if (nearest_event_time==MAX_INT64)
+   
+    unsigned long long old_current_time;
+    if(ssd->current_time > ssd->biggest_time){
+        ssd->biggest_time = ssd->current_time;
+    }
+
+    // modify
+    // old_current_time = ssd->current_time;
+    // unsigned long long gap;
+    // if(nearest_event_time != MAX_INT64){
+    //     gap = nearest_event_time - ssd->current_time;
+    //     ssd->current_time = nearest_event_time; 
+    //     if(nearest_event_time < time_t || ssd->request_queue_length >= ssd->parameter->queue_length){    
+    //         fseek(ssd->tracefile,filepoint,0);
+    //         gap = ssd->current_time - old_current_time;
+    //         return -1;
+    //     }
+    // }else{
+    //     if(ssd->current_time < time_t){
+    //         ssd->current_time = time_t;
+    //     }
+    // }
+    // gap = ssd->current_time - old_current_time;
+
+     if (nearest_event_time==MAX_INT64)
     {
         ssd->current_time=time_t;           
 
@@ -351,11 +398,9 @@ int get_requests(struct ssd_info *ssd)
             }
         }
     }
-
-    if(time_t < 0)
-    {
-        printf("error!\n");
-        while(1){}
+    
+    if(ssd->current_time > ssd->biggest_time){
+        ssd->biggest_time = ssd->current_time;
     }
 
     if(feof(ssd->tracefile))
@@ -369,6 +414,8 @@ int get_requests(struct ssd_info *ssd)
     memset(request1,0, sizeof(struct request));
 
     request1->time = time_t;
+    request1->id = request_id;
+    request_id++;
     request1->lsn = lsn;
     request1->size = size;
     request1->operation = ope;	
@@ -381,7 +428,8 @@ int get_requests(struct ssd_info *ssd)
     request1->need_distr_flag = NULL;
     request1->complete_lsn_count=0;         //record the count of lsn served by buffer
     filepoint = ftell(ssd->tracefile);		// set the file point
-
+    // printf("erase is %d\n",ssd->erase_count);
+    ssd->last_time = time_t;
     if(ssd->request_queue == NULL)          //The queue is empty
     {
         ssd->request_queue = request1;
@@ -411,6 +459,9 @@ int get_requests(struct ssd_info *ssd)
     sscanf(buffer,"%lld %d %d %lld %d %d",&time_t,&device,&ope,&lsn,&size,&response);
     ssd->next_request_time=time_t;
     fseek(ssd->tracefile,filepoint,0);
+    if(time_t - request1->time < 100000){
+        ssd->error_times++;
+    }
 
     return 1;
 }
@@ -442,10 +493,10 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
 
     new_request=ssd->request_tail;
     lsn=new_request->lsn;
-    lpn=new_request->lsn/ssd->parameter->subpage_page;
-    if(lpn == 1583729184){
-        printf("lpn 1583729184 location is NULL\n");
+    if(lsn == 252721){
+        printf("here 252721\n");
     }
+    lpn=new_request->lsn/ssd->parameter->subpage_page;
     last_lpn=(new_request->lsn+new_request->size-1)/ssd->parameter->subpage_page;
     first_lpn=new_request->lsn/ssd->parameter->subpage_page;
     int capacity = sizeof(unsigned int)*((last_lpn-first_lpn+1)*ssd->parameter->subpage_page/32+1);
@@ -463,9 +514,6 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
              *************************************************************************************************/
             need_distb_flag=full_page;  
             // ssd->total_read++; 
-            if(lpn == 5277084){
-                printf("here\n");
-            }
             key.group=lpn;
             buffer_node= (struct buffer_group*)avlTreeFind(ssd->dram->buffer, (TREE_NODE *)&key);		// buffer node 
             ssd->dram->map->map_entry[lpn].read_count++;
@@ -650,6 +698,15 @@ struct ssd_info *distribute(struct ssd_info *ssd)
                             else
                             {
                                 sub=creat_sub_request(ssd,lpn,sub_size,0,req,req->operation);
+                                // 用于追踪请求，记录请求时间
+                                sub->lsn = req->lsn;
+                                sub->req_id = req->id;
+                                sub->req_begin_time = req->time;
+                                // if(sub->begin_time - sub->req_begin_time >= 30000000){
+                                //     printf("here\n");
+                                // }
+                                if(sub->lsn == 9038616)
+                                    printf("current time to req begin time is %u\n",ssd->current_time - sub->req_begin_time);
                             }	
                         }
                     }
@@ -714,16 +771,22 @@ void trace_output(struct ssd_info* ssd){
             // }
             // latency[latency_index] = tail;
             // latency_index++;
-
+            ssd->sub_total_time+=(req->response_time - req->begin_time);
             if (req->operation==READ)
             {
                 ssd->read_request_count++;
-                ssd->read_avg=ssd->read_avg+(req->response_time-req->time);
+                // ssd->read_avg=ssd->read_avg+(req->response_time-req->time);
             } 
             else
             {
                 ssd->write_request_count++;
-                ssd->write_avg=ssd->write_avg+(req->response_time-req->time);
+                // ssd->write_avg=ssd->write_avg+(req->response_time-req->time);
+                // if(ssd->write_avg > 50000000){
+                //     printf("here write request time is too long\n");
+                // }
+            }
+            if(req->response_time - req->begin_time != 1000){
+                printf("response time is error %u\n",req->response_time - req->begin_time);
             }
             // 请求的前一�?节点�?能不为空
             if(pre_node == NULL)
@@ -777,8 +840,12 @@ void trace_output(struct ssd_info* ssd){
         {
             // 说明执�?�了flash操作
             flag=1;
+            unsigned long long pre_time = 0;
+            unsigned long long old_sub = 0;
+            unsigned long long s_time = MAX_INT64;
+            unsigned long long b_time = 0;
             while(sub != NULL)
-            {
+            { 
                 if(start_time == 0)
                     start_time = sub->begin_time;
                 if(start_time > sub->begin_time)
@@ -786,7 +853,19 @@ void trace_output(struct ssd_info* ssd){
                 if(end_time < sub->complete_time)
                     end_time = sub->complete_time;
                 if((sub->current_state == SR_COMPLETE)||((sub->next_state==SR_COMPLETE)&&(sub->next_state_predict_time<=ssd->current_time)))	// if any sub-request is not completed, the request is not completed
-                {
+                { 
+                   if(pre_time != 0){
+                        unsigned long long time_gap = 0;
+                        if(sub->begin_time > pre_time){
+                            time_gap = sub->begin_time - pre_time;
+                        }else{
+                            time_gap = pre_time - sub->begin_time;
+                        }
+                        if(req->operation == 1 && time_gap > 100000000)
+                            printf("here sub begin time gap is too big %llu\n",time_gap);
+                   }
+                    pre_time = sub->begin_time;
+                    old_sub = sub->lpn;
                     sub = sub->next_subs;
                 }
                 else
@@ -799,7 +878,7 @@ void trace_output(struct ssd_info* ssd){
 
             if (flag == 1)
             {		
-                // 表示大�?�求�?的所有子请求都完成了操作
+                // 表示大请求中的所有子请求都完成了操作
                 //fprintf(ssd->outputfile,"%10I64u %10u %6u %2u %16I64u %16I64u %10I64u\n",req->time,req->lsn, req->size, req->operation, start_time, end_time, end_time-req->time);
                 fprintf(ssd->outputfile,"%16lld %10d %6d %2d %16lld %16lld %10lld\n",req->time,req->lsn, req->size, req->operation, start_time, end_time, end_time-req->time);
                 fflush(ssd->outputfile);
@@ -809,24 +888,157 @@ void trace_output(struct ssd_info* ssd){
                     printf("the response time is 0?? \n");
                     getchar();
                 }
-
+                if(end_time==0){
+                    printf("here end_time is 0\n");
+                }
+                if(end_time < req->time){
+                    printf("error\n");
+                }
+                unsigned long long sub_time = end_time - start_time;
+                // if(req->operation ==1 && end_time - req->time > 10000000000){
+                //     printf("time is %llu\n",end_time - req->time);
+                //     printf("time is %llu\n",end_time - start_time);
+                //     printf("gap is %llu\n",start_time - req->time);
+                //     unsigned long long time_test = ssd->first_time + ssd->sub_total_time;
+                //     if(time_test < req->time){
+                //         printf("error %llu\n",req->time - time_test);
+                //     }else{
+                //         printf("real gap is %llu\n",time_test - req->time);
+                //     }
+                //     printf("time from begin to here %llu\n",req->time - ssd->first_time);
+                //     printf("time is too long\n");
+                // }
+                unsigned long long req_time = end_time - req->time;
+                unsigned long long gap_time = start_time - req->time;
+                unsigned long long real_gap = ssd->sub_total_time - req->time;
+                unsigned long long from_time = req->time - ssd->first_time;
+                if(req->operation ==1 && req_time > 120000000000){
+                    printf("time is %llu\n",req_time);
+                    printf("time is %llu\n",sub_time);
+                    // 这里是子请求开始时间和当前请求到达时间的差值，应该比下面的real gap小，因为读请求可以优先处理
+                    printf("gap is %llu\n",gap_time);
+                   
+                    printf("real gap is %llu\n",real_gap);
+                    
+                    printf("time from begin to here %llu\n",from_time);
+                    printf("time is too long\n");
+                }
+                if(sub_time > 50000000){
+                    printf("here\n");
+                }
+                if(req->operation == 1 && sub_time > 10000000){
+                    printf("here\n");
+                }
+                // if(start_time != ssd->sub_total_time){
+                //     printf("here %llu\n",ssd->sub_total_time - start_time);
+                //     printf("here %llu\n",start_time - ssd->sub_total_time);
+                // }
+                int success_flag = 0;
+                if(start_time != req->time){
+                    // printf("gap is %llu\n",gap_time);
+                    for(int i = 0;i < ssd->parameter->channel_number;i++){
+                        struct req_list* req_now = ssd->channel_head[i].req;
+                        while(req_now != NULL){
+                            if(req_now->time <= start_time && (req_now->time + req_now->here2next) >= req->time){
+                                // printf("channel %d req id %u req time %llu\n",i,req_now->id,req_now->time + req_now->here2next - req->time);
+                                // printf("here2next is %llu\n",req_now->here2next);
+                                flag = 1;
+                            }
+                            req_now = req_now->next; 
+                        }
+                        for(int j = 0;j < ssd->parameter->chip_channel[0];j++){
+                            req_now = ssd->channel_head[i].chip_head[j].req;
+                            while(req_now != NULL){
+                                if(req_now->time <= start_time && (req_now->time + req_now->here2next) >= req->time){
+                                    // printf("chip %d req id %u req time %llu\n",i*2+j,req_now->id,req_now->time + req_now->here2next - req->time);
+                                    // printf("here2next is %llu\n",req_now->here2next);
+                                    flag = 1;
+                                }
+                                req_now = req_now->next; 
+                            }
+                        }
+                    }
+                    if(flag == 0){
+                        printf("error flag gap is %llu\n",gap_time);
+                    }
+                }
+                ssd->sub_total_time = end_time;
+                // if(ssd->sub_total_time <= req->time){
+                //     ssd->sub_total_time = req->time + sub_time;
+                // }else{
+                //     // if(ssd->sub_total_time <= start_time){
+                //     //     ssd->sub_total_time += sub_time;
+                //     // }else{
+                //     //     ssd->sub_total_time = end_time;
+                //     // }
+                //     ssd->sub_total_time = end_time;
+                // }
+                // if(ssd->sub_total_time != end_time){
+                //     printf("here %llu\n",ssd->sub_total_time - end_time);
+                //     printf("here %llu\n",end_time - ssd->sub_total_time);
+                // }
                 if (req->operation==READ)
                 {
                     ssd->read_request_count++;
                     ssd->read_avg=ssd->read_avg+(end_time-req->time);
+                    // if(end_time - req->time > 146000000000){
+                    //     ssd->error_times++;
+                    //     // printf("time is %u",ssd->current_time - req->time);
+                    // }
                 } 
                 else
                 {
                     ssd->write_request_count++;
                     ssd->write_avg=ssd->write_avg+(end_time-req->time);
+                    // if(ssd->write_avg > 50000000){
+                    //     printf("here write request time is too long\n");
+                    // }
                 }
-                // 在这里�?�算尾延�?
+                // 在这里计算尾延时间
                 unsigned long long tail = end_time - req->time;
                 if(tail > ssd->tail_latency){
                     ssd->tail_latency = tail;
                 }
                 latency[latency_index] = tail;
                 latency_index++;
+
+                // for(int i = 0;i < ssd->parameter->channel_number;i++){
+                //     struct req_list* req_pre = ssd->channel_head[i].req;
+                //     struct req_list* req_now = ssd->channel_head[i].req;
+                //     while(req_now != NULL){
+                //         if(req_now->id == req->id){
+                //             if(req_pre == ssd->channel_head[i].req){
+                //                 ssd->channel_head[i].req = req_now->next;
+                //             }else{
+                //                 req_pre->next = req_now->next;
+                //             }
+                //             free(req_now);
+                //             req_now = NULL;
+                //         }else{
+                //             req_pre = req_now;
+                //         }
+                //         req_now = req_pre->next; 
+                //     }
+                //     for(int j = 0;j < ssd->parameter->chip_channel[0];j++){
+                //         req_pre = ssd->channel_head[i].chip_head[j].req;
+                //         req_now = ssd->channel_head[i].chip_head[j].req;
+                //         while(req_now != NULL){
+                //             if(req_now->id == req->id){
+                //                 if(req_pre == ssd->channel_head[i].chip_head[j].req){
+                //                     ssd->channel_head[i].chip_head[j].req = req_now->next;
+                //                 }else{
+                //                     req_pre->next = req_now->next;
+                //                 }
+                //                 req_pre->next = req_now->next;
+                //                 free(req_now);
+                //                 req_now = NULL;
+                //             }else{
+                //                 req_pre = req_now;
+                //             }
+                //             req_now = req_pre->next; 
+                //         }
+                //     }
+                // }
 
                 while(req->subs!=NULL)
                 {
@@ -897,6 +1109,7 @@ void trace_output(struct ssd_info* ssd){
                     }
 
                 }
+                
             }
             else
             {	
@@ -1006,8 +1219,12 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->outputfile,"---------------------------read & program & total & tail latency---------------------------\n");
     fprintf(ssd->outputfile,"read request average size: %13f\n",ssd->ave_read_size);
     fprintf(ssd->outputfile,"write request average size: %13f\n",ssd->ave_write_size);
+    fprintf(ssd->outputfile,"read request total response time: %llu\n",ssd->read_avg);
+    fprintf(ssd->outputfile,"write request total response time: %llu\n",ssd->write_avg);
     fprintf(ssd->outputfile,"read request average response time: %llu\n",ssd->read_avg/ssd->read_request_count);
-    fprintf(ssd->outputfile,"write request average response time: %llu\n",ssd->write_avg/ssd->write_request_count);
+    fprintf(ssd->outputfile,"write request average response time: %llu\n",ssd->write_avg/ssd->real_written);
+    fprintf(ssd->outputfile,"sub read request average response time: %llu\n",ssd->read_avg/ssd->total_read);
+    fprintf(ssd->outputfile,"sub write request average response time: %llu\n",ssd->write_avg/ssd->write_request_count);
     fprintf(ssd->outputfile,"total request average response time: %lld\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
     fprintf(ssd->outputfile,"tail latency: %llu\n",ssd->tail_latency);
     fprintf(ssd->outputfile,"---------------------------Space utilization rate---------------------------\n");
@@ -1068,10 +1285,14 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"---------------------------read & program & total & tail latency---------------------------\n");
     fprintf(ssd->statisticfile,"read request average response time: %llu\n",ssd->read_avg/ssd->read_request_count);
     fprintf(ssd->statisticfile,"write request average response time: %llu\n",ssd->write_avg/ssd->write_request_count);
+    fprintf(ssd->statisticfile,"read request total response time: %llu\n",ssd->read_avg);
+    fprintf(ssd->statisticfile,"write request total response time: %llu\n",ssd->write_avg);
+    // fprintf(ssd->statisticfile,"sub write request average response time: %llu\n",ssd->write_avg/ssd->real_written);
+    // fprintf(ssd->statisticfile,"sub read request average response time: %llu\n",ssd->read_avg/ssd->total_read);
     fprintf(ssd->statisticfile,"total request average response time: %llu\n",(ssd->write_avg + ssd->read_avg)/(ssd->write_request_count + ssd->read_request_count));
     fprintf(ssd->statisticfile,"tail latency: %llu\n",ssd->tail_latency);
     fprintf(ssd->statisticfile,"---------------------------Space utilization rate---------------------------\n");
-    fprintf(ssd->statisticfile,"real written pagenums: %d\n",ssd->free_invalid);
+    fprintf(ssd->statisticfile,"free invalid pagenums: %d\n",ssd->free_invalid);
     fprintf(ssd->statisticfile,"---------------------------WA---------------------------\n");
     fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)ssd->real_written/ssd->total_write);
     fprintf(ssd->statisticfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
@@ -1086,24 +1307,20 @@ void statistic_output(struct ssd_info *ssd)
         read_array[i] = 0;
         prog_array[i] = 0;
     }
+    // 已修改，统计整个ssd
     for(int i = 0;i < page_num;i ++){
-        if(ssd->dram->map->map_entry[i].pn != 0){
-            totalnum++;
-            int read_count = ssd->dram->map->map_entry[i].read_count;
-            int prog_count = ssd->dram->map->map_entry[i].write_count;
-            if(prog_count == 0){
-                printf("here\n");
-            }
-            if(read_count < 10){
-                read_array[read_count]++;
-            }else{
-                read_array[9]++;
-            }
-            if(prog_count < 10){
-                prog_array[prog_count]++;
-            }else{
-                prog_array[9]++;
-            }
+        totalnum++;
+        int read_count = ssd->dram->map->map_entry[i].read_count;
+        int prog_count = ssd->dram->map->map_entry[i].write_count;
+        if(read_count < 10){
+            read_array[read_count]++;
+        }else{
+            read_array[9]++;
+        }
+        if(prog_count < 10){
+            prog_array[prog_count]++;
+        }else{
+        prog_array[9]++;
         }
     }
     for(int i = 0;i < 10; i++){
@@ -1183,12 +1400,72 @@ unsigned int transfer_size(struct ssd_info *ssd,int need_distribute,unsigned int
 
 /**********************************************************************************************************  
  *int64_t find_nearest_event(struct ssd_info *ssd)       
- *寻找所有子请求的最早到达的下个状态时�?,首先看�?�求的下一�?状态时间，如果请求的下�?状态时间小于等于当前时间，
- *说明请求�?阻�?�，需要查看channel或者�?�应die的下一状态时间。Int64�?有�?�号 64 位整数数�?类型，值类型表示值介�?
- *-2^63 ( -9,223,372,036,854,775,808)�?2^63-1(+9,223,372,036,854,775,807 )之间的整数。存储空间占 8 字节�?
- *channel,die�?事件向前推进的关�?因素，三种情况可以使事件继续向前推进，channel，die分别回到idle状态，die�?�?
- *读数�?准�?�好�?
+ *寻找所有子请求的最早到达的下个状态时间,首先看请求的下一个状态时间，如果请求的下个状态时间小于等于当前时间，
+ *说明请求被阻塞，需要查看channel或者对应die的下一状态时间。Int64是有符号 64 位整数数据类型，值类型表示值介于
+ *-2^63 ( -9,223,372,036,854,775,808)到2^63-1(+9,223,372,036,854,775,807 )之间的整数。存储空间占 8 字节。
+ *channel,die是事件向前推进的关键因素，三种情况可以使事件继续向前推进，channel，die分别回到idle状态，die中的
+ *读数据准备好了
  ***********************************************************************************************************/
+// int64_t find_nearest_event(struct ssd_info *ssd) 
+// {
+//     unsigned int i,j;
+//     int64_t time=MAX_INT64;
+//     int64_t time1=MAX_INT64;
+//     int64_t time2=MAX_INT64;
+//     int channel1 = NONE,chip = NONE,channel2 = NONE;
+//     for (i=0;i<ssd->parameter->channel_number;i++)
+//     {
+//         if(time1>ssd->channel_head[i].next_state_predict_time)
+//             // if (ssd->channel_head[i].next_state_predict_time>ssd->current_time)    
+//             if(ssd->channel_head[i].update_time == 1){
+//                 time1=ssd->channel_head[i].next_state_predict_time;
+//                 channel1 = i;
+//             }
+//         for (j=0;j<ssd->parameter->chip_channel[i];j++)
+//         {
+//             // if ((ssd->channel_head[i].chip_head[j].next_state==CHIP_IDLE)||(ssd->channel_head[i].chip_head[j].next_state==CHIP_DATA_TRANSFER))
+//             if(time2>ssd->channel_head[i].chip_head[j].next_state_predict_time)
+//                 // if (ssd->channel_head[i].chip_head[j].next_state_predict_time>ssd->current_time)    
+//                 if(ssd->channel_head[i].chip_head[j].update_time == 1){
+//                     time2=ssd->channel_head[i].chip_head[j].next_state_predict_time;
+//                     channel2 = i;
+//                     chip = j;
+//                 }
+                	
+//         }   
+//     } 
+
+//      /*****************************************************************************************************
+//      *time为所有 A.下一状态为CHANNEL_IDLE且下一状态预计时间大于ssd当前时间的CHANNEL的下一状态预计时间
+//      *           B.下一状态为CHIP_IDLE且下一状态预计时间大于ssd当前时间的DIE的下一状态预计时间
+//      *		     C.下一状态为CHIP_DATA_TRANSFER且下一状态预计时间大于ssd当前时间的DIE的下一状态预计时间
+//      *CHIP_DATA_TRANSFER读准备好状态，数据已从介质传到了register，下一状态是从register传往buffer中的最小值 
+//      *注意可能都没有满足要求的time，这时time返回0x7fffffffffffffff 。
+//      *****************************************************************************************************/
+//     time=(time1>time2)?time2:time1;
+//     if(time != MAX_INT64){
+//         if(time == time1){
+//             ssd->channel_head[channel1].update_time = 0;
+//             channel_busy[channel1] = 0;
+//             if(time1 == time2){
+//                 ssd->channel_head[channel2].chip_head[chip].update_time = 0;
+//                 int index = channel2*2+chip;
+//                 chip_busy[index] = 0;
+//             }
+//         }else if(time == time2){
+//             ssd->channel_head[channel2].chip_head[chip].update_time = 0;
+//             int index = channel2*2+chip;
+//             chip_busy[index] = 0;
+//             if(time1 == time2){
+//                 ssd->channel_head[channel1].update_time = 0;
+//                 channel_busy[channel1] = 0;
+//             }
+//         }
+//     }
+    
+//     return time;
+// }
+
 int64_t find_nearest_event(struct ssd_info *ssd) 
 {
     unsigned int i,j;
@@ -1221,6 +1498,7 @@ int64_t find_nearest_event(struct ssd_info *ssd)
     time=(time1>time2)?time2:time1;
     return time;
 }
+
 
 /***********************************************
  *free_all_node()函数的作用就�?释放所有申请的节点
