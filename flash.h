@@ -57,6 +57,7 @@ int write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsig
 int allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req);
 int typeofdata(struct ssd_info* ssd,unsigned int lpn);
 int get_prog_time(unsigned int ppn);
+void process_invalid(struct ssd_info* ssd,int plane);
 Status static_find_active_block(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type);
 
 

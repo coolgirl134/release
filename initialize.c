@@ -254,7 +254,7 @@ struct blk_info * initialize_block(struct blk_info * p_block,struct parameter_va
     p_block->page_head = (struct page_info *)malloc(page_block * sizeof(struct page_info));
     alloc_assert(p_block->page_head,"p_block->page_head");
     memset(p_block->page_head,0,page_block * sizeof(struct page_info));
-    p_block->LCMT_number[P_LC] = p_block->LCMT_number[P_MT] = NONE;
+    p_block->LCMT_number[R_LC] = p_block->LCMT_number[R_MT] = NONE;
 
     for(i = 0; i<page_block; i++)
     {

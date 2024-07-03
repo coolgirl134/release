@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 6;index_i < 7;index_i ++){
+    for(int index_i = 1;index_i < 2;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -141,6 +141,7 @@ int  main()
     fprintf(ssd->outputfile,"\t\t\t\t\t\t\t\t\tOUTPUT\n");
     fprintf(ssd->outputfile,"****************** TRACE INFO ******************\n");
     ssd=simulate(ssd);
+    printf("dram node %u\n",avlTreeCount(ssd->dram->buffer));
     printf("update write %llu + free invalid %llu = %llu, real written %llu\n",ssd->update_write,ssd->free_invalid,ssd->update_write + ssd->free_invalid,ssd->real_written);
     statistic_output(ssd);  
     /*	free_all_node(ssd);*/
@@ -581,7 +582,7 @@ struct ssd_info *buffer_management(struct ssd_info *ssd)
         while(lpn<=last_lpn)           	
         {	
             ssd->dram->map->map_entry[lpn].write_count++;
-            // ssd->total_write++;
+            
             need_distb_flag=full_page;
             mask=~(0xffffffff<<(ssd->parameter->subpage_page));
             state=mask;
@@ -1299,7 +1300,7 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"---------------------------Space utilization rate---------------------------\n");
     fprintf(ssd->statisticfile,"free invalid pagenums: %d\n",ssd->free_invalid);
     fprintf(ssd->statisticfile,"---------------------------WA---------------------------\n");
-    fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)((ssd->real_written + ssd->free_invalid)*ssd->parameter->subpage_page + ssd->dram->buffer->buffer_sector_count)/ssd->total_write);
+    fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)((ssd->real_written + ssd->free_invalid + avlTreeCount(ssd->dram->buffer))*ssd->parameter->subpage_page )/ssd->total_write);
     fprintf(ssd->statisticfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->statisticfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->statisticfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);

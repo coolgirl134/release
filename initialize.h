@@ -129,8 +129,8 @@ typedef int Status;
 #define HOTPROG 4
 #define COLD 2
 
-#define P_LC 0
-#define P_MT 1
+#define R_LC 0
+#define R_MT 1
 
 #define BITS_PER_CELL 4
 
@@ -469,7 +469,7 @@ struct sub_request{
     unsigned int state;              //使用state的最高位表示该子请求�??否是一对�?�映射关系中的一�??，是的话，需要�?�到buffer�??�??1表示�??一对�?�，0表示不用写到buffer
     //读�?�求不需要这�??成员，lsn加size就可以分辨出该页的状�??;但是写�?�求需要这�??成员，大部分写子请求来自于buffer写回操作，可能有类似子页不连�??的情况，所以需要单�??维持该成�??
 
-    int bit_type;                   //记录该子请求存储应当存储的bit类型，P_LC或者P_MT
+    int bit_type;                   //记录该子请求存储应当存储的bit类型，R_LC或者R_MT
 
     int64_t begin_time;               //子�?�求开始时�??
     int64_t complete_time;            //记录该子请求的�?�理时间,既真正写入或者�?�出数据的时�??
