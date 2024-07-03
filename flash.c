@@ -4455,11 +4455,6 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
         }
         
     }
-    if(ssd->channel_head[location->channel].next_state_predict_time!=0 && ssd->current_time > ssd->channel_head[location->channel].next_state_predict_time && ssd->current_time - ssd->channel_head[location->channel].next_state_predict_time > 10000000){
-        if(sub1->begin_time != sub1->req_begin_time){
-        printf("error %llu\n",ssd->current_time - ssd->channel_head[location->channel].next_state_predict_time);
-        }
-    }
 
  
     
