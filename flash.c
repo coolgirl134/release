@@ -2139,7 +2139,7 @@ void process_invalid(struct ssd_info* ssd,int plane){
     int page = cell*BITS_PER_CELL;
     make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,block,page);
     make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,block,page + 1);
-
+    ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].free_page-=2;
     free(loc);
     loc = NULL;
 }
@@ -2179,7 +2179,8 @@ int get_plane_new(struct ssd_info* ssd,unsigned int channel,unsigned int chip_to
                 if(bitmap_table[find_plane] != FULL || bitmap_table[find_plane]!=LC_FULL){
                     process_invalid(ssd,find_plane);
                     return find_plane;
-                }  
+                }
+                find_plane = (find_plane + 1)% plane_chip + start; 
             }
         }
     }  
@@ -4449,12 +4450,6 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
     unsigned long long old_channle_time = ssd->channel_head[location->channel].next_state_predict_time;
     unsigned long long chip_current_time = old_chip_time;
     unsigned long long channel_current_time = old_channle_time;
-    if(ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time!=0&& ssd->current_time > ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time && ssd->current_time - ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time>10000000){
-        if(sub1->begin_time != sub1->req_begin_time){
-            printf("error %llu\n",ssd->current_time - ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time);
-        }
-        
-    }
 
  
     
@@ -4615,10 +4610,6 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                 }
             default :  return ERROR;
 
-        }
-        if(old_chip_time!=0 && (old_chip_time > sub1->req_begin_time) && ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time > 5700000){
-            printf("error here %u\n",ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->current_time);
-            printf("%u \n",sub1->current_time+7*ssd->parameter->time_characteristics.tWC+(4*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tWC + prog_time - old_chip_time);
         }
         
         

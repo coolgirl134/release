@@ -570,8 +570,11 @@ Status find_open_block_for_2_write(struct ssd_info *ssd,unsigned int channel,uns
         }else{
             ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_MT-=2;
         }
-        if(type == LSB_PAGE && ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_LC == 0){
+        if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_LC == 0){
             bitmap_table[index] = LC_FULL;
+        }
+        if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page == 0){
+            bitmap_table[index] = FULL;
         }
         ssd->real_written+=2;
         return type;
@@ -770,6 +773,9 @@ struct ssd_info *get_ppn_for_2_write(struct ssd_info *ssd,unsigned int channel,u
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page-=2;
     if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page == 0){
         printf("\nchannel %d chip %d die %d plane %d free page is %d\n",channel,chip,die,plane,ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page);
+        int index = get_index_by_loc(ssd,channel,chip,die,plane);
+        bitmap_table[index] = FULL;
+        
     }
     ssd->write_flash_count+=2;
 
