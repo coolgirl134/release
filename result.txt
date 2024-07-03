@@ -1,0 +1,1395 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.1  0.0 173592 14312 ?        Ss   3月18 245:36 /lib/systemd/systemd --system --deserialize 17
+root           2  0.0  0.0      0     0 ?        S    3月18   0:34 [kthreadd]
+root           3  0.0  0.0      0     0 ?        I<   3月18   0:00 [rcu_gp]
+root           4  0.0  0.0      0     0 ?        I<   3月18   0:00 [rcu_par_gp]
+root           5  0.0  0.0      0     0 ?        I<   3月18   0:00 [slub_flushwq]
+root           6  0.0  0.0      0     0 ?        I<   3月18   0:00 [netns]
+root           8  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/0:0H-events_highpri]
+root          11  0.0  0.0      0     0 ?        I<   3月18   0:00 [mm_percpu_wq]
+root          12  0.0  0.0      0     0 ?        S    3月18   0:00 [rcu_tasks_rude_]
+root          13  0.0  0.0      0     0 ?        S    3月18   0:00 [rcu_tasks_trace]
+root          14  0.0  0.0      0     0 ?        S    3月18   5:16 [ksoftirqd/0]
+root          15  0.0  0.0      0     0 ?        I    3月18 117:00 [rcu_sched]
+root          16  0.0  0.0      0     0 ?        S    3月18   1:37 [migration/0]
+root          17  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/0]
+root          19  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/0]
+root          20  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/1]
+root          21  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/1]
+root          22  0.0  0.0      0     0 ?        S    3月18   1:43 [migration/1]
+root          23  0.0  0.0      0     0 ?        S    3月18   2:30 [ksoftirqd/1]
+root          25  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/1:0H-kblockd]
+root          26  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/2]
+root          27  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/2]
+root          28  0.0  0.0      0     0 ?        S    3月18   1:46 [migration/2]
+root          29  0.0  0.0      0     0 ?        S    3月18   2:12 [ksoftirqd/2]
+root          31  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/2:0H-kblockd]
+root          32  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/3]
+root          33  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/3]
+root          34  0.0  0.0      0     0 ?        S    3月18   1:39 [migration/3]
+root          35  0.0  0.0      0     0 ?        S    3月18   1:34 [ksoftirqd/3]
+root          37  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/3:0H-kblockd]
+root          38  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/4]
+root          39  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/4]
+root          40  0.0  0.0      0     0 ?        S    3月18   1:46 [migration/4]
+root          41  0.0  0.0      0     0 ?        S    3月18   1:55 [ksoftirqd/4]
+root          43  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/4:0H-events_highpri]
+root          44  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/5]
+root          45  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/5]
+root          46  0.0  0.0      0     0 ?        S    3月18   1:38 [migration/5]
+root          47  0.0  0.0      0     0 ?        S    3月18   1:39 [ksoftirqd/5]
+root          49  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/5:0H-kblockd]
+root          50  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/6]
+root          51  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/6]
+root          52  0.0  0.0      0     0 ?        S    3月18   1:36 [migration/6]
+root          53  0.0  0.0      0     0 ?        S    3月18   1:43 [ksoftirqd/6]
+root          55  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/6:0H-events_highpri]
+root          56  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/7]
+root          57  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/7]
+root          58  0.0  0.0      0     0 ?        S    3月18   1:39 [migration/7]
+root          59  0.0  0.0      0     0 ?        S    3月18   1:28 [ksoftirqd/7]
+root          61  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/7:0H-events_highpri]
+root          62  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/8]
+root          63  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/8]
+root          64  0.0  0.0      0     0 ?        S    3月18   1:41 [migration/8]
+root          65  0.0  0.0      0     0 ?        S    3月18   1:28 [ksoftirqd/8]
+root          67  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/8:0H-events_highpri]
+root          68  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/9]
+root          69  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/9]
+root          70  0.0  0.0      0     0 ?        S    3月18   1:40 [migration/9]
+root          71  0.0  0.0      0     0 ?        S    3月18   1:42 [ksoftirqd/9]
+root          73  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/9:0H-events_highpri]
+root          74  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/10]
+root          75  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/10]
+root          76  0.0  0.0      0     0 ?        S    3月18   1:16 [migration/10]
+root          77  0.0  0.0      0     0 ?        S    3月18   1:29 [ksoftirqd/10]
+root          79  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/10:0H-events_highpri]
+root          81  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/11]
+root          82  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/11]
+root          83  0.0  0.0      0     0 ?        S    3月18   1:28 [migration/11]
+root          84  0.0  0.0      0     0 ?        S    3月18   1:37 [ksoftirqd/11]
+root          86  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/11:0H-events_highpri]
+root          87  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/12]
+root          88  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/12]
+root          89  0.0  0.0      0     0 ?        S    3月18   1:19 [migration/12]
+root          90  0.0  0.0      0     0 ?        S    3月18   1:23 [ksoftirqd/12]
+root          92  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/12:0H-events_highpri]
+root          93  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/13]
+root          94  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/13]
+root          95  0.0  0.0      0     0 ?        S    3月18   1:21 [migration/13]
+root          96  0.0  0.0      0     0 ?        S    3月18   1:46 [ksoftirqd/13]
+root          98  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/13:0H-events_highpri]
+root          99  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/14]
+root         100  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/14]
+root         101  0.0  0.0      0     0 ?        S    3月18   1:21 [migration/14]
+root         102  0.0  0.0      0     0 ?        S    3月18   1:33 [ksoftirqd/14]
+root         104  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/14:0H-events_highpri]
+root         105  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/15]
+root         106  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/15]
+root         107  0.0  0.0      0     0 ?        S    3月18   1:17 [migration/15]
+root         108  0.0  0.0      0     0 ?        S    3月18   1:22 [ksoftirqd/15]
+root         110  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/15:0H-events_highpri]
+root         111  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/16]
+root         112  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/16]
+root         113  0.0  0.0      0     0 ?        S    3月18   1:20 [migration/16]
+root         114  0.0  0.0      0     0 ?        S    3月18   1:22 [ksoftirqd/16]
+root         116  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/16:0H-events_highpri]
+root         117  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/17]
+root         118  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/17]
+root         119  0.0  0.0      0     0 ?        S    3月18   1:13 [migration/17]
+root         120  0.0  0.0      0     0 ?        S    3月18   1:22 [ksoftirqd/17]
+root         122  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/17:0H-events_highpri]
+root         123  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/18]
+root         124  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/18]
+root         125  0.0  0.0      0     0 ?        S    3月18   1:19 [migration/18]
+root         126  0.0  0.0      0     0 ?        S    3月18   1:25 [ksoftirqd/18]
+root         128  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/18:0H-events_highpri]
+root         129  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/19]
+root         130  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/19]
+root         131  0.0  0.0      0     0 ?        S    3月18   1:13 [migration/19]
+root         132  0.0  0.0      0     0 ?        S    3月18   1:20 [ksoftirqd/19]
+root         134  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/19:0H-events_highpri]
+root         135  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/20]
+root         136  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/20]
+root         137  0.0  0.0      0     0 ?        S    3月18   1:27 [migration/20]
+root         138  0.0  0.0      0     0 ?        S    3月18   1:27 [ksoftirqd/20]
+root         140  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/20:0H-events_highpri]
+root         141  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/21]
+root         142  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/21]
+root         143  0.0  0.0      0     0 ?        S    3月18   1:30 [migration/21]
+root         144  0.0  0.0      0     0 ?        S    3月18   1:36 [ksoftirqd/21]
+root         146  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/21:0H-kblockd]
+root         147  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/22]
+root         148  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/22]
+root         149  0.0  0.0      0     0 ?        S    3月18   1:38 [migration/22]
+root         150  0.0  0.0      0     0 ?        S    3月18   1:19 [ksoftirqd/22]
+root         152  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/22:0H-kblockd]
+root         153  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/23]
+root         154  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/23]
+root         155  0.0  0.0      0     0 ?        S    3月18   1:32 [migration/23]
+root         156  0.0  0.0      0     0 ?        S    3月18   1:17 [ksoftirqd/23]
+root         158  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/23:0H-events_highpri]
+root         159  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/24]
+root         160  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/24]
+root         161  0.0  0.0      0     0 ?        S    3月18   1:33 [migration/24]
+root         162  0.0  0.0      0     0 ?        S    3月18   1:18 [ksoftirqd/24]
+root         164  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/24:0H-events_highpri]
+root         165  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/25]
+root         166  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/25]
+root         167  0.0  0.0      0     0 ?        S    3月18   1:35 [migration/25]
+root         168  0.0  0.0      0     0 ?        S    3月18   1:10 [ksoftirqd/25]
+root         170  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/25:0H-events_highpri]
+root         171  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/26]
+root         172  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/26]
+root         173  0.0  0.0      0     0 ?        S    3月18   1:36 [migration/26]
+root         174  0.0  0.0      0     0 ?        S    3月18   1:29 [ksoftirqd/26]
+root         176  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/26:0H-events_highpri]
+root         177  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/27]
+root         178  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/27]
+root         179  0.0  0.0      0     0 ?        S    3月18   1:32 [migration/27]
+root         180  0.0  0.0      0     0 ?        S    3月18   1:11 [ksoftirqd/27]
+root         182  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/27:0H-events_highpri]
+root         183  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/28]
+root         184  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/28]
+root         185  0.0  0.0      0     0 ?        S    3月18   1:33 [migration/28]
+root         186  0.0  0.0      0     0 ?        S    3月18   1:10 [ksoftirqd/28]
+root         188  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/28:0H-events_highpri]
+root         189  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/29]
+root         190  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/29]
+root         191  0.0  0.0      0     0 ?        S    3月18   1:44 [migration/29]
+root         192  0.0  0.0      0     0 ?        S    3月18   1:09 [ksoftirqd/29]
+root         194  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/29:0H-events_highpri]
+root         195  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/30]
+root         196  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/30]
+root         197  0.0  0.0      0     0 ?        S    3月18   1:07 [migration/30]
+root         198  0.0  0.0      0     0 ?        S    3月18   1:28 [ksoftirqd/30]
+root         200  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/30:0H-events_highpri]
+root         201  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/31]
+root         202  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/31]
+root         203  0.0  0.0      0     0 ?        S    3月18   1:14 [migration/31]
+root         204  0.0  0.0      0     0 ?        S    3月18   1:10 [ksoftirqd/31]
+root         206  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/31:0H-events_highpri]
+root         207  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/32]
+root         208  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/32]
+root         209  0.0  0.0      0     0 ?        S    3月18   1:13 [migration/32]
+root         210  0.0  0.0      0     0 ?        S    3月18   1:11 [ksoftirqd/32]
+root         212  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/32:0H-events_highpri]
+root         213  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/33]
+root         214  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/33]
+root         215  0.0  0.0      0     0 ?        S    3月18   1:11 [migration/33]
+root         216  0.0  0.0      0     0 ?        S    3月18   1:09 [ksoftirqd/33]
+root         218  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/33:0H-events_highpri]
+root         219  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/34]
+root         220  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/34]
+root         221  0.0  0.0      0     0 ?        S    3月18   1:14 [migration/34]
+root         222  0.0  0.0      0     0 ?        S    3月18   1:10 [ksoftirqd/34]
+root         224  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/34:0H-events_highpri]
+root         225  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/35]
+root         226  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/35]
+root         227  0.0  0.0      0     0 ?        S    3月18   1:13 [migration/35]
+root         228  0.0  0.0      0     0 ?        S    3月18   1:08 [ksoftirqd/35]
+root         230  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/35:0H-events_highpri]
+root         231  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/36]
+root         232  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/36]
+root         233  0.0  0.0      0     0 ?        S    3月18   1:14 [migration/36]
+root         234  0.0  0.0      0     0 ?        S    3月18   1:07 [ksoftirqd/36]
+root         236  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/36:0H-events_highpri]
+root         237  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/37]
+root         238  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/37]
+root         239  0.0  0.0      0     0 ?        S    3月18   1:13 [migration/37]
+root         240  0.0  0.0      0     0 ?        S    3月18   1:07 [ksoftirqd/37]
+root         242  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/37:0H-events_highpri]
+root         243  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/38]
+root         244  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/38]
+root         245  0.0  0.0      0     0 ?        S    3月18   1:12 [migration/38]
+root         246  0.0  0.0      0     0 ?        S    3月18   1:07 [ksoftirqd/38]
+root         248  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/38:0H-events_highpri]
+root         249  0.0  0.0      0     0 ?        S    3月18   0:00 [cpuhp/39]
+root         250  0.0  0.0      0     0 ?        S    3月18   0:00 [idle_inject/39]
+root         251  0.0  0.0      0     0 ?        S    3月18   1:12 [migration/39]
+root         252  0.0  0.0      0     0 ?        S    3月18   1:08 [ksoftirqd/39]
+root         254  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/39:0H-events_highpri]
+root         255  0.0  0.0      0     0 ?        S    3月18   0:00 [kdevtmpfs]
+root         256  0.0  0.0      0     0 ?        I<   3月18   0:00 [inet_frag_wq]
+root         257  0.0  0.0      0     0 ?        S    3月18   0:00 [kauditd]
+root         261  0.0  0.0      0     0 ?        S    3月18   1:18 [khungtaskd]
+root         262  0.0  0.0      0     0 ?        S    3月18   0:01 [oom_reaper]
+root         263  0.0  0.0      0     0 ?        I<   3月18   0:00 [writeback]
+root         264  0.0  0.0      0     0 ?        S    3月18  66:23 [kcompactd0]
+root         265  0.0  0.0      0     0 ?        S    3月18  58:50 [kcompactd1]
+root         266  0.0  0.0      0     0 ?        SN   3月18   0:00 [ksmd]
+root         267  0.0  0.0      0     0 ?        SN   3月18   2:47 [khugepaged]
+root         314  0.0  0.0      0     0 ?        I<   3月18   0:00 [kintegrityd]
+root         315  0.0  0.0      0     0 ?        I<   3月18   0:00 [kblockd]
+root         316  0.0  0.0      0     0 ?        I<   3月18   0:00 [blkcg_punt_bio]
+root         317  0.0  0.0      0     0 ?        I<   3月18   0:00 [tpm_dev_wq]
+root         318  0.0  0.0      0     0 ?        I<   3月18   0:00 [ata_sff]
+root         319  0.0  0.0      0     0 ?        I<   3月18   0:00 [md]
+root         320  0.0  0.0      0     0 ?        I<   3月18   0:00 [edac-poller]
+root         321  0.0  0.0      0     0 ?        I<   3月18   0:00 [devfreq_wq]
+root         322  0.0  0.0      0     0 ?        S    3月18   0:00 [watchdogd]
+root         324  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/0:1H-kblockd]
+root         327  0.0  0.0      0     0 ?        S    3月18  27:12 [kswapd0]
+root         328  0.0  0.0      0     0 ?        S    3月18  28:00 [kswapd1]
+root         329  0.0  0.0      0     0 ?        S    3月18   0:00 [ecryptfs-kthrea]
+root         331  0.0  0.0      0     0 ?        I<   3月18   0:00 [kthrotld]
+root         332  0.0  0.0      0     0 ?        I<   3月18   0:00 [acpi_thermal_pm]
+root         335  0.0  0.0      0     0 ?        I<   3月18   0:00 [vfio-irqfd-clea]
+root         371  0.0  0.0      0     0 ?        I<   3月18   0:00 [mld]
+root         372  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/10:1H-kblockd]
+root         373  0.0  0.0      0     0 ?        I<   3月18   0:00 [ipv6_addrconf]
+root         384  0.0  0.0      0     0 ?        I<   3月18   0:00 [kstrp]
+root         389  0.0  0.0      0     0 ?        I<   3月18   0:00 [zswap-shrink]
+root         427  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/u83:0]
+root         428  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/u84:0]
+root         429  0.0  0.0      0     0 ?        I<   3月18   0:00 [kworker/u85:0]
+root         436  0.0  0.0      0     0 ?        I<   3月18   0:00 [charger_manager]
+root         458  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/32:1H-kblockd]
+root         503  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/17:1H-kblockd]
+root         507  0.0  0.0      0     0 ?        I<   3月18   0:00 [nvme-wq]
+root         511  0.0  0.0      0     0 ?        I<   3月18   0:00 [nvme-reset-wq]
+root         512  0.0  0.0      0     0 ?        I<   3月18   0:00 [nvme-delete-wq]
+root         548  0.0  0.0      0     0 ?        I<   3月18   0:00 [ixgbe]
+root         567  0.0  0.0      0     0 ?        I<   3月18   0:07 [kworker/36:1H-kblockd]
+root         570  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_0]
+root         571  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_0]
+root         572  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_1]
+root         573  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_1]
+root         574  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_2]
+root         575  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_2]
+root         576  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_3]
+root         577  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_3]
+root         578  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_4]
+root         579  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_4]
+root         580  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_5]
+root         581  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_5]
+root         582  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_6]
+root         583  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_6]
+root         584  0.0  0.0      0     0 ?        S    3月18   0:00 [scsi_eh_7]
+root         585  0.0  0.0      0     0 ?        I<   3月18   0:00 [scsi_tmf_7]
+root         592  0.0  0.0      0     0 ?        I<   3月18   0:10 [kworker/1:1H-kblockd]
+root         593  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/21:1H-kblockd]
+root         594  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/22:1H-kblockd]
+root         595  0.0  0.0      0     0 ?        I<   3月18   0:12 [kworker/5:1H-kblockd]
+root         596  0.0  0.0      0     0 ?        I<   3月18   0:12 [kworker/2:1H-kblockd]
+root         597  0.0  0.0      0     0 ?        I<   3月18   0:13 [kworker/3:1H-kblockd]
+root         604  0.0  0.0      0     0 ?        I<   3月18   0:12 [kworker/28:1H-kblockd]
+root         605  0.0  0.0      0     0 ?        I<   3月18   0:07 [kworker/34:1H-kblockd]
+root         606  0.0  0.0      0     0 ?        I<   3月18   0:06 [kworker/39:1H-kblockd]
+root         607  0.0  0.0      0     0 ?        I<   3月18   0:10 [kworker/20:1H-kblockd]
+root         608  0.0  0.0      0     0 ?        I<   3月18   0:07 [kworker/37:1H-kblockd]
+root         609  0.0  0.0      0     0 ?        I<   3月18   0:07 [kworker/35:1H-kblockd]
+root         610  0.0  0.0      0     0 ?        I<   3月18   0:07 [kworker/27:1H-kblockd]
+root         630  0.0  0.0      0     0 ?        S    3月18   6:51 [jbd2/nvme0n1p2-]
+root         631  0.0  0.0      0     0 ?        I<   3月18   0:00 [ext4-rsv-conver]
+root         666  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/15:1H-kblockd]
+root         667  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/30:1H-kblockd]
+root         669  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/11:1H-kblockd]
+root         671  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/12:1H-kblockd]
+root         673  0.0  0.0      0     0 ?        I<   3月18   0:07 [kworker/33:1H-kblockd]
+root         675  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/16:1H-kblockd]
+root         681  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/14:1H-kblockd]
+root         684  0.0  0.0      0     0 ?        I<   3月18   0:11 [kworker/25:1H-kblockd]
+root         687  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/31:1H-kblockd]
+root         690  0.0  0.0      0     0 ?        I<   3月18   0:06 [kworker/38:1H-kblockd]
+root         693  0.0  0.0      0     0 ?        I<   3月18   0:15 [kworker/23:1H-kblockd]
+root         696  0.0  0.0      0     0 ?        I<   3月18   0:08 [kworker/19:1H-kblockd]
+root         699  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/26:1H-kblockd]
+root         710  0.0  0.0      0     0 ?        I<   3月18   0:06 [kworker/29:1H-kblockd]
+root         716  0.0  0.0      0     0 ?        I<   3月18   0:14 [kworker/9:1H-kblockd]
+root         723  0.0  0.0      0     0 ?        I<   3月18   0:06 [kworker/24:1H-kblockd]
+root         805  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/13:1H-kblockd]
+root         806  0.0  0.0      0     0 ?        I<   3月18   0:13 [kworker/4:1H-kblockd]
+root         831  0.0  0.0      0     0 ?        I<   3月18   0:09 [kworker/18:1H-kblockd]
+root         832  0.0  0.0      0     0 ?        I<   3月18   0:00 [ipmi-msghandler]
+root         836  0.0  0.0      0     0 ?        I<   3月18   0:12 [kworker/7:1H-kblockd]
+root         858  0.0  0.0      0     0 ?        I<   3月18   0:12 [kworker/8:1H-kblockd]
+root         912  0.0  0.0      0     0 ?        I<   3月18   0:00 [cryptd]
+root         954  0.0  0.0      0     0 ?        I<   3月18   0:12 [kworker/6:1H-kblockd]
+root        1057  0.0  0.0      0     0 ?        S    3月18   0:00 [jbd2/sde-8]
+root        1060  0.0  0.0      0     0 ?        I<   3月18   0:00 [ext4-rsv-conver]
+root        1079  0.0  0.0      0     0 ?        S    3月18   0:39 [jbd2/sdf-8]
+root        1081  0.0  0.0      0     0 ?        I<   3月18   0:00 [ext4-rsv-conver]
+root        1093  0.0  0.0      0     0 ?        S    3月18   7:51 [jbd2/sdc-8]
+root        1094  0.0  0.0      0     0 ?        I<   3月18   0:00 [ext4-rsv-conver]
+root        1095  0.0  0.0      0     0 ?        S    3月18   0:03 [jbd2/sdd-8]
+root        1096  0.0  0.0      0     0 ?        I<   3月18   0:00 [ext4-rsv-conver]
+root        1097  0.0  0.0      0     0 ?        S    3月18   0:00 [nv_queue]
+root        1098  0.0  0.0      0     0 ?        S    3月18   0:00 [nv_queue]
+root        1128  0.0  0.0      0     0 ?        I<   3月18   0:00 [nfit]
+root        1140  0.0  0.0      0     0 ?        S    3月18   0:00 [nvidia-modeset/]
+root        1141  0.0  0.0      0     0 ?        S    3月18   0:00 [nvidia-modeset/]
+root        1192  0.0  0.0      0     0 ?        SN   3月18   0:00 [kipmi0]
+root        1196  0.0  0.0      0     0 ?        S    3月18   0:00 [UVM global queu]
+root        1197  0.0  0.0      0     0 ?        S    3月18   0:00 [UVM deferred re]
+root        1198  0.0  0.0      0     0 ?        S    3月18   0:00 [UVM Tools Event]
+root        1230  0.0  0.0   2548   528 ?        Ss   3月18   0:00 /usr/sbin/acpid
+root        1237  0.0  0.0  18056  1216 ?        Ss   3月18   0:13 /usr/sbin/cron -f
+message+    1242  0.1  0.0  18256 10996 ?        Ss   3月18 191:19 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root        1251  0.0  0.0  82192  1784 ?        Ssl  3月18  61:00 /usr/sbin/irqbalance --foreground
+root        1255  0.0  0.0  48320  8692 ?        Ss   3月18   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root        1268  0.0  0.0 251616 15332 ?        Ssl  3月18  19:10 /usr/lib/policykit-1/polkitd --no-debug
+root        1286  0.0  0.0 244360   680 ?        Ssl  3月18   0:00 /usr/libexec/switcheroo-control
+root        1291  0.0  0.0  19444  5500 ?        Ss   3月18  19:27 /lib/systemd/systemd-logind
+root        1294  0.0  0.0 394436  8412 ?        Ssl  3月18 127:42 /usr/lib/udisks2/udisksd
+root        1295  0.0  0.0  13692  1988 ?        Ss   3月18   0:25 /sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+root        1330  0.0  0.0 315104  4940 ?        Ssl  3月18   0:01 /usr/sbin/ModemManager
+colord      1334  0.0  0.0 871752 13968 ?        Ssl  3月18   0:15 /usr/libexec/colord
+root        1407  0.0  0.0 323028  6524 ?        Ssl  3月18   0:00 /usr/sbin/gdm3
+root        1478  0.0  0.0 126780  8140 ?        Ssl  3月18   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+root        1479  0.0  0.0 175460  2624 ?        Sl   3月18   0:00 gdm-session-worker [pam/gdm-launch-environment]
+gdm         1524  0.1  0.0  20000  6112 ?        Ss   3月18 208:28 /lib/systemd/systemd --user
+gdm         1526  0.0  0.0 169616  3596 ?        S    3月18   0:00 (sd-pam)
+gdm         1550  0.0  0.0 890768  5144 ?        S<sl 3月18   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+gdm         1552  0.0  0.0 995348 14548 ?        SNsl 3月18   0:00 /usr/libexec/tracker-miner-fs
+gdm         1553  0.0  0.0 172656   648 tty1     Ssl+ 3月18   0:00 /usr/lib/gdm3/gdm-x-session dbus-run-session -- gnome-session --autostart /usr/share/gdm/greeter/autostart
+root        1555  0.0  0.0 27685524 90056 tty1   Sl+  3月18   2:17 /usr/lib/xorg/Xorg vt1 -displayfd 3 -auth /run/user/126/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+gdm         1558  0.0  0.0   7580  2228 ?        Ss   3月18   0:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+rtkit       1559  0.0  0.0 152936  1628 ?        SNsl 3月18   1:09 /usr/libexec/rtkit-daemon
+gdm         1574  0.0  0.0 248356  2004 ?        Ssl  3月18   0:00 /usr/libexec/gvfsd
+gdm         1579  0.0  0.0 312816   652 ?        Sl   3月18   0:00 /usr/libexec/gvfsd-fuse /run/user/126/gvfs -f -o big_writes
+gdm         1585  0.6  0.0 322804  6040 ?        Ssl  3月18 980:02 /usr/libexec/gvfs-udisks2-volume-monitor
+gdm         1592  0.0  0.0 244516  1480 ?        Ssl  3月18   0:00 /usr/libexec/gvfs-goa-volume-monitor
+gdm         1596  0.0  0.0 561932  8344 ?        Sl   3月18   0:04 /usr/libexec/goa-daemon
+gdm         1605  0.0  0.0 323396  2364 ?        Sl   3月18   3:57 /usr/libexec/goa-identity-service
+gdm         1615  0.0  0.0 246748  2988 ?        Ssl  3月18   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+gdm         1619  0.0  0.0 325364  3148 ?        Ssl  3月18   2:40 /usr/libexec/gvfs-afc-volume-monitor
+gdm         1624  0.0  0.0 244344  1484 ?        Ssl  3月18   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+root        1629  0.0  0.0 260876  2080 ?        Ssl  3月18   0:01 /usr/lib/upower/upowerd
+root        1651  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/188-nvidia]
+root        1652  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/189-nvidia]
+root        1653  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/190-nvidia]
+root        1654  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/191-nvidia]
+root        1655  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/192-nvidia]
+root        1656  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/193-nvidia]
+root        1657  0.0  0.0      0     0 ?        S    3月18   0:00 [nvidia]
+root        1658  0.0  0.0      0     0 ?        S    3月18   0:00 [nv_queue]
+root        1670  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/194-nvidia]
+root        1671  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/195-nvidia]
+root        1672  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/196-nvidia]
+root        1673  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/197-nvidia]
+root        1674  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/198-nvidia]
+root        1675  0.0  0.0      0     0 ?        S    3月18   0:00 [irq/199-nvidia]
+root        1676  0.0  0.0      0     0 ?        S    3月18   0:00 [nvidia]
+root        1677  0.0  0.0      0     0 ?        S    3月18   0:00 [nv_queue]
+gdm         1761  0.0  0.0   5296   176 tty1     S+   3月18   0:00 dbus-run-session -- gnome-session --autostart /usr/share/gdm/greeter/autostart
+gdm         1762  0.0  0.0   7688  2104 tty1     S+   3月18   0:00 dbus-daemon --nofork --print-address 4 --session
+gdm         1763  0.0  0.0 418748  2280 tty1     Sl+  3月18   0:01 /usr/libexec/gnome-session-binary --systemd --autostart /usr/share/gdm/greeter/autostart
+gdm         1766  0.0  0.0 305528  1940 tty1     Sl+  3月18   0:00 /usr/libexec/at-spi-bus-launcher
+gdm         1771  0.0  0.0   7248   336 tty1     S+   3月18   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+gdm         1859  0.1  0.0 6702592 156968 tty1   Sl+  3月18 203:42 /usr/bin/gnome-shell
+root        1909  2.0  0.0 949108 20320 ?        Ssl  3月18 3114:52 /opt/todesk/bin/ToDesk_Service
+kernoops    1912  0.0  0.0  11268   916 ?        Ss   3月18  16:00 /usr/sbin/kerneloops --test
+kernoops    1915  0.0  0.0  11268   940 ?        Ss   3月18  15:58 /usr/sbin/kerneloops
+gdm         2137  0.0  0.0 319728  3692 tty1     Sl   3月18   0:01 ibus-daemon --panel disable --xim
+gdm         2140  0.0  0.0 245164   640 tty1     Sl   3月18   0:00 /usr/libexec/ibus-dconf
+gdm         2142  0.0  0.0 196600  4064 tty1     Sl   3月18   0:00 /usr/libexec/ibus-x11 --kill-daemon
+gdm         2145  0.0  0.0 245144   456 tty1     Sl+  3月18   0:00 /usr/libexec/ibus-portal
+gdm         2156  0.0  0.0 162916   980 tty1     Sl+  3月18   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+gdm         2160  0.0  0.0 244236   432 tty1     Sl+  3月18   0:00 /usr/libexec/xdg-permission-store
+gdm         2173  0.0  0.0 2938828 12972 tty1    Sl+  3月18   0:05 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+gdm         2187  0.0  0.0 473416  5832 tty1     Sl+  3月18   4:31 /usr/libexec/gsd-sharing
+gdm         2189  0.0  0.0 343688  3068 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-wacom
+gdm         2190  0.0  0.0 776840 13804 tty1     Sl+  3月18   0:51 /usr/libexec/gsd-color
+gdm         2191  0.0  0.0 344188  2588 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-keyboard
+gdm         2194  0.0  0.0 171336  1144 tty1     Sl   3月18   0:00 /usr/libexec/ibus-engine-simple
+gdm         2196  0.0  0.0 257648  5528 tty1     Sl+  3月18   0:09 /usr/libexec/gsd-print-notifications
+gdm         2198  0.0  0.0 465740  2512 tty1     Sl+  3月18   0:01 /usr/libexec/gsd-rfkill
+gdm         2200  0.0  0.0 323800  1184 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-smartcard
+gdm         2202  0.0  0.0 382252  2288 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-datetime
+gdm         2209  0.0  0.0 900000  3820 tty1     Sl+  3月18   0:01 /usr/libexec/gsd-media-keys
+gdm         2212  0.0  0.0 244148   888 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-screensaver-proxy
+gdm         2213  0.0  0.0 327988  1480 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-sound
+gdm         2218  0.0  0.0 318296   552 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-a11y-settings
+gdm         2221  0.2  0.0 320600  4188 tty1     Sl+  3月18 417:01 /usr/libexec/gsd-housekeeping
+gdm         2224  0.0  0.0 418832  5756 tty1     Sl+  3月18   0:09 /usr/libexec/gsd-power
+gdm         2288  0.0  0.0 350824  2044 tty1     Sl+  3月18   0:00 /usr/libexec/gsd-printer
+gdm         2652  0.0  0.0 156240  1704 tty1     Sl+  3月18   0:00 /usr/libexec/dconf-service
+root        2848  0.0  0.0 323456  7604 ?        Sl   3月18   0:04 gdm-session-worker [pam/gdm-password]
+yunhao      2857  0.1  0.0  20288  6620 ?        Ss   3月18 227:27 /lib/systemd/systemd --user
+yunhao      2858  0.0  0.0 170036  3776 ?        S    3月18   0:00 (sd-pam)
+yunhao      2863  0.0  0.0 1680000 6740 ?        S<sl 3月18   1:22 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+yunhao      2865  0.0  0.0 929660 16328 ?        SNsl 3月18   3:24 /usr/libexec/tracker-miner-fs
+yunhao      2875  0.0  0.0   8700  3964 ?        Ss   3月18   1:28 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+yunhao      2877  0.0  0.0 248796  3012 ?        Sl   3月18   0:09 /usr/bin/gnome-keyring-daemon --daemonize --login
+yunhao      2894  0.0  0.0 248452  2964 ?        Ssl  3月18   0:14 /usr/libexec/gvfsd
+yunhao      2899  0.0  0.0 378352  2664 ?        Sl   3月18   0:00 /usr/libexec/gvfsd-fuse /run/user/1005/gvfs -f -o big_writes
+yunhao      2905  0.6  0.0 322808  5944 ?        Ssl  3月18 981:37 /usr/libexec/gvfs-udisks2-volume-monitor
+yunhao      2914  0.0  0.0 244648  2528 ?        Ssl  3月18   0:14 /usr/libexec/gvfs-goa-volume-monitor
+yunhao      2918  0.0  0.0 561932  8332 ?        Sl   3月18   0:04 /usr/libexec/goa-daemon
+yunhao      2926  0.0  0.0 323396  3988 ?        Sl   3月18   3:57 /usr/libexec/goa-identity-service
+yunhao      2932  0.0  0.0 246748  2788 ?        Ssl  3月18   0:14 /usr/libexec/gvfs-gphoto2-volume-monitor
+yunhao      2936  0.0  0.0 325492  3108 ?        Ssl  3月18   2:34 /usr/libexec/gvfs-afc-volume-monitor
+yunhao      2941  0.0  0.0 244472  2960 ?        Ssl  3月18   0:14 /usr/libexec/gvfs-mtp-volume-monitor
+yunhao      2956  0.0  0.0 172656  2316 tty2     Ssl+ 3月18   0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+root        2958  0.0  0.0 27760268 157336 tty2  Sl+  3月18   1:46 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1005/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+yunhao      3001  0.0  0.0 196872  1480 tty2     Sl+  3月18   0:00 /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+yunhao      3068  0.0  0.0   6040   448 ?        Ss   3月18   0:21 /usr/bin/ssh-agent /usr/bin/im-launch env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+yunhao      3085  0.0  0.0 305416   788 ?        Ssl  3月18   0:00 /usr/libexec/at-spi-bus-launcher
+yunhao      3090  0.0  0.0   7248   564 ?        S    3月18   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+yunhao      3164  0.0  0.0  98700   416 ?        Ssl  3月18   0:00 /usr/libexec/gnome-session-ctl --monitor
+yunhao      3173  0.0  0.0 419044  5016 ?        Ssl  3月18   0:01 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+yunhao      3187  0.0  0.1 6839716 374308 ?      Ssl  3月18  92:40 /usr/bin/gnome-shell
+yunhao      3243  0.0  0.0 319980  4072 ?        Sl   3月18   0:00 ibus-daemon --panel disable --xim
+yunhao      3247  0.0  0.0 245160  2268 ?        Sl   3月18   0:00 /usr/libexec/ibus-dconf
+yunhao      3248  0.0  0.0 284988 20288 ?        Sl   3月18   0:01 /usr/libexec/ibus-extension-gtk3
+yunhao      3250  0.0  0.0 207264 15244 ?        Sl   3月18   0:00 /usr/libexec/ibus-x11 --kill-daemon
+yunhao      3252  0.0  0.0 246068  5668 ?        Sl   3月18   0:08 /usr/libexec/ibus-portal
+yunhao      3265  0.0  0.0 162916   840 ?        Sl   3月18   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+yunhao      3269  0.0  0.0 244236  2244 ?        Ssl  3月18   0:00 /usr/libexec/xdg-permission-store
+yunhao      3274  0.0  0.0 581068  6936 ?        Sl   3月18   0:00 /usr/libexec/gnome-shell-calendar-server
+yunhao      3280  0.0  0.0 1078832 6776 ?        Ssl  3月18   0:00 /usr/libexec/evolution-source-registry
+yunhao      3289  0.0  0.0 1388156 8188 ?        Ssl  3月18   0:06 /usr/libexec/evolution-calendar-factory
+yunhao      3298  0.0  0.0 156212   944 ?        Sl   3月18   0:00 /usr/libexec/dconf-service
+yunhao      3304  0.0  0.0 894952  7108 ?        Ssl  3月18   0:05 /usr/libexec/evolution-addressbook-factory
+yunhao      3319  0.0  0.0 2938932 13500 ?       Sl   3月18   0:05 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+yunhao      3331  0.0  0.0 322724  5020 ?        Sl   3月18 120:00 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+yunhao      3345  0.0  0.0 318288  1692 ?        Ssl  3月18   0:00 /usr/libexec/gsd-a11y-settings
+yunhao      3346  0.0  0.0 513968 22684 ?        Ssl  3月18   0:50 /usr/libexec/gsd-color
+yunhao      3348  0.0  0.0 382244  3020 ?        Ssl  3月18   0:00 /usr/libexec/gsd-datetime
+yunhao      3350  0.2  0.0 320584  4564 ?        Ssl  3月18 415:43 /usr/libexec/gsd-housekeeping
+yunhao      3351  0.0  0.0 355228 19840 ?        Ssl  3月18   0:05 /usr/libexec/gsd-keyboard
+yunhao      3354  0.0  0.0 697480 17916 ?        Ssl  3月18   0:01 /usr/libexec/gsd-media-keys
+yunhao      3356  0.0  0.0 429408 17708 ?        Ssl  3月18   0:09 /usr/libexec/gsd-power
+yunhao      3358  0.0  0.0 257652  5552 ?        Ssl  3月18   0:09 /usr/libexec/gsd-print-notifications
+yunhao      3359  0.0  0.0 465740  2540 ?        Ssl  3月18   0:01 /usr/libexec/gsd-rfkill
+yunhao      3363  0.0  0.0 244148  1276 ?        Ssl  3月18   0:00 /usr/libexec/gsd-screensaver-proxy
+yunhao      3365  0.0  0.0 473412  5688 ?        Ssl  3月18   4:34 /usr/libexec/gsd-sharing
+yunhao      3367  0.0  0.0 323792  1480 ?        Ssl  3月18   0:00 /usr/libexec/gsd-smartcard
+yunhao      3368  0.0  0.0 327980  1952 ?        Ssl  3月18   0:00 /usr/libexec/gsd-sound
+yunhao      3371  0.0  0.0 393600  2940 ?        Ssl  3月18   0:00 /usr/libexec/gsd-usb-protection
+yunhao      3376  0.0  0.0 281016 15896 ?        Ssl  3月18   0:00 /usr/libexec/gsd-wacom
+yunhao      3378  0.0  0.0 322720  1404 ?        Ssl  3月18   0:00 /usr/libexec/gsd-wwan
+yunhao      3382  0.0  0.0 355256 17464 ?        Ssl  3月18   0:02 /usr/libexec/gsd-xsettings
+yunhao      3395  0.0  0.0 231808  4396 ?        Sl   3月18   0:29 /usr/libexec/gsd-disk-utility-notify
+yunhao      3408  0.0  0.0 655188 25088 ?        Sl   3月18   0:09 /usr/libexec/evolution-data-server/evolution-alarm-notify
+yunhao      3431  0.0  0.0 350824  3132 ?        Sl   3月18   0:00 /usr/libexec/gsd-printer
+yunhao      3453  0.0  0.0 171336   968 ?        Sl   3月18   0:00 /usr/libexec/ibus-engine-simple
+yunhao      3494  0.0  0.0 4160436 56348 ?       Ssl  3月18   0:55 /usr/libexec/gnome-initial-setup --existing-user
+yunhao      3510  0.0  0.0 170928  2692 ?        Ssl  3月18   0:14 /usr/libexec/gvfsd-metadata
+root        3575  0.0  0.0   2496    64 ?        S    3月18   0:00 bpfilter_umh
+yunhao      4096  0.0  0.0 975664 33304 ?        Ssl  3月18   0:01 /usr/libexec/gnome-terminal-server
+yunhao      4120  0.0  0.0  19648  3012 pts/0    Ss+  3月18   0:00 bash
+yunhao      5528  0.0  0.0 430120 22416 ?        Sl   3月18   2:23 update-notifier
+yunhao      5786  1.0  0.1 3850372 450360 ?      Sl   3月18 1570:50 /usr/lib/firefox/firefox -new-window
+yunhao      5862  0.0  0.0 208748  8512 ?        Sl   3月18   0:00 /usr/lib/firefox/firefox -contentproc -parentBuildID 20230912013654 -prefsLen 19869 -prefMapSize 229360 -appDir /usr/lib/firefox/browser {c1f1d227-e0bd-434d-bd58-cbce06625d84} 5786 true socket
+yunhao      5873  0.0  0.0 546132  7824 ?        Ssl  3月18   2:28 /usr/libexec/xdg-desktop-portal
+yunhao      5877  0.0  0.0 466164  3336 ?        Ssl  3月18   0:10 /usr/libexec/xdg-document-portal
+yunhao      5886  0.0  0.0 502376 20844 ?        Ssl  3月18   0:08 /usr/libexec/xdg-desktop-portal-gtk
+yunhao      5954  0.0  0.0 2470556 48136 ?       Sl   3月18   0:04 /usr/lib/firefox/firefox -contentproc -childID 1 -isForBrowser -prefsLen 21567 -prefMapSize 229360 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {44f10f15-8384-439d-a723-3810fd104567} 5786 true tab
+yunhao      5973  0.0  0.0 2499316 86860 ?       Sl   3月18   0:07 /usr/lib/firefox/firefox -contentproc -childID 2 -isForBrowser -prefsLen 22697 -prefMapSize 229360 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {a66f4dd6-0eb9-49c9-9c66-dad964bde94a} 5786 true tab
+yunhao      6007  0.0  0.0 2463736 51828 ?       Sl   3月18   0:04 /usr/lib/firefox/firefox -contentproc -childID 3 -isForBrowser -prefsLen 22310 -prefMapSize 229360 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {23bc282d-94a1-4df4-9930-e762cdf760c9} 5786 true tab
+yunhao      6078  0.0  0.0 2488044 74680 ?       Sl   3月18   0:04 /usr/lib/firefox/firefox -contentproc -childID 5 -isForBrowser -prefsLen 27743 -prefMapSize 229360 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {851b151b-2100-420f-848b-ab65bbcb1991} 5786 true tab
+xinyue     17486  0.0  0.0   3928  1988 pts/9    S+   5月05   2:56 /home/xinyue/Downloads/pycharm-community-2024.1.1/bin/fsnotifier
+xinyue     19594  0.0  0.0  19648  4160 pts/10   Ss+  5月05   0:00 bash
+chenjx    108517  1.4  0.1 1246196 453344 ?      Sl   3月30 1924:18 gnome-system-monitor
+qwe       416315  0.0  0.0 618824  8348 ?        Ssl  5月18   0:57 /usr/libexec/xdg-desktop-portal
+qwe       416321  0.0  0.0 539892  4872 ?        Ssl  5月18   0:00 /usr/libexec/xdg-document-portal
+qwe       416330  0.0  0.0 502368 26204 ?        Ssl  5月18   0:00 /usr/libexec/xdg-desktop-portal-gtk
+yunhao    417587  0.3  0.0 117500 50532 ?        S    5月18 222:21 python -u keepdrcom.py
+yunhao    417711  0.0  0.0  49468 24720 ?        S    5月18   0:03 /home/yunhao/anaconda3/envs/deepgcn/bin/python -u /home/yunhao/electricity/main.py
+chenjx    457179  0.0  0.0  19648  3060 pts/2    Ss+  4月07   0:00 bash
+shaoqi    644943  0.0  0.0   2616   596 ?        S    7月01   0:00 sh /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/bin/code-server --connection-token=remotessh --accept-server-license-terms --start-server --enable-remote-auto-shutdown --socket-path=/tmp/code-2b3507d1-39db-4a40-9224-14c99fb3d645
+shaoqi    644947  0.8  1.1 4175532 2942104 ?     Sl   7月01  17:06 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/server-main.js --connection-token=remotessh --accept-server-license-terms --start-server --enable-remote-auto-shutdown --socket-path=/tmp/code-2b3507d1-39db-4a40-9224-14c99fb3d645
+shaoqi    645022  3.9  0.0 1240848 42040 ?       Sl   7月01  84:30 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+shaoqi    645040  2.4  0.0 1626628 90008 ?       Sl   7月01  52:50 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=ptyHost --logsPath /home/shaoqi/.vscode-server/data/logs/20240701T090452
+shaoqi    645120  0.0  0.0   2624   540 pts/17   Ss   7月01   0:00 /bin/sh
+shaoqi    645387  0.0  0.0  15052  6340 pts/17   S    7月01   0:00 bash
+root      669697  0.0  0.0  14000  8456 ?        Ss   7月01   0:00 sshd: shaoqi [priv]
+shaoqi    669877  0.1  0.0  14136  5920 ?        S    7月01   2:18 sshd: shaoqi@notty
+shaoqi    669878  0.0  0.0   2616   536 ?        Ss   7月01   0:00 sh -c bash
+shaoqi    669879  0.0  0.0  12704  3536 ?        S    7月01   0:00 bash
+shaoqi    669898  0.2  0.0 111232  8424 ?        Sl   7月01   4:58 /home/shaoqi/.vscode-server/code-5437499feb04f7a586f677b155b039bc2b3669eb command-shell --cli-data-dir /home/shaoqi/.vscode-server/cli --parent-process-id 669879 --on-port --on-host=127.0.0.1
+shaoqi    669960  0.7  0.0 11897792 195716 ?     Sl   7月01  14:36 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node --dns-result-order=ipv4first /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+shaoqi    669972  0.0  0.0 1109232 40896 ?       Sl   7月01   0:05 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+shaoqi    670022  0.0  0.0   2624   604 pts/23   Ss   7月01   0:00 /bin/sh
+shaoqi    670028  0.0  0.0   2616   536 ?        S    7月01   0:00 /bin/sh
+shaoqi    670100  0.0  0.0 112096 25560 ?        Sl   7月01   0:15 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/bin/cpptools
+shaoqi    670143  0.0  0.0 994532 42204 ?        Sl   7月01   0:03 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=669960
+shaoqi    670215  0.0  0.0 4291388 20500 ?       Sl   7月01   0:06 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/bin/cpptools-srv 670100 {F2506A19-DB97-4573-9032-215F910CC288}
+shaoqi    670261  0.0  0.0  13956  4932 pts/23   S+   7月01   0:00 bash
+shaoqi    670587  0.0  0.0   2624   600 pts/24   Ss   7月01   0:00 /bin/sh
+shaoqi    671498  0.0  0.0  13956  5284 pts/24   S    7月01   0:00 bash
+www-data  689956  0.0  0.0 408360 73012 ?        S    6月19  16:18 apache2 -DFOREGROUND
+root      808765  0.0  0.0  23816  1976 ?        S    4月07   0:00 /usr/sbin/xrdp-sesman
+shaoqi    808767  0.1  0.0  20284  7360 ?        Ss   4月07 182:52 /lib/systemd/systemd --user
+shaoqi    808768  0.0  0.0 171460  5332 ?        S    4月07   0:00 (sd-pam)
+shaoqi    808773  0.0  0.0 1078332 5324 ?        Ssl  4月07   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+shaoqi    808775  0.0  0.0 1128240 21060 ?       SNsl 4月07   0:54 /usr/libexec/tracker-miner-fs
+shaoqi    808776  0.0  0.0 270860  4264 ?        Sl   4月07   0:00 /usr/libexec/gnome-session-binary --systemd
+shaoqi    808777  0.0  0.0 270816 64656 ?        Sl   4月07   1:13 /usr/lib/xorg/Xorg :12 -auth .Xauthority -config xrdp/xorg.conf -noreset -nolisten tcp -logfile .xorgxrdp.%s.log
+shaoqi    808782  0.0  0.0   8256  4252 ?        Ss   4月07   0:07 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+shaoqi    808797  0.0  0.0 248456  3996 ?        Ssl  4月07   0:01 /usr/libexec/gvfsd
+shaoqi    808802  0.0  0.0 378352  2340 ?        Sl   4月07   0:00 /usr/libexec/gvfsd-fuse /run/user/1010/gvfs -f -o big_writes
+shaoqi    808804  0.6  0.0 396636  7644 ?        Ssl  4月07 824:04 /usr/libexec/gvfs-udisks2-volume-monitor
+shaoqi    808816  0.0  0.0 244516  2460 ?        Ssl  4月07   0:00 /usr/libexec/gvfs-goa-volume-monitor
+shaoqi    808822  0.0  0.0 561932 10088 ?        Sl   4月07   0:04 /usr/libexec/goa-daemon
+shaoqi    808832  0.0  0.0 323396  4204 ?        Sl   4月07   3:23 /usr/libexec/goa-identity-service
+shaoqi    808837  0.0  0.0 246748  2384 ?        Ssl  4月07   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+shaoqi    808842  0.0  0.0 325364  4144 ?        Ssl  4月07   1:58 /usr/libexec/gvfs-afc-volume-monitor
+shaoqi    808847  0.0  0.0 100456  2912 ?        Sl   4月07   0:00 /usr/sbin/xrdp-chansrv
+shaoqi    808850  0.0  0.0 244344  2704 ?        Ssl  4月07   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+shaoqi    808905  0.0  0.0   6040   452 ?        Ss   4月07   0:17 /usr/bin/ssh-agent /usr/bin/im-launch x-session-manager
+shaoqi    808922  0.0  0.0 305416  2312 ?        Ssl  4月07   0:00 /usr/libexec/at-spi-bus-launcher
+shaoqi    808927  0.0  0.0   7248  1572 ?        S    4月07   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+shaoqi    809000  0.0  0.0  98700   880 ?        Ssl  4月07   0:00 /usr/libexec/gnome-session-ctl --monitor
+shaoqi    809009  0.0  0.0 419024  6060 ?        Ssl  4月07   0:01 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+shaoqi    809019  0.0  0.0 248844  4092 ?        SLl  4月07   0:00 /usr/bin/gnome-keyring-daemon --start --components=ssh
+shaoqi    809027  0.0  0.1 9809856 383000 ?      Ssl  4月07  72:31 /usr/bin/gnome-shell
+shaoqi    809096  0.0  0.0 393320  4080 ?        Sl   4月07   0:00 ibus-daemon --panel disable --xim
+shaoqi    809100  0.0  0.0 245160  2456 ?        Sl   4月07   0:00 /usr/libexec/ibus-dconf
+shaoqi    809101  0.0  0.0 280352 16672 ?        Sl   4月07   0:01 /usr/libexec/ibus-extension-gtk3
+shaoqi    809103  0.0  0.0 200668 10952 ?        Sl   4月07   0:00 /usr/libexec/ibus-x11 --kill-daemon
+shaoqi    809105  0.0  0.0 245144  3868 ?        Sl   4月07   0:00 /usr/libexec/ibus-portal
+shaoqi    809119  0.0  0.0 162916  2808 ?        Sl   4月07   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+shaoqi    809123  0.0  0.0 244236  2348 ?        Ssl  4月07   0:00 /usr/libexec/xdg-permission-store
+shaoqi    809128  0.0  0.0 581100  6704 ?        Sl   4月07   0:00 /usr/libexec/gnome-shell-calendar-server
+shaoqi    809134  0.0  0.0 1078836 8444 ?        Ssl  4月07   0:00 /usr/libexec/evolution-source-registry
+shaoqi    809143  0.0  0.0 1387996 9796 ?        Ssl  4月07   0:05 /usr/libexec/evolution-calendar-factory
+shaoqi    809153  0.0  0.0 156240  2480 ?        Sl   4月07   0:00 /usr/libexec/dconf-service
+shaoqi    809159  0.0  0.0 1026024 8460 ?        Ssl  4月07   0:04 /usr/libexec/evolution-addressbook-factory
+shaoqi    809178  0.0  0.0 2938932 13780 ?       Sl   4月07   0:04 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+shaoqi    809193  0.0  0.0 318288  2280 ?        Ssl  4月07   0:00 /usr/libexec/gsd-a11y-settings
+shaoqi    809194  0.0  0.0 571436 17876 ?        Ssl  4月07   0:40 /usr/libexec/gsd-color
+shaoqi    809195  0.0  0.0 382244  4556 ?        Ssl  4月07   0:00 /usr/libexec/gsd-datetime
+shaoqi    809198  0.2  0.0 320476  4856 ?        Ssl  4月07 356:42 /usr/libexec/gsd-housekeeping
+shaoqi    809202  0.0  0.0 348688 11192 ?        Ssl  4月07   0:00 /usr/libexec/gsd-keyboard
+shaoqi    809204  0.0  0.0 903828 13260 ?        Ssl  4月07   0:00 /usr/libexec/gsd-media-keys
+shaoqi    809205  0.0  0.0 422848 13684 ?        Ssl  4月07   0:08 /usr/libexec/gsd-power
+shaoqi    809208  0.0  0.0 257652  6704 ?        Ssl  4月07   0:07 /usr/libexec/gsd-print-notifications
+shaoqi    809209  0.0  0.0 465740  3516 ?        Ssl  4月07   0:01 /usr/libexec/gsd-rfkill
+shaoqi    809212  0.0  0.0 244148  2352 ?        Ssl  4月07   0:00 /usr/libexec/gsd-screensaver-proxy
+shaoqi    809214  0.0  0.0 473544  6936 ?        Ssl  4月07   4:04 /usr/libexec/gsd-sharing
+shaoqi    809215  0.0  0.0 323792  2692 ?        Ssl  4月07   0:00 /usr/libexec/gsd-smartcard
+shaoqi    809216  0.0  0.0 171336  2448 ?        Sl   4月07   0:00 /usr/libexec/ibus-engine-simple
+shaoqi    809218  0.0  0.0 327980  2868 ?        Ssl  4月07   0:00 /usr/libexec/gsd-sound
+shaoqi    809223  0.0  0.0 393600  2596 ?        Ssl  4月07   0:00 /usr/libexec/gsd-usb-protection
+shaoqi    809226  0.0  0.0 348188 11012 ?        Ssl  4月07   0:00 /usr/libexec/gsd-wacom
+shaoqi    809228  0.0  0.0 322720  2352 ?        Ssl  4月07   0:00 /usr/libexec/gsd-wwan
+shaoqi    809232  0.0  0.0 348660 13020 ?        Ssl  4月07   0:00 /usr/libexec/gsd-xsettings
+shaoqi    809246  0.0  0.0 231808  5036 ?        Sl   4月07   0:24 /usr/libexec/gsd-disk-utility-notify
+shaoqi    809266  0.0  0.0 725924 24988 ?        Sl   4月07   0:08 /usr/libexec/evolution-data-server/evolution-alarm-notify
+shaoqi    809338  0.0  0.0 350824  4712 ?        Sl   4月07   0:00 /usr/libexec/gsd-printer
+shaoqi    810054  0.0  0.0 871552 21408 ?        Sl   4月07   0:31 /usr/bin/gnome-calendar --gapplication-service
+shaoqi    810077  0.0  0.0 322724  5524 ?        Sl   4月07 106:58 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+shaoqi    810243  0.0  0.0 170892  2548 ?        Ssl  4月07   0:00 /usr/libexec/gvfsd-metadata
+shaoqi    810246  0.0  0.0 425128 14912 ?        Sl   4月07   2:03 update-notifier
+shaoqi    817786  0.0  0.0  43996  1268 ?        Ss   4月07   0:00 /usr/lib/bluetooth/obexd
+xinyue    827175  0.0  0.0  19648  4092 pts/13   Ss+  5月20   0:00 bash
+xinyue    827373  0.0  0.0 2415812 62872 pts/9   Sl   5月20   0:00 /usr/lib/firefox/firefox -contentproc -childID 47 -isForBrowser -prefsLen 29849 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {640a07e8-af61-4650-a336-b6d6e20d73d9} 2484329 true tab
+qwe       839482  0.0  0.0 1105248 158740 ?      SNl  5月20   0:05 /usr/bin/python3 /usr/bin/update-manager --no-update --no-focus-on-map
+yingping  861138  0.1  0.0  19756  9532 ?        Ss   7月01   2:02 /lib/systemd/systemd --user
+yingping  861139  0.0  0.0 174860  6868 ?        S    7月01   0:00 (sd-pam)
+yingping  861288  0.0  0.0   7252  3248 ?        Ss   7月01   0:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+yingping  871290  0.0  0.0   6048   460 ?        Ss   7月01   0:00 ssh-agent -s
+yingping  878183  0.0  0.0   6048  2736 ?        Ss   7月01   0:00 ssh-agent -s
+root      912488  0.0  0.0  32676  8692 ?        Ss   00:00   0:00 /usr/sbin/cupsd -l
+root      912490  0.0  0.0 178688 14032 ?        Ssl  00:00   0:00 /usr/sbin/cups-browsed
+lp        913028  0.0  0.0  15332  5448 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913029  0.0  0.0  15332  5496 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913030  0.0  0.0  15332  5436 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913031  0.0  0.0  15332  5432 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913032  0.0  0.0  15332  5464 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913033  0.0  0.0  15332  5400 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913034  0.0  0.0  15332  5428 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913035  0.0  0.0  15332  5400 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913036  0.0  0.0  15332  5428 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+lp        913037  0.0  0.0  15332  5580 ?        S    00:01   0:00 /usr/lib/cups/notifier/dbus dbus://
+shaoqi   1081161 99.2  3.8 10581436 10248572 pts/24 R 13:13 433:11 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1081167  0.5  1.1 4732268 2906564 ?     ts   13:13   2:12 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1083358 98.7  3.7 10283016 9943208 pts/24 R  13:20 423:45 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1083387  0.5  1.1 4732268 2906564 ?     ts   13:20   2:12 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1086046 99.5  3.7 10206468 9864740 pts/24 R  13:28 419:39 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1086053  0.1  0.5 3198428 1355356 ?     ts   13:28   0:34 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1086914 99.7  3.8 10435080 10098676 pts/24 R 13:31 417:33 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1086921  0.1  0.5 3198428 1355356 ?     ts   13:31   0:33 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1089751 99.5  3.8 10368956 10031328 pts/24 R 13:41 406:09 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1089763  0.1  0.5 3198428 1355360 ?     ts   13:41   0:33 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1103068 99.7  3.5 9712656 9359132 pts/24 R   14:38 350:04 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1103075  0.1  0.5 3198428 1355356 ?     ts   14:38   0:33 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1103795 98.5  3.4 9570196 9213092 pts/24 R   14:40 343:53 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1103802  0.1  0.5 3198428 1355360 ?     ts   14:40   0:33 /home/shaoqi/Documents/ssdsim/ssd
+root     1120433  0.0  0.0      0     0 ?        I    15:44   0:08 [kworker/2:2-events]
+root     1159952  0.0  0.0      0     0 ?        I    18:22   0:03 [kworker/17:0-events]
+root     1159992  0.0  0.0      0     0 ?        I    18:22   0:03 [kworker/4:1-events]
+root     1162031  0.0  0.0      0     0 ?        I    18:32   0:01 [kworker/26:0-events]
+root     1162194  0.0  0.0      0     0 ?        I    18:33   0:01 [kworker/24:0-mm_percpu_wq]
+root     1162339  0.0  0.0      0     0 ?        I    18:33   0:03 [kworker/6:2-events]
+root     1165591  0.0  0.0      0     0 ?        I    18:44   0:02 [kworker/3:2-events]
+shaoqi   1167076  0.2  0.0 3918460 82060 ?       Sl   18:48   0:17 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/debugAdapters/bin/OpenDebugAD7
+shaoqi   1167093  0.0  0.0   2624   604 pts/24   S+   18:48   0:00 /bin/sh /tmp/Microsoft-MIEngine-Cmd-ufxf242e.drg
+shaoqi   1167095  0.0  0.0  64928 47788 pts/24   S    18:48   0:00 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/24
+shaoqi   1167102  0.0  0.1 2113124 265320 ?      ts   18:48   0:00 /home/shaoqi/Documents/ssdsim/ssd
+shaoqi   1167686 11.1  0.0 1240816 50044 ?       Sl   18:50  11:04 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+shaoqi   1168960  0.0  0.0   2624   600 pts/30   Ss   18:54   0:00 /bin/sh
+shaoqi   1169788  0.0  0.0  13956  5548 pts/30   S    18:56   0:00 bash
+shaoqi   1169810  0.2  0.0 3984020 99716 ?       Sl   18:56   0:16 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/debugAdapters/bin/OpenDebugAD7
+shaoqi   1169831  0.0  0.0   2624   600 pts/30   S+   18:56   0:00 /bin/sh /tmp/Microsoft-MIEngine-Cmd-fczyldbh.qsi
+shaoqi   1169833  0.0  0.0  64932 47532 pts/30   S    18:56   0:00 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/30
+shaoqi   1169843  0.0  0.1 2113916 265908 ?      ts   18:56   0:04 /home/shaoqi/Documents/ssdsim/ssd
+root     1170407  0.0  0.0      0     0 ?        I    18:58   0:02 [kworker/12:1-events]
+shaoqi   1170975 12.1  0.0 1240848 50196 ?       Sl   19:00  10:52 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+root     1172281  0.0  0.0      0     0 ?        I    19:03   0:02 [kworker/11:0-rcu_gp]
+shaoqi   1172864  0.0  0.0  13956  5432 ?        S    19:06   0:00 bash
+shaoqi   1174777  0.0  0.0   2624   600 pts/34   Ss   19:11   0:00 /bin/sh
+root     1175361  0.0  0.0      0     0 ?        I    19:12   0:02 [kworker/35:2-rcu_par_gp]
+root     1175465  0.0  0.0      0     0 ?        I    19:12   0:02 [kworker/9:1-events]
+root     1176745  0.0  0.0      0     0 ?        I    19:15   0:01 [kworker/21:2-events]
+shaoqi   1176761  0.0  0.0  13956  5364 pts/34   S    19:15   0:00 bash
+shaoqi   1179401  0.3  0.0 4049616 92224 ?       Sl   19:23   0:13 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/debugAdapters/bin/OpenDebugAD7
+shaoqi   1179417  0.0  0.0   2624   536 pts/34   S+   19:23   0:00 /bin/sh /tmp/Microsoft-MIEngine-Cmd-uapr32fi.azf
+shaoqi   1179419  0.0  0.0  68276 50896 pts/34   S    19:23   0:00 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/34
+shaoqi   1179425 51.2 23.6 64025480 62311412 ?   Ss   19:23  33:45 /home/shaoqi/Documents/ssdsim/ssd
+root     1179642  0.0  0.0      0     0 ?        I    19:24   0:00 [kworker/25:1-events]
+root     1182781  0.0  0.0      0     0 ?        I    19:31   0:01 [kworker/34:0-rcu_par_gp]
+root     1183127  0.0  0.0      0     0 ?        I    19:32   0:01 [kworker/5:0-events]
+root     1184302  0.0  0.0      0     0 ?        I    19:34   0:01 [kworker/28:1-rcu_gp]
+root     1186112  0.0  0.0      0     0 ?        I    19:38   0:00 [kworker/u80:2-ext4-rsv-conversion]
+root     1186614  0.0  0.0      0     0 ?        I    19:39   0:00 [kworker/26:1-events]
+root     1187143  0.0  0.0      0     0 ?        I    19:40   0:01 [kworker/16:1-events]
+root     1187307  0.0  0.0      0     0 ?        I    19:40   0:00 [kworker/22:1-events]
+root     1187907  0.0  0.0      0     0 ?        I    19:42   0:01 [kworker/20:0-rcu_par_gp]
+root     1188289  0.0  0.0      0     0 ?        I    19:42   0:01 [kworker/7:1-events]
+root     1188618  0.0  0.0      0     0 ?        I    19:43   0:00 [kworker/37:1-rcu_gp]
+root     1188837  0.1  0.0      0     0 ?        I    19:43   0:02 [kworker/u81:2-events_unbound]
+root     1189473  0.0  0.0      0     0 ?        I    19:45   0:00 [kworker/2:1]
+root     1190209  0.0  0.0      0     0 ?        I    19:46   0:00 [kworker/13:2-rcu_par_gp]
+root     1190585  0.0  0.0      0     0 ?        I    19:47   0:00 [kworker/u80:0-ixgbe]
+root     1191121  0.0  0.0      0     0 ?        I    19:49   0:01 [kworker/29:0-events]
+root     1191769  0.0  0.0      0     0 ?        I    19:50   0:01 [kworker/14:1-events]
+root     1191942  0.0  0.0      0     0 ?        I    19:51   0:01 [kworker/0:0-rcu_par_gp]
+root     1192273  0.0  0.0      0     0 ?        I    19:51   0:00 [kworker/32:0-rcu_gp]
+root     1192861  0.0  0.0      0     0 ?        I    19:53   0:00 [kworker/27:0-events]
+root     1193038  0.0  0.0      0     0 ?        I    19:53   0:01 [kworker/1:1-events]
+root     1193487  0.5  0.0      0     0 ?        I    19:54   0:11 [kworker/u82:3-events_power_efficient]
+root     1193526  0.0  0.0      0     0 ?        I    19:54   0:00 [kworker/10:1-rcu_par_gp]
+root     1193606  0.0  0.0      0     0 ?        I    19:54   0:00 [kworker/8:0-events]
+root     1193780  0.0  0.0      0     0 ?        I    19:55   0:00 [kworker/30:1-events]
+root     1194026  0.0  0.0      0     0 ?        I    19:55   0:00 [kworker/39:0-events]
+root     1194656  0.0  0.0      0     0 ?        I    19:57   0:00 [kworker/31:1-events]
+root     1194815  0.0  0.0      0     0 ?        I    19:57   0:00 [kworker/33:0-events]
+root     1195073  0.0  0.0      0     0 ?        I    19:58   0:00 [kworker/36:1-rcu_par_gp]
+root     1195494  0.0  0.0      0     0 ?        I    19:59   0:00 [kworker/38:0-rcu_gp]
+root     1196607  0.0  0.0      0     0 ?        I    20:01   0:00 [kworker/32:1-rcu_par_gp]
+root     1197605  0.0  0.0      0     0 ?        I    20:03   0:00 [kworker/23:0-events]
+root     1198293  0.0  0.0      0     0 ?        I    20:05   0:00 [kworker/19:0-rcu_gp]
+root     1198663  0.0  0.0      0     0 ?        I    20:06   0:00 [kworker/18:1-events]
+root     1198809  0.0  0.0      0     0 ?        I    20:07   0:00 [kworker/34:1-rcu_par_gp]
+root     1199500  0.0  0.0      0     0 ?        I    20:10   0:00 [kworker/27:2-events]
+root     1199632  0.0  0.0      0     0 ?        I    20:11   0:00 [kworker/9:2-events]
+root     1199835  0.0  0.0      0     0 ?        I    20:12   0:00 [kworker/30:2-rcu_par_gp]
+root     1199968  0.0  0.0      0     0 ?        I    20:12   0:00 [kworker/28:0-rcu_par_gp]
+root     1200135  0.0  0.0      0     0 ?        I    20:13   0:00 [kworker/1:0-rcu_par_gp]
+root     1200169  0.1  0.0      0     0 ?        I    20:13   0:01 [kworker/0:2-events]
+root     1200237  0.0  0.0      0     0 ?        I    20:14   0:00 [kworker/36:0-events]
+root     1200291  0.0  0.0      0     0 ?        I    20:14   0:00 [kworker/u81:1-events_power_efficient]
+root     1200338  0.0  0.0      0     0 ?        I    20:14   0:00 [kworker/4:2-events]
+root     1200411  0.0  0.0      0     0 ?        I    20:15   0:00 [kworker/39:1-events]
+root     1200478  0.0  0.0      0     0 ?        I    20:15   0:00 [kworker/15:0-rcu_gp]
+root     1200510  0.0  0.0      0     0 ?        I    20:15   0:00 [kworker/31:0-rcu_par_gp]
+root     1200578  0.0  0.0      0     0 ?        I    20:15   0:00 [kworker/25:2]
+root     1200645  0.0  0.0      0     0 ?        I    20:16   0:00 [kworker/10:0-events]
+root     1200678  0.0  0.0      0     0 ?        I    20:16   0:00 [kworker/35:0-rcu_par_gp]
+root     1200713  0.0  0.0      0     0 ?        I    20:16   0:00 [kworker/5:2-rcu_par_gp]
+root     1200747  0.0  0.0      0     0 ?        I    20:16   0:00 [kworker/21:1]
+root     1200962  0.0  0.0      0     0 ?        I    20:17   0:00 [kworker/3:1]
+root     1201026  0.0  0.0      0     0 ?        I    20:18   0:00 [kworker/29:1-events]
+root     1201114  0.0  0.0      0     0 ?        I    20:18   0:00 [kworker/u82:1-events_unbound]
+root     1201130  0.0  0.0      0     0 ?        I    20:18   0:00 [kworker/13:1-events]
+root     1201195  0.0  0.0      0     0 ?        I    20:19   0:00 [kworker/12:0-events]
+root     1201333  0.0  0.0      0     0 ?        I    20:19   0:00 [kworker/7:2]
+shaoqi   1201617  1.0  0.0 1344316 110060 ?      Sl   20:20   0:06 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node --dns-result-order=ipv4first /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+root     1201727  0.0  0.0      0     0 ?        I    20:20   0:00 [kworker/11:1-events]
+shaoqi   1201746  0.0  0.0   2624   600 pts/35   Ss   20:20   0:00 /bin/sh
+shaoqi   1201766  0.0  0.0  14088  5760 pts/35   S+   20:20   0:00 bash
+shaoqi   1202000  1.8  0.0 22351156 153320 ?     Sl   20:20   0:09 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node --dns-result-order=ipv4first /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+shaoqi   1202011  3.3  0.0 1240304 51252 ?       Sl   20:20   0:18 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+root     1202176  0.0  0.0      0     0 ?        I    20:20   0:00 [kworker/22:0-rcu_par_gp]
+root     1202242  0.0  0.0      0     0 ?        I    20:21   0:00 [kworker/15:2-events]
+root     1202305  0.0  0.0      0     0 ?        I    20:21   0:00 [kworker/6:0-rcu_par_gp]
+root     1202431  0.0  0.0      0     0 ?        I    20:21   0:00 [kworker/33:2-rcu_par_gp]
+root     1202510  0.0  0.0      0     0 ?        I    20:21   0:00 [kworker/24:1-events]
+shaoqi   1202774  1.8  0.0 11902556 197900 ?     Sl   20:21   0:09 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node --dns-result-order=ipv4first /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+shaoqi   1202785  3.1  0.0 1240816 51860 ?       Sl   20:21   0:15 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+shaoqi   1202895  0.1  0.0 120304 40564 ?        Sl   20:21   0:00 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/bin/cpptools
+shaoqi   1202943  0.0  0.0 994532 47824 ?        Sl   20:21   0:00 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=1202774
+shaoqi   1203018  0.0  0.0 4291316 21292 ?       Sl   20:21   0:00 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/bin/cpptools-srv 1202895 {987B6DE6-9B5A-4D11-A94B-6ED3D7249C4A}
+shaoqi   1203095  0.6  0.0 3803804 77924 ?       Sl   20:21   0:02 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/debugAdapters/bin/OpenDebugAD7
+shaoqi   1203113  0.0  0.0   2624   536 pts/36   Ss   20:21   0:00 /bin/sh
+shaoqi   1203119  0.0  0.0   2624   600 pts/36   S+   20:21   0:00 /bin/sh /tmp/Microsoft-MIEngine-Cmd-4hkvhqzs.wq0
+shaoqi   1203121  0.0  0.0  64884 47988 pts/36   S    20:21   0:00 /usr/bin/gdb --interpreter=mi --tty=/dev/pts/36
+shaoqi   1203136 26.9  0.5 3171104 1326856 ?     Ss   20:21   2:08 /home/shaoqi/Documents/ssdsim/ssd
+root     1203194  0.0  0.0      0     0 ?        I    20:21   0:00 [kworker/8:2-events]
+root     1203310  0.0  0.0      0     0 ?        I    20:22   0:00 [kworker/37:0-events]
+root     1203461  0.0  0.0      0     0 ?        I    20:22   0:00 [kworker/19:1-events]
+root     1203513  0.0  0.0      0     0 ?        I    20:22   0:00 [kworker/18:2-events]
+root     1203608  0.0  0.0      0     0 ?        I    20:23   0:00 [kworker/16:2-events]
+root     1203680  0.0  0.0      0     0 ?        I    20:23   0:00 [kworker/14:2]
+root     1203772  0.0  0.0      0     0 ?        I    20:23   0:00 [kworker/38:1-rcu_par_gp]
+root     1203863  0.0  0.0      0     0 ?        I    20:23   0:00 [kworker/20:1-events]
+root     1203947  0.0  0.0      0     0 ?        I    20:23   0:00 [kworker/23:2]
+root     1204166  0.0  0.0      0     0 ?        I    20:24   0:00 [kworker/17:1-rcu_par_gp]
+root     1204216  0.0  0.0      0     0 ?        I    20:24   0:00 [kworker/13:0]
+root     1204269  0.0  0.0      0     0 ?        I    20:24   0:00 [kworker/28:2-events]
+root     1204347  0.0  0.0      0     0 ?        I    20:25   0:00 [kworker/u82:0-events_unbound]
+root     1204367  0.0  0.0      0     0 ?        I    20:25   0:00 [kworker/12:2-events]
+root     1204519  0.0  0.0      0     0 ?        I    20:25   0:00 [kworker/30:0-rcu_par_gp]
+root     1204649  0.0  0.0      0     0 ?        I    20:26   0:00 [kworker/34:2-events]
+root     1204832  0.0  0.0      0     0 ?        I    20:26   0:00 [kworker/22:2]
+root     1204918  0.0  0.0      0     0 ?        I    20:27   0:00 [kworker/29:2]
+root     1204963  0.0  0.0      0     0 ?        I    20:27   0:00 [kworker/31:2]
+root     1205132  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/1:2]
+root     1205164  0.0  0.0  13996  8984 ?        Ss   20:28   0:00 sshd: shaoqi [priv]
+root     1205179  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/32:2-events]
+shaoqi   1205250  0.1  0.0  14132  6060 ?        S    20:28   0:00 sshd: shaoqi@notty
+shaoqi   1205251  0.0  0.0   2616   592 ?        Ss   20:28   0:00 sh -c bash
+shaoqi   1205252  0.0  0.0  12704  3708 ?        S    20:28   0:00 bash
+shaoqi   1205271  0.6  0.0 111076 15664 ?        Sl   20:28   0:00 /home/shaoqi/.vscode-server/code-5437499feb04f7a586f677b155b039bc2b3669eb command-shell --cli-data-dir /home/shaoqi/.vscode-server/cli --parent-process-id 1205252 --on-port --on-host=127.0.0.1
+shaoqi   1205336  0.0  0.0  11156   580 ?        S    20:28   0:00 sleep 180
+shaoqi   1205337  6.2  0.0 11904316 194636 ?     Sl   20:28   0:05 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node --dns-result-order=ipv4first /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+shaoqi   1205348  0.2  0.0 1240304 50136 ?       Sl   20:28   0:00 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/out/bootstrap-fork --type=fileWatcher
+shaoqi   1205431  0.0  0.0   2616   600 ?        S    20:28   0:00 /bin/sh
+shaoqi   1205458  0.5  0.0 110848 24096 ?        Sl   20:28   0:00 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/bin/cpptools
+shaoqi   1205511  0.2  0.0 994788 47520 ?        Sl   20:28   0:00 /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/node /home/shaoqi/.vscode-server/cli/servers/Stable-5437499feb04f7a586f677b155b039bc2b3669eb/server/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=1205337
+shaoqi   1205573  0.3  0.0 4291316 21732 ?       Sl   20:28   0:00 /home/shaoqi/.vscode-server/extensions/ms-vscode.cpptools-1.20.5-linux-x64/bin/cpptools-srv 1205458 {14619B8D-2EE0-499F-B655-5F0F9D474D50}
+root     1205651  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/27:1]
+root     1205689  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/16:0-events]
+root     1205709  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/15:1-events]
+root     1205770  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/33:1]
+root     1205801  2.2  0.0 396648 34876 ?        Ssl  20:28   0:01 /usr/libexec/fwupd/fwupd
+root     1205813  0.0  0.0      0     0 ?        I    20:28   0:00 [kworker/35:1-events]
+shaoqi   1205863  0.0  0.0  11156   580 ?        S    20:29   0:00 sleep 180
+root     1206051  0.0  0.0      0     0 ?        I    20:29   0:00 [kworker/24:2]
+root     1206109  0.0  0.0      0     0 ?        I    20:29   0:00 [kworker/38:2-events]
+shaoqi   1206150  0.0  0.0  14568  3616 pts/17   R+   20:29   0:00 ps aux
+yongxin  1478992  0.1  0.0  20288 10000 ?        Ss   5月23  90:41 /lib/systemd/systemd --user
+yongxin  1478993  0.0  0.0 174520  8508 ?        S    5月23   0:00 (sd-pam)
+yongxin  1478999  0.0  0.0 1340364 11128 ?       Ssl  5月23   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+yongxin  1479001  0.0  0.0 929788 21840 ?        SNsl 5月23   0:00 /usr/libexec/tracker-miner-fs
+yongxin  1479012  0.0  0.0   8248  4600 ?        Ss   5月23   0:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+yongxin  1479028  0.0  0.0 248340  6612 ?        Ssl  5月23   0:00 /usr/libexec/gvfsd
+yongxin  1479033  0.0  0.0 382076  6916 ?        Sl   5月23   0:00 /usr/libexec/gvfsd-fuse /run/user/1008/gvfs -f -o big_writes
+yongxin  1479053  0.7  0.0 400040 10920 ?        Ssl  5月23 408:47 /usr/libexec/gvfs-udisks2-volume-monitor
+yongxin  1479088  0.0  0.0 244520  5216 ?        Ssl  5月23   0:00 /usr/libexec/gvfs-goa-volume-monitor
+yongxin  1479099  0.0  0.0 562072 24768 ?        Sl   5月23   0:03 /usr/libexec/goa-daemon
+yongxin  1479165  0.0  0.0 327296  9808 ?        Sl   5月23   2:05 /usr/libexec/goa-identity-service
+yongxin  1479171  0.0  0.0 246752  6408 ?        Ssl  5月23   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+yongxin  1479175  0.0  0.0 325368  7568 ?        Ssl  5月23   1:01 /usr/libexec/gvfs-afc-volume-monitor
+yongxin  1479180  0.0  0.0 244348  5212 ?        Ssl  5月23   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+yongxin  1479411  0.0  0.0 170964  5888 ?        Ssl  5月23   0:00 /usr/libexec/gvfsd-metadata
+root     1480231  0.0  0.0  23980  2824 ?        S    5月23   0:00 /usr/sbin/xrdp-sesman
+yongbiao 1480233  0.1  0.0  20296  9956 ?        Ss   5月23  90:31 /lib/systemd/systemd --user
+yongbiao 1480234  0.0  0.0 174520  8508 ?        S    5月23   0:00 (sd-pam)
+yongbiao 1480240  0.0  0.0 815968 10840 ?        Ssl  5月23   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+yongbiao 1480242  0.0  0.0 798736 21968 ?        SNsl 5月23   0:00 /usr/libexec/tracker-miner-fs
+yongbiao 1480249  0.0  0.0 273336 13108 ?        Sl   5月23   0:00 /usr/libexec/gnome-session-binary --systemd
+yongbiao 1480250  0.0  0.0 256504 78036 ?        Sl   5月23   0:22 /usr/lib/xorg/Xorg :10 -auth .Xauthority -config xrdp/xorg.conf -noreset -nolisten tcp -logfile .xorgxrdp.%s.log
+yongbiao 1480254  0.0  0.0   8332  4604 ?        Ss   5月23   0:03 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+yongbiao 1480258  0.0  0.0 248340  6680 ?        Ssl  5月23   0:00 /usr/libexec/gvfsd
+yongbiao 1480263  0.0  0.0 382076  6924 ?        Sl   5月23   0:00 /usr/libexec/gvfsd-fuse /run/user/1012/gvfs -f -o big_writes
+yongbiao 1480281  0.7  0.0 400056 10972 ?        Ssl  5月23 408:52 /usr/libexec/gvfs-udisks2-volume-monitor
+yongbiao 1480296  0.0  0.0 244520  5120 ?        Ssl  5月23   0:00 /usr/libexec/gvfs-goa-volume-monitor
+yongbiao 1480300  0.0  0.0 562076 24672 ?        Sl   5月23   0:03 /usr/libexec/goa-daemon
+yongbiao 1480308  0.0  0.0 327296 10132 ?        Sl   5月23   2:06 /usr/libexec/goa-identity-service
+yongbiao 1480313  0.0  0.0 246756  5488 ?        Ssl  5月23   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+yongbiao 1480317  0.0  0.0 325368  7508 ?        Ssl  5月23   0:56 /usr/libexec/gvfs-afc-volume-monitor
+yongbiao 1480322  0.0  0.0 244348  5192 ?        Ssl  5月23   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+yongbiao 1480329  0.0  0.0 100460  5116 ?        Sl   5月23   0:00 /usr/sbin/xrdp-chansrv
+yongbiao 1480382  0.0  0.0   6044   456 ?        Ss   5月23   0:07 /usr/bin/ssh-agent /usr/bin/im-launch x-session-manager
+yongbiao 1480398  0.0  0.0 309840  7964 ?        Ssl  5月23   0:00 /usr/libexec/at-spi-bus-launcher
+yongbiao 1480403  0.0  0.0   7248  3608 ?        S    5月23   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+yongbiao 1480478  0.0  0.0  98704  3188 ?        Ssl  5月23   0:00 /usr/libexec/gnome-session-ctl --monitor
+yongbiao 1480505  0.0  0.0 156360  5520 ?        Sl   5月23   0:00 /usr/libexec/dconf-service
+yongbiao 1480509  0.0  0.0 421448 14504 ?        Ssl  5月23   0:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+yongbiao 1480520  0.0  0.0 248680  6636 ?        Sl   5月23   0:00 /usr/bin/gnome-keyring-daemon --start --components=secrets
+yongbiao 1480529  0.0  0.1 6842564 419108 ?      Ssl  5月23  31:12 /usr/bin/gnome-shell
+yongbiao 1480589  0.0  0.0 170924  5900 ?        Ssl  5月23   0:00 /usr/libexec/gvfsd-metadata
+yongbiao 1480593  0.0  0.0 323472  8876 ?        Sl   5月23   0:00 ibus-daemon --panel disable --xim
+yongbiao 1480597  0.0  0.0 249020  7348 ?        Sl   5月23   0:00 /usr/libexec/ibus-dconf
+yongbiao 1480598  0.0  0.0 282052 27508 ?        Sl   5月23   0:01 /usr/libexec/ibus-extension-gtk3
+yongbiao 1480600  0.0  0.0 202460 21388 ?        Sl   5月23   0:00 /usr/libexec/ibus-x11 --kill-daemon
+yongbiao 1480602  0.0  0.0 248868  7696 ?        Sl   5月23   0:00 /usr/libexec/ibus-portal
+yongbiao 1480615  0.0  0.0 162920  5664 ?        Sl   5月23   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+yongbiao 1480619  0.0  0.0 244240  3832 ?        Ssl  5月23   0:00 /usr/libexec/xdg-permission-store
+yongbiao 1480624  0.0  0.0 581844 16388 ?        Sl   5月23   0:00 /usr/libexec/gnome-shell-calendar-server
+yongbiao 1480630  0.0  0.0 1079100 20332 ?       Ssl  5月23   0:00 /usr/libexec/evolution-source-registry
+yongbiao 1480639  0.0  0.0 847568 24940 ?        Ssl  5月23   0:03 /usr/libexec/evolution-calendar-factory
+yongbiao 1480652  0.0  0.0 682228 24844 ?        Ssl  5月23   0:03 /usr/libexec/evolution-addressbook-factory
+yongbiao 1480662  0.0  0.0 2939160 24176 ?       Sl   5月23   0:02 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+yongbiao 1480685  0.0  0.0 322636  7432 ?        Ssl  5月23   0:00 /usr/libexec/gsd-a11y-settings
+yongbiao 1480686  0.0  0.0 498860 23952 ?        Ssl  5月23   0:19 /usr/libexec/gsd-color
+yongbiao 1480687  0.0  0.0 383008 13860 ?        Ssl  5月23   0:00 /usr/libexec/gsd-datetime
+yongbiao 1480688  0.3  0.0 322960  8512 ?        Ssl  5月23 179:00 /usr/libexec/gsd-housekeeping
+yongbiao 1480690  0.0  0.0 350392 21892 ?        Ssl  5月23   0:00 /usr/libexec/gsd-keyboard
+yongbiao 1480693  0.0  0.0 766232 23528 ?        Ssl  5月23   0:00 /usr/libexec/gsd-media-keys
+yongbiao 1480696  0.0  0.0 424536 22700 ?        Ssl  5月23   0:03 /usr/libexec/gsd-power
+yongbiao 1480697  0.0  0.0 257664 10748 ?        Ssl  5月23   0:03 /usr/libexec/gsd-print-notifications
+yongbiao 1480701  0.0  0.0 465744  5456 ?        Ssl  5月23   0:00 /usr/libexec/gsd-rfkill
+yongbiao 1480703  0.0  0.0 244152  5780 ?        Ssl  5月23   0:00 /usr/libexec/gsd-screensaver-proxy
+yongbiao 1480704  0.0  0.0 477752 11976 ?        Ssl  5月23   1:00 /usr/libexec/gsd-sharing
+yongbiao 1480705  0.0  0.0 327084  8636 ?        Ssl  5月23   0:00 /usr/libexec/gsd-smartcard
+yongbiao 1480706  0.0  0.0 330504  8800 ?        Ssl  5月23   0:00 /usr/libexec/gsd-sound
+yongbiao 1480709  0.0  0.0 396608  7884 ?        Ssl  5月23   0:00 /usr/libexec/gsd-usb-protection
+yongbiao 1480713  0.0  0.0 349964 21324 ?        Ssl  5月23   0:00 /usr/libexec/gsd-wacom
+yongbiao 1480717  0.0  0.0 327064  7756 ?        Ssl  5月23   0:00 /usr/libexec/gsd-wwan
+yongbiao 1480724  0.0  0.0 351072 22724 ?        Ssl  5月23   0:00 /usr/libexec/gsd-xsettings
+yongbiao 1480738  0.0  0.0 231812  7416 ?        Sl   5月23   0:12 /usr/libexec/gsd-disk-utility-notify
+yongbiao 1480754  0.0  0.0 651808 45472 ?        Sl   5月23   0:03 /usr/libexec/evolution-data-server/evolution-alarm-notify
+yongbiao 1480782  0.0  0.0 175192  7480 ?        Sl   5月23   0:00 /usr/libexec/ibus-engine-simple
+yongbiao 1480788  0.0  0.0 350828 12948 ?        Sl   5月23   0:00 /usr/libexec/gsd-printer
+yongbiao 1480854  0.0  0.0 969468 258620 ?       Sl   5月23   3:21 /snap/snap-store/1113/usr/bin/snap-store --gapplication-service
+yongbiao 1480878  0.0  0.0 466176  6020 ?        Ssl  5月23   0:00 /usr/libexec/xdg-document-portal
+yongbiao 1480979  0.0  0.0 545172  9616 ?        Ssl  5月23   0:56 /usr/libexec/xdg-desktop-portal
+yongbiao 1480983  0.0  0.0 499168 22916 ?        Ssl  5月23   0:00 /usr/libexec/xdg-desktop-portal-gtk
+yongbiao 1480995  0.0  0.0 326316  9044 ?        Sl   5月23  51:04 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+yongbiao 1481251  0.0  0.0 428248 27968 ?        Sl   5月23   0:57 update-notifier
+root     1481855  0.0  0.0  23980  2828 ?        S    5月23   0:00 /usr/sbin/xrdp-sesman
+yongxin  1481856  0.0  0.0 273332 13016 ?        Sl   5月23   0:00 /usr/libexec/gnome-session-binary --systemd
+yongxin  1481857  0.0  0.0 262908 85192 ?        Sl   5月23   0:28 /usr/lib/xorg/Xorg :11 -auth .Xauthority -config xrdp/xorg.conf -noreset -nolisten tcp -logfile .xorgxrdp.%s.log
+yongxin  1481860  0.0  0.0 443520 26148 ?        Ssl  5月23   1:46 /usr/libexec/tracker-store
+yongxin  1481871  0.0  0.0 100460  5000 ?        Sl   5月23   0:00 /usr/sbin/xrdp-chansrv
+yongxin  1481920  0.0  0.0   6044   452 ?        Ss   5月23   0:08 /usr/bin/ssh-agent /usr/bin/im-launch x-session-manager
+yongxin  1481932  0.0  0.0 309836  7980 ?        Ssl  5月23   0:00 /usr/libexec/at-spi-bus-launcher
+yongxin  1481937  0.0  0.0   7248  3600 ?        S    5月23   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+yongxin  1482010  0.0  0.0  98704  3264 ?        Ssl  5月23   0:00 /usr/libexec/gnome-session-ctl --monitor
+yongxin  1482026  0.0  0.0 156244  5492 ?        Sl   5月23   0:00 /usr/libexec/dconf-service
+yongxin  1482030  0.0  0.0 421444 14436 ?        Ssl  5月23   0:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+yongxin  1482040  0.0  0.0 248840  6204 ?        SLl  5月23   0:00 /usr/bin/gnome-keyring-daemon --start --components=secrets
+yongxin  1482049  0.0  0.1 9596312 399004 ?      Ssl  5月23  33:32 /usr/bin/gnome-shell
+yongxin  1482105  0.0  0.0 323480  8836 ?        Sl   5月23   0:00 ibus-daemon --panel disable --xim
+yongxin  1482109  0.0  0.0 249016  7368 ?        Sl   5月23   0:00 /usr/libexec/ibus-dconf
+yongxin  1482110  0.0  0.0 282048 26844 ?        Sl   5月23   0:01 /usr/libexec/ibus-extension-gtk3
+yongxin  1482112  0.0  0.0 202432 21280 ?        Sl   5月23   0:00 /usr/libexec/ibus-x11 --kill-daemon
+yongxin  1482114  0.0  0.0 248868  7512 ?        Sl   5月23   0:00 /usr/libexec/ibus-portal
+yongxin  1482127  0.0  0.0 162920  5576 ?        Sl   5月23   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+yongxin  1482131  0.0  0.0 244240  3972 ?        Ssl  5月23   0:00 /usr/libexec/xdg-permission-store
+yongxin  1482136  0.0  0.0 581840 16764 ?        Sl   5月23   0:00 /usr/libexec/gnome-shell-calendar-server
+yongxin  1482142  0.0  0.0 1079108 20564 ?       Ssl  5月23   0:00 /usr/libexec/evolution-source-registry
+yongxin  1482151  0.0  0.0 847600 24964 ?        Ssl  5月23   0:04 /usr/libexec/evolution-calendar-factory
+yongxin  1482165  0.0  0.0 682224 24908 ?        Ssl  5月23   0:03 /usr/libexec/evolution-addressbook-factory
+yongxin  1482174  0.0  0.0 2939156 23700 ?       Sl   5月23   0:02 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+yongxin  1482194  0.0  0.0 322636  7576 ?        Ssl  5月23   0:00 /usr/libexec/gsd-a11y-settings
+yongxin  1482195  0.0  0.0 498808 24420 ?        Ssl  5月23   0:19 /usr/libexec/gsd-color
+yongxin  1482198  0.0  0.0 383004 14104 ?        Ssl  5月23   0:00 /usr/libexec/gsd-datetime
+yongxin  1482199  0.3  0.0 322956  8616 ?        Ssl  5月23 177:37 /usr/libexec/gsd-housekeeping
+yongxin  1482201  0.0  0.0 350396 21768 ?        Ssl  5月23   0:00 /usr/libexec/gsd-keyboard
+yongxin  1482203  0.0  0.0 905624 23804 ?        Ssl  5月23   0:00 /usr/libexec/gsd-media-keys
+yongxin  1482206  0.0  0.0 424464 22448 ?        Ssl  5月23   0:03 /usr/libexec/gsd-power
+yongxin  1482208  0.0  0.0 257660 10624 ?        Ssl  5月23   0:03 /usr/libexec/gsd-print-notifications
+yongxin  1482211  0.0  0.0 465744  5504 ?        Ssl  5月23   0:00 /usr/libexec/gsd-rfkill
+yongxin  1482212  0.0  0.0 244152  5576 ?        Ssl  5月23   0:00 /usr/libexec/gsd-screensaver-proxy
+yongxin  1482213  0.0  0.0 477748 12164 ?        Ssl  5月23   0:58 /usr/libexec/gsd-sharing
+yongxin  1482215  0.0  0.0 327084  8712 ?        Ssl  5月23   0:00 /usr/libexec/gsd-smartcard
+yongxin  1482217  0.0  0.0 330496  8856 ?        Ssl  5月23   0:00 /usr/libexec/gsd-sound
+yongxin  1482220  0.0  0.0 396528  7888 ?        Ssl  5月23   0:00 /usr/libexec/gsd-usb-protection
+yongxin  1482223  0.0  0.0 349964 21064 ?        Ssl  5月23   0:00 /usr/libexec/gsd-wacom
+yongxin  1482227  0.0  0.0 327056  7800 ?        Ssl  5月23   0:00 /usr/libexec/gsd-wwan
+yongxin  1482231  0.0  0.0 351084 22800 ?        Ssl  5月23   0:00 /usr/libexec/gsd-xsettings
+yongxin  1482242  0.0  0.0 231812  7376 ?        Sl   5月23   0:12 /usr/libexec/gsd-disk-utility-notify
+yongxin  1482259  0.0  0.0 725536 45496 ?        Sl   5月23   0:03 /usr/libexec/evolution-data-server/evolution-alarm-notify
+yongxin  1482273  0.0  0.0 175192  7420 ?        Sl   5月23   0:00 /usr/libexec/ibus-engine-simple
+yongxin  1482331  0.0  0.0 350828 12972 ?        Sl   5月23   0:00 /usr/libexec/gsd-printer
+yongxin  1482496  0.0  0.0 871076 40132 ?        Sl   5月23   0:15 /usr/bin/gnome-calendar --gapplication-service
+yongxin  1482501  0.0  0.0 821468 43472 ?        Ssl  5月23   0:00 /usr/libexec/gnome-terminal-server
+yongxin  1482521  0.0  0.0 326320  9088 ?        Sl   5月23  52:23 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+yongxin  1482632  0.0  0.0  19636  4412 pts/11   Ss+  5月23   0:00 bash
+yongxin  1482700  0.0  0.0 428284 28084 ?        Sl   5月23   1:01 update-notifier
+root     1803850  0.0  0.0      0     0 ?        I<   3月25   0:00 [dio/sdc]
+liaojing 1816370  0.1  0.0  20312  6824 ?        Ss   3月25 200:20 /lib/systemd/systemd --user
+liaojing 1816371  0.0  0.0 170252  4156 ?        S    3月25   0:00 (sd-pam)
+liaojing 1816378  0.0  0.0 893100 44740 ?        SNsl 3月25   0:00 /usr/libexec/tracker-miner-fs
+liaojing 1816391  0.0  0.0   8456  3248 ?        Ss   3月25   0:02 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+liaojing 1816420  0.0  0.0 248356  3968 ?        Ssl  3月25   0:00 /usr/libexec/gvfsd
+liaojing 1816425  0.0  0.0 378352   548 ?        Sl   3月25   0:00 /usr/libexec/gvfsd-fuse /run/user/1001/gvfs -f -o big_writes
+liaojing 1816434  0.6  0.0 322828  5948 ?        Ssl  3月25 927:56 /usr/libexec/gvfs-udisks2-volume-monitor
+liaojing 1816454  0.0  0.0 244516  1612 ?        Ssl  3月25   0:00 /usr/libexec/gvfs-goa-volume-monitor
+liaojing 1816459  0.0  0.0 561932  8212 ?        Sl   3月25   0:04 /usr/libexec/goa-daemon
+liaojing 1816502  0.0  0.0 323396  3204 ?        Sl   3月25   3:44 /usr/libexec/goa-identity-service
+liaojing 1816526  0.0  0.0 246748  1388 ?        Ssl  3月25   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+liaojing 1816551  0.0  0.0 325364  3176 ?        Ssl  3月25   2:10 /usr/libexec/gvfs-afc-volume-monitor
+liaojing 1816556  0.0  0.0 244344   596 ?        Ssl  3月25   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+root     1817454  0.0  0.0  51996  1692 ?        Ss   3月25   0:00 nginx: master process nginx
+www-data 1817455  0.0  0.0  52736  5312 ?        S    3月25  11:58 nginx: worker process
+www-data 1817456  0.0  0.0  52236  4904 ?        S    3月25   0:14 nginx: worker process
+www-data 1817457  0.0  0.0  52236  4052 ?        S    3月25   0:00 nginx: worker process
+www-data 1817458  0.0  0.0  52236  2392 ?        S    3月25   0:00 nginx: worker process
+www-data 1817459  0.0  0.0  52236  3468 ?        S    3月25   0:00 nginx: worker process
+www-data 1817460  0.0  0.0  52236  2140 ?        S    3月25   0:00 nginx: worker process
+www-data 1817461  0.0  0.0  52236  2092 ?        S    3月25   0:00 nginx: worker process
+www-data 1817462  0.0  0.0  52236  2020 ?        S    3月25   0:00 nginx: worker process
+www-data 1817463  0.0  0.0  52236  2280 ?        S    3月25   0:00 nginx: worker process
+www-data 1817464  0.0  0.0  52236  2268 ?        S    3月25   0:00 nginx: worker process
+www-data 1817465  0.0  0.0  52236  2120 ?        S    3月25   0:00 nginx: worker process
+www-data 1817466  0.0  0.0  52236  2136 ?        S    3月25   0:00 nginx: worker process
+www-data 1817467  0.0  0.0  52236  2388 ?        S    3月25   0:00 nginx: worker process
+www-data 1817468  0.0  0.0  52236  2400 ?        S    3月25   0:00 nginx: worker process
+www-data 1817469  0.0  0.0  52236  2212 ?        S    3月25   0:00 nginx: worker process
+www-data 1817470  0.0  0.0  52236  2184 ?        S    3月25   0:00 nginx: worker process
+www-data 1817471  0.0  0.0  52236  2276 ?        S    3月25   0:00 nginx: worker process
+www-data 1817472  0.0  0.0  52236  2444 ?        S    3月25   0:00 nginx: worker process
+www-data 1817473  0.0  0.0  52236  2384 ?        S    3月25   0:00 nginx: worker process
+www-data 1817474  0.0  0.0  52236  2380 ?        S    3月25   0:00 nginx: worker process
+www-data 1817475  0.0  0.0  52236  2408 ?        S    3月25   0:00 nginx: worker process
+www-data 1817476  0.0  0.0  52236  2268 ?        S    3月25   0:00 nginx: worker process
+www-data 1817477  0.0  0.0  52236  2268 ?        S    3月25   0:00 nginx: worker process
+www-data 1817478  0.0  0.0  52236  2192 ?        S    3月25   0:00 nginx: worker process
+www-data 1817479  0.0  0.0  52236  2388 ?        S    3月25   0:00 nginx: worker process
+www-data 1817480  0.0  0.0  52236  2224 ?        S    3月25   0:00 nginx: worker process
+www-data 1817481  0.0  0.0  52236  2144 ?        S    3月25   0:00 nginx: worker process
+www-data 1817482  0.0  0.0  52236  2236 ?        S    3月25   0:00 nginx: worker process
+www-data 1817483  0.0  0.0  52236  2340 ?        S    3月25   0:00 nginx: worker process
+www-data 1817484  0.0  0.0  52236  2216 ?        S    3月25   0:00 nginx: worker process
+www-data 1817485  0.0  0.0  52236  2188 ?        S    3月25   0:00 nginx: worker process
+www-data 1817486  0.0  0.0  52236  2188 ?        S    3月25   0:00 nginx: worker process
+www-data 1817487  0.0  0.0  52236  2328 ?        S    3月25   0:00 nginx: worker process
+www-data 1817488  0.0  0.0  52236  2388 ?        S    3月25   0:00 nginx: worker process
+www-data 1817489  0.0  0.0  52236  2340 ?        S    3月25   0:00 nginx: worker process
+www-data 1817490  0.0  0.0  52236  2396 ?        S    3月25   0:00 nginx: worker process
+www-data 1817491  0.0  0.0  52236  2340 ?        S    3月25   0:00 nginx: worker process
+www-data 1817492  0.0  0.0  52236  2264 ?        S    3月25   0:00 nginx: worker process
+www-data 1817493  0.0  0.0  52236  2260 ?        S    3月25   0:00 nginx: worker process
+www-data 1817494  0.0  0.0  52236  2352 ?        S    3月25   0:00 nginx: worker process
+systemd+ 1851598  0.0  0.0  90920  6532 ?        Ssl  5月25   0:04 /lib/systemd/systemd-timesyncd
+systemd+ 1851681  0.0  0.0  25092 12372 ?        Ss   5月25  19:38 /lib/systemd/systemd-resolved
+root     1851708  0.0  0.0 270088 149548 ?       S<s  5月25   7:37 /lib/systemd/systemd-journald
+chenjx   1855324  0.1  0.0  20328  6548 ?        Ss   3月25 200:32 /lib/systemd/systemd --user
+chenjx   1855325  0.0  0.0 170252  4156 ?        S    3月25   0:00 (sd-pam)
+chenjx   1855331  0.0  0.0 1942308 6656 ?        Ssl  3月25   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+chenjx   1855333  0.0  0.0 870964 20640 ?        SNsl 3月25   0:03 /usr/libexec/tracker-miner-fs
+chenjx   1855344  0.0  0.0   8704  3356 ?        Ss   3月25   0:05 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+chenjx   1855373  0.0  0.0 248472  1056 ?        Ssl  3月25   0:00 /usr/libexec/gvfsd
+chenjx   1855380  0.0  0.0 378352   748 ?        Sl   3月25   0:00 /usr/libexec/gvfsd-fuse /run/user/1004/gvfs -f -o big_writes
+chenjx   1855386  0.6  0.0 322808  6016 ?        Ssl  3月25 924:42 /usr/libexec/gvfs-udisks2-volume-monitor
+chenjx   1855406  0.0  0.0 244516  1904 ?        Ssl  3月25   0:00 /usr/libexec/gvfs-goa-volume-monitor
+chenjx   1855412  0.0  0.0 561932  7980 ?        Sl   3月25   0:04 /usr/libexec/goa-daemon
+chenjx   1855437  0.0  0.0 323396  2780 ?        Sl   3月25   3:50 /usr/libexec/goa-identity-service
+chenjx   1855460  0.0  0.0 246748   924 ?        Ssl  3月25   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+chenjx   1855484  0.0  0.0 325364  2696 ?        Ssl  3月25   2:24 /usr/libexec/gvfs-afc-volume-monitor
+chenjx   1855509  0.0  0.0 244344  2272 ?        Ssl  3月25   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+root     1865932  0.0  0.0  25160  7348 ?        Ss   5月25   0:04 /lib/systemd/systemd-udevd
+root     1866020  0.2  0.0 4683720 39492 ?       Ssl  5月25 135:15 /usr/bin/containerd
+uuidd    1866198  0.0  0.0  13672   744 ?        Ss   5月25   0:00 /usr/sbin/uuidd --socket-activation
+root     1866312  0.0  0.0 244244 10600 ?        Ssl  5月25   1:34 /usr/lib/accountsservice/accounts-daemon
+root     1866801  0.0  0.0  16024  3168 ?        S    5月25   0:00 /usr/sbin/xrdp-sesman
+xrdp     1866811  0.0  0.0  16140  2152 ?        S    5月25   0:00 /usr/sbin/xrdp
+root     1868543  0.0  0.0      0     0 ?        I<   5月25   0:00 [xfsalloc]
+root     1868544  0.0  0.0      0     0 ?        I<   5月25   0:00 [xfs_mru_cache]
+root     1868548  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsIO]
+root     1868549  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868550  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868551  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868552  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868553  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868554  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868555  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868556  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868557  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868558  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868559  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868560  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868561  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868562  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868563  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868564  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868565  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868566  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868567  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868568  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868569  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868570  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868571  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868572  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868573  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868574  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868575  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868576  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868577  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868578  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868579  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868580  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868581  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868582  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868583  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868584  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868585  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868586  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868587  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868588  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsCommit]
+root     1868589  0.0  0.0      0     0 ?        S    5月25   0:00 [jfsSync]
+root     1870852  0.2  0.0 5938308 105904 ?      Ssl  5月25 134:13 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+root     1871246  0.0  0.0 1236216 10476 ?       Sl   5月25   4:25 /usr/bin/containerd-shim-runc-v2 -namespace moby -id c984a44017474dc252e85d078404761390069e80450599deb338e1d4d1b17ec5 -address /run/containerd/containerd.sock
+liaojing 1871269  0.5  0.0 727872 18476 ?        Ssl  5月25 279:18 /opt/bitnami/node-exporter/bin/node_exporter --path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/rootfs
+root     1871301  0.0  0.0 2707056 4500 ?        Sl   5月25   9:21 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8017 -container-ip 10.135.123.3 -container-port 80
+root     1871322  0.0  0.0 1236472 11532 ?       Sl   5月25   4:31 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1c085067c3ca17ceee34f8ae5bfaf16ca8eba4d6bb0f59d9d7ec95c13e0a0d69 -address /run/containerd/containerd.sock
+liaojing 1871344  0.2  0.0 1495756 99040 ?       Ssl  5月25 121:23 /opt/bitnami/prometheus/bin/prometheus --config.file=/opt/bitnami/prometheus/conf/prometheus.yml --storage.tsdb.path=/opt/bitnami/prometheus/data --web.console.libraries=/opt/bitnami/prometheus/conf/console_libraries --web.console.templates=/opt/bitnami/prometheus/conf/consoles
+root     1871363  0.0  0.0 1598388 3388 ?        Sl   5月25   0:01 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 3000 -container-ip 10.11.12.5 -container-port 3000
+root     1871421  0.0  0.0 1236472 11008 ?       Sl   5月25   4:09 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 97198d776a48a738a94111c3a2c21cbaab0ad8341016491b29980de2b30cb8bd -address /run/containerd/containerd.sock
+root     1871448  0.0  0.0 1236536 10872 ?       Sl   5月25   4:25 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 5310862063ccd53d0c18ad3f8ed2ab37a1938ebfa5c74fb15bc2bee8a8d9d22f -address /run/containerd/containerd.sock
+systemd+ 1871471  0.0  0.0 6720444 137428 ?      Ssl  5月25  46:05 mysqld --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+systemd+ 1871486  0.1  0.0  55388  5828 ?        Ssl  5月25  56:21 redis-server *:6379
+root     1871498  0.0  0.0 1745852 4120 ?        Sl   5月25   0:01 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 7777 -container-ip 172.18.0.4 -container-port 80
+root     1871588  0.0  0.0 1236536 11760 ?       Sl   5月25   4:35 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1a458302d88fa818d363d6a1b42326b816a70af14828c272a2d6abb3e3e0b643 -address /run/containerd/containerd.sock
+root     1871609  0.0  0.0  20424  9952 ?        Ss   5月25   0:00 /usr/bin/python3 -u /sbin/my_init
+root     1871622  0.0  0.0 1236472 11020 ?       Sl   5月25   5:46 /usr/bin/containerd-shim-runc-v2 -namespace moby -id f55a845bbf89dd033892bd5e6509621a3a05bc835ba4e316903bb88804e21c82 -address /run/containerd/containerd.sock
+root     1871652  0.0  0.0 401324 42288 ?        Ss   5月25   1:40 apache2 -DFOREGROUND
+root     1871707  0.0  0.0 1236472 10204 ?       Sl   5月25   4:20 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1bdd1b7c886954ff206c3692479e7a1de5ae3fd666b8c01bc73cede4bf3dbc1c -address /run/containerd/containerd.sock
+root     1871744  0.0  0.0 1236728 12140 ?       Sl   5月25  38:47 /usr/bin/containerd-shim-runc-v2 -namespace moby -id bb48980a115873eeed0d4ff30e5a2e4d12d5f32c3be2050559f43bdda6972b47 -address /run/containerd/containerd.sock
+472      1871774  0.0  0.0 808516 77784 ?        Ssl  5月25  45:13 grafana-server --homepath=/usr/share/grafana --config=/etc/grafana/grafana.ini --packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins cfg:default.paths.provisioning=/etc/grafana/provisioning
+systemd+ 1871775  1.0  0.0 1943952 208052 ?      Ssl  5月25 580:47 mongod --replSet overleaf --bind_ip_all
+root     1872070  0.0  0.0 439076  6900 ?        S    5月25   0:12 /usr/sbin/syslog-ng --pidfile /var/run/syslog-ng.pid -F --no-caps
+www-data 1872192  0.0  0.0 408552 75572 ?        S    5月25  47:18 apache2 -DFOREGROUND
+www-data 1872193  0.0  0.0 408452 78724 ?        S    5月25  47:31 apache2 -DFOREGROUND
+www-data 1872194  0.0  0.0 408520 77296 ?        S    5月25  47:53 apache2 -DFOREGROUND
+www-data 1872195  0.0  0.0 455792 91456 ?        S    5月25  47:53 apache2 -DFOREGROUND
+www-data 1872196  0.0  0.0 408508 75152 ?        S    5月25  48:11 apache2 -DFOREGROUND
+www-data 1872306  0.0  0.0 408520 76808 ?        S    5月25  48:24 apache2 -DFOREGROUND
+www-data 1872332  0.0  0.0 408608 76308 ?        S    5月25  47:45 apache2 -DFOREGROUND
+root     1872403  0.0  0.0   2532  1068 ?        S    5月25   0:39 /usr/bin/runsvdir -P /etc/service
+root     1872404  0.0  0.0   2380   472 ?        Ss   5月25   0:00 runsv sshd
+root     1872405  0.0  0.0   2380   420 ?        Ss   5月25   0:00 runsv cron
+root     1872406  0.0  0.0   2380   412 ?        Ss   5月25   0:00 runsv real-time-sharelatex
+root     1872407  0.0  0.0   2380   420 ?        Ss   5月25   0:00 runsv project-history-sharelatex
+root     1872408  0.0  0.0   2380   416 ?        Ss   5月25   0:00 runsv spelling-sharelatex
+root     1872409  0.0  0.0   2380   412 ?        Ss   5月25   0:00 runsv history-v1-sharelatex
+root     1872410  0.0  0.0   2380   408 ?        Ss   5月25   0:00 runsv web-api-sharelatex
+root     1872411  0.0  0.0   2380   408 ?        Ss   5月25   0:00 runsv docstore-sharelatex
+root     1872412  0.0  0.0   2380   420 ?        Ss   5月25   0:00 runsv chat-sharelatex
+root     1872413  0.0  0.0   2380   416 ?        Ss   5月25   0:00 runsv filestore-sharelatex
+root     1872414  0.0  0.0   2380   476 ?        Ss   5月25   0:00 runsv nginx
+root     1872415  0.0  0.0   2380   468 ?        Ss   5月25   0:00 runsv web-sharelatex
+root     1872416  0.0  0.0   2380   472 ?        Ss   5月25   0:00 runsv clsi-sharelatex
+root     1872417  0.0  0.0   2380   424 ?        Ss   5月25   0:00 runsv notifications-sharelatex
+root     1872418  0.0  0.0   2380   412 ?        Ss   5月25   0:00 runsv document-updater-sharelatex
+root     1872419  0.0  0.0   2380   472 ?        Ss   5月25   0:00 runsv contacts-sharelatex
+www-data 1872420  0.1  0.0 11217416 71060 ?      Sl   5月25  89:46 /usr/bin/node /overleaf/services/spelling/app.js
+www-data 1872421  0.1  0.0 945164 74100 ?        Sl   5月25  93:26 /usr/bin/node /overleaf/services/clsi/app.js
+www-data 1872438  0.1  0.0 11460644 89896 ?      Sl   5月25 106:49 /usr/bin/node /overleaf/services/project-history/app.js
+www-data 1872439  0.1  0.0 750236 73660 ?        Sl   5月25  98:46 /usr/bin/node /overleaf/services/filestore/app.js
+www-data 1872440  0.1  0.0 883212 75560 ?        Sl   5月25  99:39 /usr/bin/node /overleaf/services/real-time/app.js
+www-data 1872441  0.1  0.0 926448 102932 ?       Sl   5月25 108:57 /usr/bin/node /overleaf/services/history-v1/app.js
+www-data 1872442  0.1  0.0 903512 84140 ?        Sl   5月25  99:12 /usr/bin/node /overleaf/services/notifications/app.js
+www-data 1872443  0.2  0.0 1029052 148604 ?      Sl   5月25 114:42 /usr/bin/node /overleaf/services/web/app.js
+root     1872444  0.0  0.0   8724  4628 ?        S    5月25   0:00 nginx: master process nginx
+www-data 1872445  0.1  0.0 11386084 79336 ?      Sl   5月25 106:06 /usr/bin/node /overleaf/services/contacts/app.js
+www-data 1872446  0.1  0.0 931916 93816 ?        Sl   5月25 103:44 /usr/bin/node /overleaf/services/docstore/app.js
+www-data 1872447  0.1  0.0 11392640 87816 ?      Sl   5月25  99:43 /usr/bin/node /overleaf/services/chat/app.js
+root     1872448  0.0  0.0   9728  2132 ?        S    5月25   0:09 /usr/sbin/cron -f
+www-data 1872449  0.2  0.0 1030076 148912 ?      Sl   5月25 122:15 /usr/bin/node /overleaf/services/web/app.js
+www-data 1872450  0.2  0.0 971448 83992 ?        Sl   5月25 145:56 /usr/bin/node /overleaf/services/document-updater/app.js
+www-data 1872527  0.0  0.0   9084  2496 ?        S    5月25   0:00 nginx: worker process
+www-data 1872528  0.0  0.0   9084  2496 ?        S    5月25   0:00 nginx: worker process
+www-data 1872529  0.0  0.0   9084  2496 ?        S    5月25   0:00 nginx: worker process
+www-data 1872530  0.0  0.0   9084  2496 ?        S    5月25   0:00 nginx: worker process
+zerotie+ 1872737  0.1  0.0 516912 18672 ?        Ssl  5月25  90:30 /usr/sbin/zerotier-one
+www-data 1873072  0.0  0.0 455796 89044 ?        S    5月25  47:42 apache2 -DFOREGROUND
+root     1874231  0.0  0.0 1087656 30032 ?       Ssl  5月25  29:28 /usr/sbin/NetworkManager --no-daemon
+root     1874713  0.0  0.0 3761324 31844 ?       Ssl  5月25  10:48 /usr/lib/snapd/snapd
+root     1875159  0.0  0.0  12196  6832 ?        Ss   5月25   1:41 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+avahi    1875298  0.0  0.0   9492  4592 ?        Ss   5月25  28:56 avahi-daemon: running [L6506.local]
+avahi    1875299  0.0  0.0   8348   340 ?        S    5月25   0:00 avahi-daemon: chroot helper
+syslog   1884107  0.0  0.0 224352  4672 ?        Ssl  5月25   1:44 /usr/sbin/rsyslogd -n -iNONE
+yunhao   2016595  0.0  0.0   2624  1112 ?        S    4月08   0:00 /bin/sh /home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/bin/remote-dev-server.sh run /home/yunhao/deepGCN
+yunhao   2022884  0.0  0.0 195260 22172 ?        S    4月08  99:02 /usr/bin/python3.8 /home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/plugins/python/helpers/pydev/pydevconsole.py --mode=client --host=127.0.0.1 --port=42445
+yunhao   2062515  0.0  0.0   2624  1168 ?        S    4月08   0:00 /bin/sh /home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/plugins/remote-dev-server/bin/launcher.sh pycharm.sh PY PYCHARM pycharm -Xmx2048m run /home/yunhao/deepGCN
+yunhao   2062706  1.1  1.3 24947776 3603896 ?    Sl   4月08 1393:01 /lib64/ld-linux-x86-64.so.2 --library-path /home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/plugins/remote-dev-server/selfcontained/lib /tmp/pid.2062515.temp.jbr/bin/java.bin -Djava.home=/tmp/pid.2062515.temp.jbr -classpath /home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/platform-loader.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/util-8.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/util.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/app-client.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/util_rt.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/product.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/opentelemetry.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/app.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/product-client.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/modules.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/lib-client.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/stats.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/jps-model.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/external-system-rt.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/rd.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/bouncy-castle.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/protobuf.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/intellij-test-discovery.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/intellij-coverage-agent-1.0.744.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/forms_rt.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/lib.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/externalProcess-rt.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/groovy.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/annotations.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/async-profiler.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/grpc.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/jsch-agent.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/junit4.jar:/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/trove.jar -XX:ErrorFile=/home/yunhao/java_error_in_pycharm_%p.log -XX:HeapDumpPath=/home/yunhao/java_error_in_pycharm_.hprof -Xms256m -Xmx2048m -XX:+HeapDumpOnOutOfMemoryError -XX:-OmitStackTraceInFastThrow -XX:+IgnoreUnrecognizedVMOptions -ea -Dsun.io.useCanonCaches=false -Dsun.java2d.metal=true -Djbr.catch.SIGABRT=true -Djdk.http.auth.tunneling.disabledSchemes="" -Djdk.attach.allowAttachSelf=true -Djdk.module.illegalAccess.silent=true -Dkotlinx.coroutines.debug=off -XX:CICompilerCount=2 -XX:ReservedCodeCacheSize=512m -XX:CompileCommand=exclude,com/intellij/openapi/vfs/impl/FilePartNodeRoot,trieDescend -XX:SoftRefLRUPolicyMSPerMB=50 -Dide.show.tips.on.startup.default.value=false -Dsun.tools.attach.tmp.only=true -Dawt.lock.fair=true -Djava.home=/tmp/pid.2062515.temp.jbr -Duser.home=/home/yunhao -Duser.name=yunhao -Djb.vmOptionsFile=/tmp/pid.2062515.temp.vmoptions -Didea.properties.file=/tmp/pid.2062515.temp.remote-dev.properties -Djava.system.class.loader=com.intellij.util.lang.PathClassLoader -Didea.vendor.name=JetBrains -Didea.paths.selector=PyCharm2024.1 -Djna.boot.library.path=/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/jna/amd64 -Dpty4j.preferred.native.folder=/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/lib/pty4j -Djna.nosys=true -Djna.noclasspath=true -Dintellij.platform.runtime.repository.path=/home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/modules/module-descriptors.jar -Didea.platform.prefix=Python -Dsplash=true -Daether.connector.resumeDownloads=false --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.ref=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED --add-opens=java.base/jdk.internal.vm=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/sun.nio.fs=ALL-UNNAMED --add-opens=java.base/sun.security.ssl=ALL-UNNAMED --add-opens=java.base/sun.security.util=ALL-UNNAMED --add-opens=java.base/sun.net.dns=ALL-UNNAMED --add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED --add-opens=java.desktop/java.awt=ALL-UNNAMED --add-opens=java.desktop/java.awt.dnd.peer=ALL-UNNAMED --add-opens=java.desktop/java.awt.event=ALL-UNNAMED --add-opens=java.desktop/java.awt.image=ALL-UNNAMED --add-opens=java.desktop/java.awt.peer=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED --add-opens=java.desktop/javax.swing=ALL-UNNAMED --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED --add-opens=java.desktop/javax.swing.text=ALL-UNNAMED --add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED --add-opens=java.desktop/sun.awt.datatransfer=ALL-UNNAMED --add-opens=java.desktop/sun.awt.image=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.desktop/sun.font=ALL-UNNAMED --add-opens=java.desktop/sun.java2d=ALL-UNNAMED --add-opens=java.desktop/sun.swing=ALL-UNNAMED --add-opens=java.desktop/com.sun.java.swing=ALL-UNNAMED --add-opens=jdk.attach/sun.tools.attach=ALL-UNNAMED --add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=jdk.jdi/com.sun.tools.jdi=ALL-UNNAMED com.intellij.idea.Main remoteDevHost /home/yunhao/deepGCN
+yunhao   2062902  0.0  0.0   4060  2108 ?        S    4月08   4:05 /home/yunhao/.cache/JetBrains/RemoteDev/dist/4e0ec52ff7f75_pycharm-professional-2024.1/bin/fsnotifier
+liaojing 2181828  0.0  0.0 170888  3896 ?        Ssl  4月16   0:00 /usr/libexec/gvfsd-metadata
+gdm      2181850  0.0  0.0 170888  3940 ?        Ssl  4月16   0:00 /usr/libexec/gvfsd-metadata
+root     2445037  0.0  0.0      0     0 ?        I<   3月27   0:00 [ib-comp-wq]
+root     2445038  0.0  0.0      0     0 ?        I<   3月27   0:00 [ib-comp-unb-wq]
+root     2445039  0.0  0.0      0     0 ?        I<   3月27   0:00 [ib_mcast]
+root     2445040  0.0  0.0      0     0 ?        I<   3月27   0:00 [ib_nl_sa_wq]
+root     2477629  0.0  0.0 1236472 11484 ?       Sl   6月24   0:59 /usr/bin/containerd-shim-runc-v2 -namespace moby -id a55c99f240fb6b171225ce471875cc5567762cedb6bec32a2df6d7c1c789e891 -address /run/containerd/containerd.sock
+root     2477652  0.0  0.0   4248  3132 pts/0    Ss+  6月24   0:00 bash
+root     2477702  0.0  0.0   4248  3116 pts/1    Ss+  6月24   0:00 /bin/bash
+root     2479409  0.0  0.0 324232  8968 ?        Sl   4月17   0:00 gdm-session-worker [pam/gdm-password]
+xinyue   2479423  0.1  0.0  20292  8480 ?        Ss   4月17 164:34 /lib/systemd/systemd --user
+xinyue   2479424  0.0  0.0 171576  5436 ?        S    4月17   0:00 (sd-pam)
+xinyue   2479430  1.7  0.0 3515140 13712 ?       S<sl 4月17 1975:04 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+xinyue   2479432  0.0  0.0 934124 24568 ?        SNsl 4月17   0:12 /usr/libexec/tracker-miner-fs
+xinyue   2479437  0.0  0.0 248952  5104 ?        Sl   4月17   0:01 /usr/bin/gnome-keyring-daemon --daemonize --login
+xinyue   2479439  0.0  0.0   8732  4700 ?        Ss   4月17   0:12 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+xinyue   2479455  0.0  0.0 248460  4972 ?        Ssl  4月17   0:00 /usr/libexec/gvfsd
+xinyue   2479460  0.0  0.0 378352  4240 ?        Sl   4月17   0:00 /usr/libexec/gvfsd-fuse /run/user/1006/gvfs -f -o big_writes
+xinyue   2479462  0.6  0.0 322824  7992 ?        Ssl  4月17 744:12 /usr/libexec/gvfs-udisks2-volume-monitor
+xinyue   2479474  0.0  0.0 244516  4028 ?        Ssl  4月17   0:00 /usr/libexec/gvfs-goa-volume-monitor
+xinyue   2479478  0.0  0.0 561936 15728 ?        Sl   4月17   0:03 /usr/libexec/goa-daemon
+xinyue   2479485  0.0  0.0 323396  5828 ?        Sl   4月17   3:08 /usr/libexec/goa-identity-service
+xinyue   2479490  0.0  0.0 246748  4540 ?        Ssl  4月17   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+xinyue   2479495  0.0  0.0 325364  5776 ?        Ssl  4月17   1:49 /usr/libexec/gvfs-afc-volume-monitor
+xinyue   2479500  0.0  0.0 244344  3408 ?        Ssl  4月17   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+xinyue   2479508  0.0  0.0 172656  4028 tty4     Ssl+ 4月17   0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+root     2479511  0.7  0.1 27914180 357020 tty4  Sl+  4月17 825:04 /usr/lib/xorg/Xorg vt4 -displayfd 3 -auth /run/user/1006/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+xinyue   2479558  0.0  0.0 170928  4300 ?        Ssl  4月17   0:00 /usr/libexec/gvfsd-metadata
+xinyue   2479568  0.0  0.0 196868  7960 tty4     Sl+  4月17   0:00 /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+xinyue   2479635  0.0  0.0   6040   452 ?        Ss   4月17   0:14 /usr/bin/ssh-agent /usr/bin/im-launch env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+xinyue   2479652  0.0  0.0 305420  4244 ?        Ssl  4月17   0:00 /usr/libexec/at-spi-bus-launcher
+xinyue   2479657  0.0  0.0   7380  2440 ?        S    4月17   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+xinyue   2479730  0.0  0.0  98700  1836 ?        Ssl  4月17   0:00 /usr/libexec/gnome-session-ctl --monitor
+xinyue   2479737  0.0  0.0 492768  9832 ?        Ssl  4月17   0:01 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+xinyue   2479751  0.1  0.2 7394016 610952 ?      Ssl  4月17 169:32 /usr/bin/gnome-shell
+xinyue   2479948  0.0  0.0 320496  7152 ?        Sl   4月17   0:30 ibus-daemon --panel disable --xim
+xinyue   2479952  0.0  0.0 245164  4672 ?        Sl   4月17   0:00 /usr/libexec/ibus-dconf
+xinyue   2479953  0.0  0.0 284996 26504 ?        Sl   4月17   0:07 /usr/libexec/ibus-extension-gtk3
+xinyue   2479955  0.0  0.0 207264 22412 ?        Sl   4月17   0:02 /usr/libexec/ibus-x11 --kill-daemon
+xinyue   2479957  0.0  0.0 245144  5116 ?        Sl   4月17   0:00 /usr/libexec/ibus-portal
+xinyue   2479970  0.0  0.0 162916  4716 ?        Sl   4月17   0:02 /usr/libexec/at-spi2-registryd --use-gnome-session
+xinyue   2479985  0.0  0.0 244236  3748 ?        Ssl  4月17   0:00 /usr/libexec/xdg-permission-store
+xinyue   2479990  0.0  0.0 581064 12928 ?        Sl   4月17   0:01 /usr/libexec/gnome-shell-calendar-server
+xinyue   2479996  0.0  0.0 1078840 16264 ?       Ssl  4月17   0:00 /usr/libexec/evolution-source-registry
+xinyue   2480006  0.0  0.0 1388128 20108 ?       Ssl  4月17   0:05 /usr/libexec/evolution-calendar-factory
+xinyue   2480011  0.0  0.0 156344  4044 ?        Sl   4月17   0:00 /usr/libexec/dconf-service
+xinyue   2480024  0.0  0.0 1026024 20388 ?       Ssl  4月17   0:04 /usr/libexec/evolution-addressbook-factory
+xinyue   2480045  0.0  0.0 2938932 21500 ?       Sl   4月17   0:04 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+xinyue   2480057  0.0  0.0 322728  6492 ?        Sl   4月17  94:54 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+xinyue   2480069  0.0  0.0 318292  4236 ?        Ssl  4月17   0:00 /usr/libexec/gsd-a11y-settings
+xinyue   2480070  0.0  0.0 513980 27544 ?        Ssl  4月17   0:36 /usr/libexec/gsd-color
+xinyue   2480071  0.0  0.0 382248  8968 ?        Ssl  4月17   0:00 /usr/libexec/gsd-datetime
+xinyue   2480072  0.2  0.0 320564  6256 ?        Ssl  4月17 322:09 /usr/libexec/gsd-housekeeping
+xinyue   2480073  0.0  0.0 355232 22536 ?        Ssl  4月17   0:00 /usr/libexec/gsd-keyboard
+xinyue   2480075  0.0  0.0 910404 24092 ?        Ssl  4月17   0:01 /usr/libexec/gsd-media-keys
+xinyue   2480077  0.0  0.0 429420 23592 ?        Ssl  4月17   0:07 /usr/libexec/gsd-power
+xinyue   2480080  0.0  0.0 257652  7856 ?        Ssl  4月17   0:06 /usr/libexec/gsd-print-notifications
+xinyue   2480083  0.0  0.0 465740  3716 ?        Ssl  4月17   0:00 /usr/libexec/gsd-rfkill
+xinyue   2480085  0.0  0.0 244148  4004 ?        Ssl  4月17   0:00 /usr/libexec/gsd-screensaver-proxy
+xinyue   2480087  0.0  0.0 473548  8036 ?        Ssl  4月17   3:39 /usr/libexec/gsd-sharing
+xinyue   2480090  0.0  0.0 323796  6976 ?        Ssl  4月17   0:00 /usr/libexec/gsd-smartcard
+xinyue   2480093  0.0  0.0 327984  5284 ?        Ssl  4月17   0:00 /usr/libexec/gsd-sound
+xinyue   2480096  0.0  0.0 393608  4604 ?        Ssl  4月17   0:00 /usr/libexec/gsd-usb-protection
+xinyue   2480097  0.0  0.0 354768 22140 ?        Ssl  4月17   0:00 /usr/libexec/gsd-wacom
+xinyue   2480100  0.0  0.0 322724  4280 ?        Ssl  4月17   0:00 /usr/libexec/gsd-wwan
+xinyue   2480103  0.0  0.0 355260 23336 ?        Ssl  4月17   0:03 /usr/libexec/gsd-xsettings
+xinyue   2480137  0.0  0.0 231808  6008 ?        Sl   4月17   0:21 /usr/libexec/gsd-disk-utility-notify
+xinyue   2480150  0.0  0.0 655260 39464 ?        Sl   4月17   0:06 /usr/libexec/evolution-data-server/evolution-alarm-notify
+xinyue   2480162  0.0  0.0 350824  8244 ?        Sl   4月17   0:00 /usr/libexec/gsd-printer
+xinyue   2480164  0.0  0.0 171472  5068 ?        Sl   4月17   0:08 /usr/libexec/ibus-engine-simple
+xinyue   2480307  0.0  0.0 1006520 60024 ?       Ssl  4月17   1:04 /usr/libexec/gnome-terminal-server
+xinyue   2480317  0.0  0.0  20144  4488 pts/9    Ss   4月17   0:00 bash
+xinyue   2480330  0.0  0.0 1117668 84736 ?       Sl   4月17   0:32 /usr/bin/nautilus --gapplication-service
+xinyue   2480452  0.0  0.0 955416 82572 ?        Sl   4月17   0:16 /usr/bin/gedit --gapplication-service
+xinyue   2480469  0.0  0.0 430116 27076 ?        Sl   4月17   1:40 update-notifier
+xinyue   2484324  0.0  0.0 288460  6140 ?        Sl   4月17   0:00 /usr/libexec/gvfsd-http --spawner :1.3 /org/gtk/gvfs/exec_spaw/1
+xinyue   2484329  4.4  0.2 4676620 657848 pts/9  Sl   4月17 4943:06 /usr/lib/firefox/firefox https://account.jetbrains.com/oauth/login?client_id=ide&scope=openid offline_access r_ide_auth&state=36d51de0-6083-4899-9f74-e3a825ea0e9a&code_challenge_method=S256&code_challenge=UsscqtosTVes9kDuKHiXZlf08DaswkrlySREB8LgoQY&redirect_uri=http://localhost:62345&request_credentials=required
+xinyue   2484397  0.0  0.0 618820  7592 ?        Ssl  4月17   1:33 /usr/libexec/xdg-desktop-portal
+xinyue   2484401  0.0  0.0 539892  3836 ?        Ssl  4月17   0:00 /usr/libexec/xdg-document-portal
+xinyue   2484410  0.0  0.0 502384 23692 ?        Ssl  4月17   0:04 /usr/libexec/xdg-desktop-portal-gtk
+xinyue   2484444  0.0  0.0 208756 25484 pts/9    Sl   4月17   0:00 /usr/lib/firefox/firefox -contentproc -parentBuildID 20230912013654 -prefsLen 29178 -prefMapSize 233417 -appDir /usr/lib/firefox/browser {8c59d618-5687-40a6-8f7c-e4f1534eaf73} 2484329 true socket
+xinyue   2484516  0.0  0.0 2473340 85312 pts/9   Sl   4月17   0:02 /usr/lib/firefox/firefox -contentproc -childID 2 -isForBrowser -prefsLen 34375 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {bedd7bbe-5b99-432c-b99b-3afc38738737} 2484329 true tab
+xinyue   2484574  0.0  0.0 2640616 153288 pts/9  Sl   4月17   0:11 /usr/lib/firefox/firefox -contentproc -childID 3 -isForBrowser -prefsLen 34375 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {b030872c-9cdd-43e8-87a9-d759b7aafc7e} 2484329 true tab
+xinyue   2486146  0.0  0.1 2827952 281340 pts/9  Sl   4月17  95:36 /usr/lib/firefox/firefox -contentproc -childID 10 -isForBrowser -prefsLen 29563 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {734337fa-4782-40bd-a34e-3a980acc0af5} 2484329 true tab
+xinyue   2486149  0.1  0.1 2952456 317780 pts/9  Sl   4月17 149:31 /usr/lib/firefox/firefox -contentproc -childID 11 -isForBrowser -prefsLen 29563 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {54aa17e4-c9d4-4620-b706-cdf237c564fe} 2484329 true tab
+whoopsie 2513161  0.0  0.0 437616 38376 ?        Ssl  4月17   0:19 /usr/bin/whoopsie -f
+xinyue   2646372  0.0  0.0 2478484 96944 pts/9   Sl   5月12   0:04 /usr/lib/firefox/firefox -contentproc -childID 19 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {627e79c6-469d-45fc-b15f-4edc7a876a2f} 2484329 true tab
+xinyue   2671082  0.0  0.0 2528184 119944 pts/9  Sl   5月12   0:05 /usr/lib/firefox/firefox -contentproc -childID 23 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {708ab5bc-f917-47a4-8331-db154b9150ed} 2484329 true tab
+xinyue   2671109  0.1  0.0 2858168 238768 pts/9  Sl   5月12  98:48 /usr/lib/firefox/firefox -contentproc -childID 24 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {cabd0c33-10ff-4c43-99f5-e828abffff1e} 2484329 true tab
+xinyue   2671167  0.0  0.0 2653020 195272 pts/9  Sl   5月12  18:05 /usr/lib/firefox/firefox -contentproc -childID 25 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {b5b413ef-83f5-4d68-b6af-48f6664bcca2} 2484329 true tab
+xinyue   2671788  0.0  0.0  19648  4180 pts/18   Ss+  5月12   0:00 bash
+xinyue   2674936  0.0  0.1 2916532 277744 pts/9  Sl   5月12  50:57 /usr/lib/firefox/firefox -contentproc -childID 26 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {7ecc760c-fb8e-4730-a316-9449979d5fd1} 2484329 true tab
+xinyue   2674992  0.0  0.0 2668696 194120 pts/9  Sl   5月12  17:41 /usr/lib/firefox/firefox -contentproc -childID 27 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {527cb495-ae37-460f-95a1-86ba6ebf7227} 2484329 true tab
+xinyue   2675308  0.0  0.0 2450692 79464 pts/9   Sl   5月12   0:00 /usr/lib/firefox/firefox -contentproc -childID 28 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {e49d1c8d-0af4-4fe1-aa90-7ebb9ec267f0} 2484329 true tab
+xinyue   2675362  0.0  0.0  19780  4252 pts/19   Ss+  5月12   0:00 bash
+xinyue   2675727  0.0  0.0 2837644 240464 pts/9  Sl   5月12  35:51 /usr/lib/firefox/firefox -contentproc -childID 29 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {061d073c-133e-4d86-8c26-62c6954e8712} 2484329 true tab
+xinyue   2681077  0.0  0.0 2536804 122028 pts/9  Sl   5月12   0:05 /usr/lib/firefox/firefox -contentproc -childID 35 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {233f59b2-442b-40ca-ae23-2fd69912c993} 2484329 true tab
+xinyue   2681174  0.0  0.0 2466052 89008 pts/9   Sl   5月12   0:01 /usr/lib/firefox/firefox -contentproc -childID 36 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {713d83f4-1e26-44bd-9ef6-6376fbcb4ad4} 2484329 true tab
+xinyue   2718312  0.1  0.0 2755752 241616 pts/9  Sl   5月12  87:10 /usr/lib/firefox/firefox -contentproc -childID 37 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {2f780463-3188-41f9-8a3b-e2f1074010fe} 2484329 true tab
+xinyue   2718333  0.0  0.1 3199268 515076 pts/9  Sl   5月12  50:48 /usr/lib/firefox/firefox -contentproc -childID 38 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {90908c77-8a27-49b6-a675-e39e8aa43189} 2484329 true tab
+xinyue   2718373  0.0  0.0 2523752 118760 pts/9  Sl   5月12   0:01 /usr/lib/firefox/firefox -contentproc -childID 39 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {755c4923-dd5b-4d3a-a25c-2c1eb8d55257} 2484329 true tab
+xinyue   2718485  0.0  0.0 2742540 262000 pts/9  Sl   5月12  37:07 /usr/lib/firefox/firefox -contentproc -childID 40 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {11c22047-1615-40a0-a38a-17f5c6efb91a} 2484329 true tab
+xinyue   2718810  0.0  0.1 2740492 265264 pts/9  Sl   5月12  38:11 /usr/lib/firefox/firefox -contentproc -childID 42 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {7b3133b8-81ad-4c91-a447-5bff3a56d4a0} 2484329 true tab
+xinyue   2719209  0.0  0.0 360072  4556 pts/9    Sl   5月12   4:15 /usr/lib/speech-dispatcher-modules/sd_dummy /etc/speech-dispatcher/modules/dummy.conf
+xinyue   2719212  0.0  0.0 360104  4024 pts/9    Sl   5月12   4:13 /usr/lib/speech-dispatcher-modules/sd_generic /etc/speech-dispatcher/modules/mary-generic.conf
+xinyue   2719215  0.0  0.0 459012  6496 pts/9    Sl   5月12   4:23 /usr/lib/speech-dispatcher-modules/sd_espeak-ng /etc/speech-dispatcher/modules/espeak-ng.conf
+xinyue   2719221  0.0  0.0 168376  1448 ?        Ssl  5月12   0:00 /usr/bin/speech-dispatcher --spawn --communication-method unix_socket --socket-path /run/user/1006/speech-dispatcher/speechd.sock
+xinyue   2809680  0.0  0.0 2565008 172088 pts/9  Sl   5月13   0:40 /usr/lib/firefox/firefox -contentproc -childID 44 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {950375c5-1b8e-4452-9b7e-fa0df5286464} 2484329 true tab
+xinyue   2809765  0.0  0.0 2415812 63648 pts/9   Sl   5月13   0:00 /usr/lib/firefox/firefox -contentproc -childID 45 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {c8df9e34-2a3f-415b-bae1-21326584c0b8} 2484329 true tab
+xinyue   2813356  0.0  0.0 2415812 62476 pts/9   Sl   5月13   0:00 /usr/lib/firefox/firefox -contentproc -childID 46 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {196afcf4-dece-4491-9141-692b726234e7} 2484329 true tab
+chenjx   2875857  0.0  0.0 248832  1176 ?        SLl  3月28   0:00 /usr/bin/gnome-keyring-daemon --start --foreground --components=secrets
+root     3103890  0.0  0.0 323320  7624 ?        Sl   5月01   0:00 gdm-session-worker [pam/gdm-password]
+liaojing 3103896  0.0  0.0 248796  5684 ?        Sl   5月01   0:00 /usr/bin/gnome-keyring-daemon --daemonize --login
+liaojing 3103900  0.0  0.0 172656  4500 tty5     Ssl+ 5月01   0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+root     3103902  0.0  0.0 27698704 164396 tty5  Sl+  5月01   3:08 /usr/lib/xorg/Xorg vt5 -displayfd 3 -auth /run/user/1001/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+liaojing 3103943  0.0  0.0 196872 10268 tty5     Sl+  5月01   0:00 /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+liaojing 3104011  0.0  0.0   6040   452 ?        Ss   5月01   0:12 /usr/bin/ssh-agent /usr/bin/im-launch env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+liaojing 3104028  0.0  0.0 305416  4988 ?        Ssl  5月01   0:00 /usr/libexec/at-spi-bus-launcher
+liaojing 3104033  0.0  0.0   7380  2772 ?        S    5月01   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+liaojing 3104151  0.0  0.0  98700  2384 ?        Ssl  5月01   0:00 /usr/libexec/gnome-session-ctl --monitor
+liaojing 3104152  0.0  0.0 893192 12564 ?        S<sl 5月01   0:27 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+liaojing 3104159  0.0  0.0 492772 12032 ?        Ssl  5月01   0:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+liaojing 3104176  0.0  0.1 6880000 418456 ?      Ssl  5月01  68:12 /usr/bin/gnome-shell
+liaojing 3104339  0.0  0.0 393452  6528 ?        Sl   5月01   0:00 ibus-daemon --panel disable --xim
+liaojing 3104343  0.0  0.0 245160  5208 ?        Sl   5月01   0:00 /usr/libexec/ibus-dconf
+liaojing 3104344  0.0  0.0 284980 29984 ?        Sl   5月01   0:01 /usr/libexec/ibus-extension-gtk3
+liaojing 3104346  0.0  0.0 207252 25308 ?        Sl   5月01   0:00 /usr/libexec/ibus-x11 --kill-daemon
+liaojing 3104348  0.0  0.0 245144  5320 ?        Sl   5月01   0:00 /usr/libexec/ibus-portal
+liaojing 3104362  0.0  0.0 162916  5664 ?        Sl   5月01   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+liaojing 3104366  0.0  0.0 244236  4124 ?        Ssl  5月01   0:00 /usr/libexec/xdg-permission-store
+liaojing 3104371  0.0  0.0 581060 13876 ?        Sl   5月01   0:00 /usr/libexec/gnome-shell-calendar-server
+liaojing 3104377  0.0  0.0 1078832 18788 ?       Ssl  5月01   0:00 /usr/libexec/evolution-source-registry
+liaojing 3104387  0.0  0.0 1387996 23348 ?       Ssl  5月01   0:04 /usr/libexec/evolution-calendar-factory
+liaojing 3104399  0.0  0.0 156224  4248 ?        Sl   5月01   0:00 /usr/libexec/dconf-service
+liaojing 3104405  0.0  0.0 1026020 22576 ?       Ssl  5月01   0:03 /usr/libexec/evolution-addressbook-factory
+liaojing 3104426  0.0  0.0 2938928 22392 ?       Sl   5月01   0:03 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+liaojing 3104438  0.0  0.0 322596  6992 ?        Sl   5月01  80:15 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+liaojing 3104449  0.0  0.0 318288  4900 ?        Ssl  5月01   0:00 /usr/libexec/gsd-a11y-settings
+liaojing 3104450  0.0  0.0 513992 30056 ?        Ssl  5月01   0:29 /usr/libexec/gsd-color
+liaojing 3104453  0.0  0.0 382244 11540 ?        Ssl  5月01   0:00 /usr/libexec/gsd-datetime
+liaojing 3104455  0.2  0.0 320588  6756 ?        Ssl  5月01 269:21 /usr/libexec/gsd-housekeeping
+liaojing 3104459  0.0  0.0 355212 25488 ?        Ssl  5月01   0:00 /usr/libexec/gsd-keyboard
+liaojing 3104462  0.0  0.0 697368 27552 ?        Ssl  5月01   0:00 /usr/libexec/gsd-media-keys
+liaojing 3104464  0.0  0.0 429408 27080 ?        Ssl  5月01   0:05 /usr/libexec/gsd-power
+liaojing 3104468  0.0  0.0 257632  8736 ?        Ssl  5月01   0:05 /usr/libexec/gsd-print-notifications
+liaojing 3104470  0.0  0.0 465740  4280 ?        Ssl  5月01   0:00 /usr/libexec/gsd-rfkill
+liaojing 3104471  0.0  0.0 244148  4388 ?        Ssl  5月01   0:00 /usr/libexec/gsd-screensaver-proxy
+liaojing 3104473  0.0  0.0 473540  8388 ?        Ssl  5月01   2:05 /usr/libexec/gsd-sharing
+liaojing 3104474  0.0  0.0 323792  6252 ?        Ssl  5月01   0:00 /usr/libexec/gsd-smartcard
+liaojing 3104475  0.0  0.0 327980  6388 ?        Ssl  5月01   0:00 /usr/libexec/gsd-sound
+liaojing 3104478  0.0  0.0 393592  5232 ?        Ssl  5月01   0:00 /usr/libexec/gsd-usb-protection
+liaojing 3104481  0.0  0.0 354740 25176 ?        Ssl  5月01   0:00 /usr/libexec/gsd-wacom
+liaojing 3104484  0.0  0.0 322720  5244 ?        Ssl  5月01   0:00 /usr/libexec/gsd-wwan
+liaojing 3104485  0.0  0.0 355252 26508 ?        Ssl  5月01   0:00 /usr/libexec/gsd-xsettings
+liaojing 3104499  0.0  0.0 231808  6584 ?        Sl   5月01   0:17 /usr/libexec/gsd-disk-utility-notify
+liaojing 3104517  0.0  0.0 655244 46548 ?        Sl   5月01   0:05 /usr/libexec/evolution-data-server/evolution-alarm-notify
+liaojing 3104560  0.0  0.0 171336  5212 ?        Sl   5月01   0:00 /usr/libexec/ibus-engine-simple
+liaojing 3104599  0.0  0.0 350824 10616 ?        Sl   5月01   0:00 /usr/libexec/gsd-printer
+liaojing 3104752  0.0  0.0 471360  8248 ?        Ssl  5月01   1:19 /usr/libexec/xdg-desktop-portal
+liaojing 3104756  0.0  0.0 466164  4688 ?        Ssl  5月01   0:00 /usr/libexec/xdg-document-portal
+liaojing 3104765  0.0  0.0 502360 26384 ?        Ssl  5月01   0:00 /usr/libexec/xdg-desktop-portal-gtk
+liaojing 3105209  0.0  0.0 430100 30036 ?        Sl   5月01   1:24 update-notifier
+liaojing 3105490  0.0  0.0 877276 44392 ?        Sl   5月01   0:24 /usr/bin/gnome-calendar --gapplication-service
+root     3271454  0.0  0.0 323308  7552 ?        Sl   5月02   0:00 gdm-session-worker [pam/gdm-password]
+qwe      3271467  0.1  0.0  20264  8376 ?        Ss   5月02 135:57 /lib/systemd/systemd --user
+qwe      3271468  0.0  0.0 174124  6208 ?        S    5月02   0:00 (sd-pam)
+qwe      3271474  0.0  0.0 1679624 12760 ?       S<sl 5月02   0:39 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+qwe      3271476  0.0  0.0 1002032 27428 ?       SNsl 5月02   0:00 /usr/libexec/tracker-miner-fs
+qwe      3271479  0.0  0.0   8556  4100 ?        Ss   5月02   0:02 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+qwe      3271482  0.0  0.0 248796  5704 ?        Sl   5月02   0:00 /usr/bin/gnome-keyring-daemon --daemonize --login
+qwe      3271499  0.0  0.0 248356  5540 ?        Ssl  5月02   0:00 /usr/libexec/gvfsd
+qwe      3271504  0.0  0.0 378352  4760 ?        Sl   5月02   0:00 /usr/libexec/gvfsd-fuse /run/user/1003/gvfs -f -o big_writes
+qwe      3271506  0.6  0.0 322816  8632 ?        Ssl  5月02 612:22 /usr/libexec/gvfs-udisks2-volume-monitor
+qwe      3271517  0.0  0.0 244516  4192 ?        Ssl  5月02   0:00 /usr/libexec/gvfs-goa-volume-monitor
+qwe      3271521  0.0  0.0 561932 22804 ?        Sl   5月02   0:03 /usr/libexec/goa-daemon
+qwe      3271528  0.0  0.0 323396  6792 ?        Sl   5月02   2:40 /usr/libexec/goa-identity-service
+qwe      3271533  0.0  0.0 246748  5060 ?        Ssl  5月02   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+qwe      3271537  0.0  0.0 325364  5852 ?        Ssl  5月02   1:19 /usr/libexec/gvfs-afc-volume-monitor
+qwe      3271543  0.0  0.0 244344  4236 ?        Ssl  5月02   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+qwe      3271550  0.0  0.0 172656  4484 tty7     Ssl+ 5月02   0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+root     3271552  0.0  0.0 27726512 184712 tty7  Sl+  5月02   1:31 /usr/lib/xorg/Xorg vt7 -displayfd 3 -auth /run/user/1003/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+qwe      3271604  0.0  0.0 196888 10244 tty7     Sl+  5月02   0:00 /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+qwe      3271618  0.0  0.0 170892  4592 ?        Ssl  5月02   0:00 /usr/libexec/gvfsd-metadata
+qwe      3271679  0.0  0.0   6040   452 ?        Ss   5月02   0:12 /usr/bin/ssh-agent /usr/bin/im-launch env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+qwe      3271713  0.0  0.0 305416  5168 ?        Ssl  5月02   0:00 /usr/libexec/at-spi-bus-launcher
+qwe      3271718  0.0  0.0   7248  2792 ?        S    5月02   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+qwe      3271841  0.0  0.0  98700  2332 ?        Ssl  5月02   0:00 /usr/libexec/gnome-session-ctl --monitor
+qwe      3271848  0.0  0.0 492788 12060 ?        Ssl  5月02   0:01 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+qwe      3271862  0.0  0.1 7153160 379548 ?      Ssl  5月02  47:37 /usr/bin/gnome-shell
+qwe      3272024  0.0  0.0 319720  6448 ?        Sl   5月02   0:00 ibus-daemon --panel disable --xim
+qwe      3272028  0.0  0.0 245160  5124 ?        Sl   5月02   0:00 /usr/libexec/ibus-dconf
+qwe      3272029  0.0  0.0 285036 29744 ?        Sl   5月02   0:01 /usr/libexec/ibus-extension-gtk3
+qwe      3272031  0.0  0.0 207252 25464 ?        Sl   5月02   0:00 /usr/libexec/ibus-x11 --kill-daemon
+qwe      3272033  0.0  0.0 245012  4420 ?        Sl   5月02   0:00 /usr/libexec/ibus-portal
+qwe      3272046  0.0  0.0 162916  5536 ?        Sl   5月02   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+qwe      3272051  0.0  0.0 244236  4364 ?        Ssl  5月02   0:00 /usr/libexec/xdg-permission-store
+qwe      3272056  0.0  0.0 581068 13644 ?        Sl   5月02   0:00 /usr/libexec/gnome-shell-calendar-server
+qwe      3272062  0.0  0.0 1078828 18888 ?       Ssl  5月02   0:00 /usr/libexec/evolution-source-registry
+qwe      3272072  0.0  0.0 1387996 23212 ?       Ssl  5月02   0:04 /usr/libexec/evolution-calendar-factory
+qwe      3272077  0.0  0.0 156240  4288 ?        Sl   5月02   0:00 /usr/libexec/dconf-service
+qwe      3272089  0.0  0.0 1026016 22468 ?       Ssl  5月02   0:03 /usr/libexec/evolution-addressbook-factory
+qwe      3272110  0.0  0.0 2938928 22480 ?       Sl   5月02   0:03 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+qwe      3272122  0.0  0.0 322728  7008 ?        Sl   5月02  76:43 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+qwe      3272134  0.0  0.0 318288  4836 ?        Ssl  5月02   0:00 /usr/libexec/gsd-a11y-settings
+qwe      3272135  0.0  0.0 440236 30116 ?        Ssl  5月02   0:28 /usr/libexec/gsd-color
+qwe      3272136  0.0  0.0 382244 11424 ?        Ssl  5月02   0:00 /usr/libexec/gsd-datetime
+qwe      3272138  0.3  0.0 320464  6676 ?        Ssl  5月02 269:14 /usr/libexec/gsd-housekeeping
+qwe      3272141  0.0  0.0 355220 25628 ?        Ssl  5月02   0:00 /usr/libexec/gsd-keyboard
+qwe      3272143  0.0  0.0 697468 27716 ?        Ssl  5月02   0:00 /usr/libexec/gsd-media-keys
+qwe      3272146  0.0  0.0 429404 26892 ?        Ssl  5月02   0:06 /usr/libexec/gsd-power
+qwe      3272149  0.0  0.0 257648  8724 ?        Ssl  5月02   0:05 /usr/libexec/gsd-print-notifications
+qwe      3272151  0.0  0.0 465740  4252 ?        Ssl  5月02   0:00 /usr/libexec/gsd-rfkill
+qwe      3272154  0.0  0.0 244148  4424 ?        Ssl  5月02   0:00 /usr/libexec/gsd-screensaver-proxy
+qwe      3272155  0.0  0.0 473408  8388 ?        Ssl  5月02   2:01 /usr/libexec/gsd-sharing
+qwe      3272157  0.0  0.0 323924  6332 ?        Ssl  5月02   0:00 /usr/libexec/gsd-smartcard
+qwe      3272158  0.0  0.0 327980  6176 ?        Ssl  5月02   0:00 /usr/libexec/gsd-sound
+qwe      3272159  0.0  0.0 393600  5316 ?        Ssl  5月02   0:00 /usr/libexec/gsd-usb-protection
+qwe      3272163  0.0  0.0 354748 25184 ?        Ssl  5月02   0:00 /usr/libexec/gsd-wacom
+qwe      3272167  0.0  0.0 322720  5068 ?        Ssl  5月02   0:00 /usr/libexec/gsd-wwan
+qwe      3272172  0.0  0.0 355224 26952 ?        Ssl  5月02   0:00 /usr/libexec/gsd-xsettings
+qwe      3272189  0.0  0.0 231808  6460 ?        Sl   5月02   0:17 /usr/libexec/gsd-disk-utility-notify
+qwe      3272207  0.0  0.0 654908 46988 ?        Sl   5月02   0:05 /usr/libexec/evolution-data-server/evolution-alarm-notify
+qwe      3272262  0.0  0.0 171336  5260 ?        Sl   5月02   0:00 /usr/libexec/ibus-engine-simple
+qwe      3272277  0.0  0.0 350824 10604 ?        Sl   5月02   0:00 /usr/libexec/gsd-printer
+qwe      3272327  0.0  0.0 975276 44456 ?        Ssl  5月02   0:04 /usr/libexec/gnome-terminal-server
+qwe      3272337  0.0  0.0  19520  3828 pts/4    Ss+  5月02   0:00 bash
+qwe      3272497  0.0  0.0 472948 37736 ?        Sl   5月02   1:23 update-notifier
+shaoqi   3281964  0.0  0.0 471484  8464 ?        Ssl  4月19   1:37 /usr/libexec/xdg-desktop-portal
+shaoqi   3281970  0.0  0.0 466164  4664 ?        Ssl  4月19   0:01 /usr/libexec/xdg-document-portal
+shaoqi   3281980  0.0  0.0 496944 21428 ?        Ssl  4月19   0:00 /usr/libexec/xdg-desktop-portal-gtk
+yunhao   3413113  0.3  0.0 117412 50608 ?        S    5月02 293:03 python -u keepdrcom.py
+root     3949336  0.0  0.0 323580  5024 ?        Sl   3月30   0:00 gdm-session-worker [pam/gdm-password]
+chenjx   3949357  0.0  0.0 172656   692 tty3     Ssl+ 3月30   0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+root     3949359  0.1  0.0 27753896 146136 tty3  Sl+  3月30 174:38 /usr/lib/xorg/Xorg vt3 -displayfd 3 -auth /run/user/1004/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+chenjx   3949401  0.0  0.0 196868  1492 tty3     Sl+  3月30   0:00 /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+chenjx   3949541  0.0  0.0   6040   452 ?        Ss   3月30   0:16 /usr/bin/ssh-agent /usr/bin/im-launch env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+chenjx   3949559  0.0  0.0 305416   648 ?        Ssl  3月30   0:00 /usr/libexec/at-spi-bus-launcher
+chenjx   3949564  0.0  0.0   7380  1272 ?        S    3月30   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+chenjx   3949638  0.0  0.0  98700   420 ?        Ssl  3月30   0:00 /usr/libexec/gnome-session-ctl --monitor
+chenjx   3949644  0.0  0.0 492768  4780 ?        Ssl  3月30   0:01 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+chenjx   3949658  0.1  0.1 7127876 390528 ?      Ssl  3月30 148:51 /usr/bin/gnome-shell
+chenjx   3949804  0.0  0.0 319816  3672 ?        Sl   3月30   0:06 ibus-daemon --panel disable --xim
+chenjx   3949809  0.0  0.0 245160   724 ?        Sl   3月30   0:00 /usr/libexec/ibus-dconf
+chenjx   3949810  0.0  0.0 284996 18132 ?        Sl   3月30   0:01 /usr/libexec/ibus-extension-gtk3
+chenjx   3949812  0.0  0.0 207260 12832 ?        Sl   3月30   0:00 /usr/libexec/ibus-x11 --kill-daemon
+chenjx   3949814  0.0  0.0 245144   964 ?        Sl   3月30   0:00 /usr/libexec/ibus-portal
+chenjx   3949827  0.0  0.0 162916   864 ?        Sl   3月30   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+chenjx   3949833  0.0  0.0 244236   588 ?        Ssl  3月30   0:00 /usr/libexec/xdg-permission-store
+chenjx   3949840  0.0  0.0 581064  3284 ?        Sl   3月30   0:00 /usr/libexec/gnome-shell-calendar-server
+chenjx   3949846  0.0  0.0 1078828 4272 ?        Ssl  3月30   0:00 /usr/libexec/evolution-source-registry
+chenjx   3949866  0.0  0.0 1387996 8232 ?        Ssl  3月30   0:05 /usr/libexec/evolution-calendar-factory
+chenjx   3949871  0.0  0.0 156208  2120 ?        Sl   3月30   0:00 /usr/libexec/dconf-service
+chenjx   3949883  0.0  0.0 894952  7416 ?        Ssl  3月30   0:04 /usr/libexec/evolution-addressbook-factory
+chenjx   3949922  0.0  0.0 2938932 12984 ?       Sl   3月30   0:04 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+chenjx   3949934  0.0  0.0 322716  4076 ?        Sl   3月30 111:48 /usr/libexec/gvfsd-trash --spawner :1.3 /org/gtk/gvfs/exec_spaw/0
+chenjx   3949944  0.0  0.0 318288   548 ?        Ssl  3月30   0:00 /usr/libexec/gsd-a11y-settings
+chenjx   3949945  0.0  0.0 440232 21908 ?        Ssl  3月30   0:43 /usr/libexec/gsd-color
+chenjx   3949946  0.0  0.0 382244  1976 ?        Ssl  3月30   0:00 /usr/libexec/gsd-datetime
+chenjx   3949950  0.2  0.0 320592  4092 ?        Ssl  3月30 382:48 /usr/libexec/gsd-housekeeping
+chenjx   3949952  0.0  0.0 355232 16300 ?        Ssl  3月30   0:00 /usr/libexec/gsd-keyboard
+chenjx   3949954  0.0  0.0 771212 15996 ?        Ssl  3月30   0:01 /usr/libexec/gsd-media-keys
+chenjx   3949956  0.0  0.0 429408 17288 ?        Ssl  3月30   0:08 /usr/libexec/gsd-power
+chenjx   3949957  0.0  0.0 257652  5528 ?        Ssl  3月30   0:07 /usr/libexec/gsd-print-notifications
+chenjx   3949961  0.0  0.0 465740  2276 ?        Ssl  3月30   0:01 /usr/libexec/gsd-rfkill
+chenjx   3949963  0.0  0.0 244148   608 ?        Ssl  3月30   0:00 /usr/libexec/gsd-screensaver-proxy
+chenjx   3949965  0.0  0.0 473536  5996 ?        Ssl  3月30   4:14 /usr/libexec/gsd-sharing
+chenjx   3949966  0.0  0.0 323792  2232 ?        Ssl  3月30   0:00 /usr/libexec/gsd-smartcard
+chenjx   3949968  0.0  0.0 327980  1016 ?        Ssl  3月30   0:00 /usr/libexec/gsd-sound
+chenjx   3949970  0.0  0.0 393600  1048 ?        Ssl  3月30   0:00 /usr/libexec/gsd-usb-protection
+chenjx   3949974  0.0  0.0 354768 12732 ?        Ssl  3月30   0:00 /usr/libexec/gsd-wacom
+chenjx   3949976  0.0  0.0 322720   916 ?        Ssl  3月30   0:00 /usr/libexec/gsd-wwan
+chenjx   3949978  0.0  0.0 355252 14896 ?        Ssl  3月30   0:00 /usr/libexec/gsd-xsettings
+chenjx   3949994  0.0  0.0 231808  4276 ?        Sl   3月30   0:27 /usr/libexec/gsd-disk-utility-notify
+chenjx   3950007  0.0  0.0 655256 24640 ?        Sl   3月30   0:08 /usr/libexec/evolution-data-server/evolution-alarm-notify
+chenjx   3950063  0.0  0.0 171472   900 ?        Sl   3月30   0:01 /usr/libexec/ibus-engine-simple
+chenjx   3950105  0.0  0.0 350824  1956 ?        Sl   3月30   0:00 /usr/libexec/gsd-printer
+chenjx   3950252  0.0  0.0 1163440 69036 ?       Sl   3月30   0:21 /usr/bin/nautilus --gapplication-service
+chenjx   3950559  0.0  0.0 170888   720 ?        Ssl  3月30   0:00 /usr/libexec/gvfsd-metadata
+chenjx   3950562  0.0  0.0 430092 16484 ?        Sl   3月30   2:13 update-notifier
+chenjx   3953967  0.0  0.0 471348  4560 ?        Ssl  3月30   2:02 /usr/libexec/xdg-desktop-portal
+chenjx   3953971  0.0  0.0 466164   720 ?        Ssl  3月30   0:00 /usr/libexec/xdg-document-portal
+chenjx   3953980  0.0  0.0 502376 16628 ?        Ssl  3月30   0:01 /usr/libexec/xdg-desktop-portal-gtk
+chenjx   4040294  0.0  0.0 877280 24068 ?        Sl   3月30   0:33 /usr/bin/gnome-calendar --gapplication-service
+chenjx   4040541  0.0  0.0 993688 24928 ?        Ssl  3月30   9:04 /usr/libexec/gnome-terminal-server
+chenjx   4040553  0.0  0.0  21360  4444 pts/1    Ss+  3月30   0:00 bash
+qwe      4125465  0.1  0.0 6602532 125820 ?      Sl   6月17  25:47 /opt/teamviewer/tv_bin/TeamViewer
+root     4128130  0.1  0.0 4019348 25396 ?       Sl   6月17  37:17 /opt/teamviewer/tv_bin/teamviewerd -d
+yunhao   4128193  0.1  0.0 7134852 185440 ?      Sl   6月17  25:48 /opt/teamviewer/tv_bin/TeamViewer
+chenjx   4128302  0.1  0.0 7200372 185956 ?      Sl   6月17  25:52 /opt/teamviewer/tv_bin/TeamViewer
+liaojing 4128399  0.1  0.0 7200380 185556 ?      Sl   6月17  26:21 /opt/teamviewer/tv_bin/TeamViewer
+xinyue   4128493  0.1  0.0 7069324 186804 ?      Sl   6月17  25:59 /opt/teamviewer/tv_bin/TeamViewer
+xinyue   4185700  0.0  0.0 877280 44456 ?        Sl   5月05   0:22 /usr/bin/gnome-calendar --gapplication-service
+xinyue   4186117  0.0  0.0 311756 73320 pts/9    Sl   5月05   0:02 /usr/lib/firefox/firefox -contentproc -parentBuildID 20230912013654 -prefsLen 34980 -prefMapSize 233417 -appDir /usr/lib/firefox/browser {a6e33266-e060-42c7-9212-0a1d42166623} 2484329 true rdd
+xinyue   4186118  0.0  0.0 214044 28308 pts/9    Sl   5月05   0:01 /usr/lib/firefox/firefox -contentproc -parentBuildID 20230912013654 -sandboxingKind 0 -prefsLen 34980 -prefMapSize 233417 -appDir /usr/lib/firefox/browser {7a8829bf-6c5d-429b-a83d-a10d2015f87e} 2484329 true utility
+xinyue   4186230  0.0  0.0 2447880 78848 pts/9   Sl   5月05   0:00 /usr/lib/firefox/firefox -contentproc -childID 14 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {770a71bb-26e3-4517-939c-a6bd445c481e} 2484329 true tab
+xinyue   4186326  0.0  0.0 2476892 96736 pts/9   Sl   5月05   0:01 /usr/lib/firefox/firefox -contentproc -childID 15 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {960f4830-fb76-4f07-a2aa-3fc13dcc78ee} 2484329 true tab
+xinyue   4186408  0.0  0.0 2578492 161860 pts/9  Sl   5月05   0:41 /usr/lib/firefox/firefox -contentproc -childID 16 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {d72d9ee6-414b-469e-9fb0-9c899d8e4c54} 2484329 true tab
+xinyue   4186453  0.0  0.0 2605360 197128 pts/9  Sl   5月05   1:08 /usr/lib/firefox/firefox -contentproc -childID 17 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {486b3ec5-79ef-4ad9-96f3-9fde53c2f02a} 2484329 true tab
+xinyue   4186867  0.0  0.0 2451788 86912 pts/9   Sl   5月05   0:02 /usr/lib/firefox/firefox -contentproc -childID 18 -isForBrowser -prefsLen 29735 -prefMapSize 233417 -jsInitLen 235824 -parentBuildID 20230912013654 -appDir /usr/lib/firefox/browser {411ddb9f-eef2-48ef-becf-3533936b48f1} 2484329 true tab
+xinyue   4189867  0.6  1.0 26961544 2826372 pts/9 SLl+ 5月05 516:26 /home/xinyue/Downloads/pycharm-community-2024.1.1/jbr/bin/java -classpath /home/xinyue/Downloads/pycharm-community-2024.1.1/lib/platform-loader.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/util-8.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/util.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/app-client.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/util_rt.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/opentelemetry.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/app.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/modules.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/lib-client.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/stats.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/jps-model.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/external-system-rt.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/rd.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/bouncy-castle.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/protobuf.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/intellij-test-discovery.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/intellij-coverage-agent-1.0.744.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/forms_rt.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/lib.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/externalProcess-rt.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/groovy.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/annotations.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/grpc.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/jsch-agent.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/junit4.jar:/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/trove.jar -XX:ErrorFile=/home/xinyue/java_error_in_pycharm_%p.log -XX:HeapDumpPath=/home/xinyue/java_error_in_pycharm_.hprof -Xms256m -Xmx1500m -XX:+HeapDumpOnOutOfMemoryError -XX:-OmitStackTraceInFastThrow -XX:+IgnoreUnrecognizedVMOptions -ea -Dsun.io.useCanonCaches=false -Dsun.java2d.metal=true -Djbr.catch.SIGABRT=true -Djdk.http.auth.tunneling.disabledSchemes="" -Djdk.attach.allowAttachSelf=true -Djdk.module.illegalAccess.silent=true -Dkotlinx.coroutines.debug=off -XX:CICompilerCount=2 -XX:ReservedCodeCacheSize=512m -XX:CompileCommand=exclude,com/intellij/openapi/vfs/impl/FilePartNodeRoot,trieDescend -XX:SoftRefLRUPolicyMSPerMB=50 -Dide.show.tips.on.startup.default.value=false -Dsun.tools.attach.tmp.only=true -Dawt.lock.fair=true -Xmx4096m -Djb.vmOptionsFile=/home/xinyue/.config/JetBrains/PyCharmCE2024.1/pycharm64.vmoptions -Djava.system.class.loader=com.intellij.util.lang.PathClassLoader -Didea.vendor.name=JetBrains -Didea.paths.selector=PyCharmCE2024.1 -Djna.boot.library.path=/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/jna/amd64 -Dpty4j.preferred.native.folder=/home/xinyue/Downloads/pycharm-community-2024.1.1/lib/pty4j -Djna.nosys=true -Djna.noclasspath=true -Dintellij.platform.runtime.repository.path=/home/xinyue/Downloads/pycharm-community-2024.1.1/modules/module-descriptors.jar -Didea.platform.prefix=PyCharmCore -Dsplash=true -Daether.connector.resumeDownloads=false --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.ref=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED --add-opens=java.base/jdk.internal.vm=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/sun.nio.fs=ALL-UNNAMED --add-opens=java.base/sun.security.ssl=ALL-UNNAMED --add-opens=java.base/sun.security.util=ALL-UNNAMED --add-opens=java.base/sun.net.dns=ALL-UNNAMED --add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED --add-opens=java.desktop/java.awt=ALL-UNNAMED --add-opens=java.desktop/java.awt.dnd.peer=ALL-UNNAMED --add-opens=java.desktop/java.awt.event=ALL-UNNAMED --add-opens=java.desktop/java.awt.image=ALL-UNNAMED --add-opens=java.desktop/java.awt.peer=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED --add-opens=java.desktop/javax.swing=ALL-UNNAMED --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED --add-opens=java.desktop/javax.swing.text=ALL-UNNAMED --add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED --add-opens=java.desktop/sun.awt.datatransfer=ALL-UNNAMED --add-opens=java.desktop/sun.awt.image=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.desktop/sun.font=ALL-UNNAMED --add-opens=java.desktop/sun.java2d=ALL-UNNAMED --add-opens=java.desktop/sun.swing=ALL-UNNAMED --add-opens=java.desktop/com.sun.java.swing=ALL-UNNAMED --add-opens=jdk.attach/sun.tools.attach=ALL-UNNAMED --add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=jdk.jdi/com.sun.tools.jdi=ALL-UNNAMED com.intellij.idea.Main

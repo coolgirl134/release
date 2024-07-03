@@ -98,6 +98,7 @@ struct ssd_info *initiation(struct ssd_info *ssd)
     latency_index = 0;
     ssd->real_written = 0;
     ssd->gc_rewrite = 0;
+    ssd->update_write = 0;
     // ssd->write_avg = ssd->read_avg = 0;
 
     /*printf("input parameter file name:");

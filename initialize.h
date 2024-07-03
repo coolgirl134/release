@@ -220,6 +220,8 @@ struct ssd_info{
     unsigned long long write_avg;                   //记录用于计算写�?�求平均响应时间的时�??
     unsigned long long read_avg;                    //记录用于计算读�?�求平均响应时间的时�??
 
+    unsigned long long update_write;
+
     unsigned int total_write;           //记录基于子�?�求的写操作�??�??
     unsigned int total_read;            //记录基于子�?�求的�?�操作个�??
     unsigned long long tail_latency;          // 记录尾延�??
@@ -302,8 +304,6 @@ struct channel_info{
     struct sub_request *subs_w_tail;     //channel上的写�?�求队列，新加进来的子�?�求加到队尾
     struct gc_operation *gc_command;     //记录需要产生gc的位�??
     struct chip_info *chip_head;  
-    
-    struct req_list* req;                  //记录占据channel的时间和对应id
 };
 
 

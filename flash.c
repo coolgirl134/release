@@ -335,6 +335,11 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
                 sub_req_size=size(ssd->dram->buffer->buffer_tail->stored);
                 sub_req_lpn=ssd->dram->buffer->buffer_tail->group;
                 sub_req=creat_sub_request(ssd,sub_req_lpn,sub_req_size,sub_req_state,req,WRITE);
+                if(ssd->dram->map->map_entry[sub_req->lpn].pn!=0){
+                    // 验证是否创建的子请求产生的更新写和我们计算的一样
+                    ssd->update_write++;
+                    // 该数值和total write相加要等有real written
+                }
                 sub_req->lsn = req->lsn;
                 sub_req->req_id = req->id;
                 sub_req->req_begin_time = req->time;
@@ -483,6 +488,7 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
                         sub_req_size=size(ssd->dram->buffer->buffer_tail->stored);
                         sub_req_lpn=ssd->dram->buffer->buffer_tail->group;
                         sub_req=creat_sub_request(ssd,sub_req_lpn,sub_req_size,sub_req_state,req,WRITE);
+                        ssd->update_write++;
                         sub_req->lsn = req->lsn;
                         sub_req->req_begin_time = req->time;
                         if(req!=NULL)           
@@ -1199,7 +1205,7 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
         if(loc == NULL){
             printf("read loc is NULL\n");
         }
-        ssd->total_read++;
+        // ssd->total_read++;
         sub->location=loc;
         sub->begin_time = ssd->current_time;
         sub->current_state = SR_WAIT;
@@ -1258,7 +1264,7 @@ struct sub_request * creat_sub_request(struct ssd_info * ssd,unsigned int lpn,in
     else if(operation == WRITE)
     {                                
         sub->ppn=0;
-        ssd->total_write++;
+        // ssd->total_write++;
         sub->operation = WRITE;
         sub->location=(struct local *)malloc(sizeof(struct local));
         alloc_assert(sub->location,"sub->location");
@@ -4366,33 +4372,33 @@ int get_read_time_new(int type){
     return NONE;
 }
 
-void process_channel_reqlist(struct ssd_info* ssd,int channel,int chip,int id,int flag){
-    struct req_list* req_new;
+// void process_channel_reqlist(struct ssd_info* ssd,int channel,int chip,int id,int flag){
+//     struct req_list* req_new;
     
-    req_new = (struct req_list*)malloc(sizeof(struct req_list));
-    req_new->id = id;
-    req_new->time = ssd->channel_head[channel].chip_head[chip].current_time;
-    req_new->here2next = ssd->channel_head[channel].chip_head[chip].next_state_predict_time - ssd->channel_head[channel].chip_head[chip].current_time;
-    if(ssd->channel_head[channel].chip_head[chip].req == NULL){
-        ssd->channel_head[channel].chip_head[chip].req = req_new;
-    }else{
-        ssd->channel_head[channel].chip_head[chip].req->next = req_new;
-    }
-    req_new->next = NULL;
-    if(flag == 1){
-        struct req_list* req_new1;
-        req_new1 = (struct req_list*)malloc(sizeof(struct req_list));
-        req_new1->id = id;
-        req_new1->time = ssd->channel_head[channel].current_time;
-        req_new1->here2next = ssd->channel_head[channel].next_state_predict_time - ssd->channel_head[channel].current_time;
-        if(ssd->channel_head[channel].req == NULL){
-                ssd->channel_head[channel].req = req_new1;
-        }else{
-            ssd->channel_head[channel].req->next = req_new1;
-        } 
-        req_new1->next = NULL;
-    }
-}
+//     req_new = (struct req_list*)malloc(sizeof(struct req_list));
+//     req_new->id = id;
+//     req_new->time = ssd->channel_head[channel].chip_head[chip].current_time;
+//     req_new->here2next = ssd->channel_head[channel].chip_head[chip].next_state_predict_time - ssd->channel_head[channel].chip_head[chip].current_time;
+//     if(ssd->channel_head[channel].chip_head[chip].req == NULL){
+//         ssd->channel_head[channel].chip_head[chip].req = req_new;
+//     }else{
+//         ssd->channel_head[channel].chip_head[chip].req->next = req_new;
+//     }
+//     req_new->next = NULL;
+//     if(flag == 1){
+//         struct req_list* req_new1;
+//         req_new1 = (struct req_list*)malloc(sizeof(struct req_list));
+//         req_new1->id = id;
+//         req_new1->time = ssd->channel_head[channel].current_time;
+//         req_new1->here2next = ssd->channel_head[channel].next_state_predict_time - ssd->channel_head[channel].current_time;
+//         if(ssd->channel_head[channel].req == NULL){
+//                 ssd->channel_head[channel].req = req_new1;
+//         }else{
+//             ssd->channel_head[channel].req->next = req_new1;
+//         } 
+//         req_new1->next = NULL;
+//     }
+// }
 
 /**************************************************************************
  *这个函数非常重要，读子请求的状态转变，以及时间的计算都通过这个函数来处理
@@ -4595,22 +4601,22 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
         }
         
         
-        if(aim_state == SR_R_READ){
-            int index = location->channel*2+location->chip;
-            chip_busy[index] = 1;
-            process_channel_reqlist(ssd,location->channel,location->chip,sub1->req_id,0);
-            chip_time += (ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->channel_head[location->channel].chip_head[location->chip].current_time);
-        }else{
-            int index = location->channel*2+location->chip;
-            chip_busy[index] = 1;
-            channel_busy[location->channel] = 1;
-            process_channel_reqlist(ssd,location->channel,location->chip,sub1->req_id,1);
-            if(sub2!=NULL && sub1->req_id != sub2->req_id){
-                process_channel_reqlist(ssd,location->channel,location->chip,sub2->req_id,1);
-            }
-            channel_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->channel_head[location->channel].current_time);
-            chip_time += (ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->channel_head[location->channel].chip_head[location->chip].current_time);
-        }
+        // if(aim_state == SR_R_READ){
+        //     int index = location->channel*2+location->chip;
+        //     chip_busy[index] = 1;
+        //     process_channel_reqlist(ssd,location->channel,location->chip,sub1->req_id,0);
+        //     chip_time += (ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->channel_head[location->channel].chip_head[location->chip].current_time);
+        // }else{
+        //     int index = location->channel*2+location->chip;
+        //     chip_busy[index] = 1;
+        //     channel_busy[location->channel] = 1;
+        //     process_channel_reqlist(ssd,location->channel,location->chip,sub1->req_id,1);
+        //     if(sub2!=NULL && sub1->req_id != sub2->req_id){
+        //         process_channel_reqlist(ssd,location->channel,location->chip,sub2->req_id,1);
+        //     }
+        //     channel_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->channel_head[location->channel].current_time);
+        //     chip_time += (ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time - ssd->channel_head[location->channel].chip_head[location->chip].current_time);
+        // }
         
     }//if(command==NORMAL)
     else if(command==TWO_PLANE)
