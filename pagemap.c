@@ -1959,12 +1959,14 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
    
                     ppn = move_page( ssd, location, &transfer_size,flag,type1);   
                     // 第一个page 的flag 为0，第二个为1；
-                    total_prog_time += get_prog_time(ppn);
+                    
                     type1 = ppn % BITS_PER_CELL;                                                
                     ssd->update_write++;
                     moved_count++;
                     if(flag == SUCCESS){
                         type1 = type2 = NONE;
+                    }else{
+                        total_prog_time += get_prog_time(ppn);
                     }
                     flag = NONE;
                     free(location);
