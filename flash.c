@@ -1153,9 +1153,19 @@ Status write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,un
 }
 
 int typeofdata(struct ssd_info* ssd,unsigned int lpn){
-    if(ssd->dram->map->map_entry[lpn].read_count > HOTREAD){
+    if(ssd->dram->map->map_entry[lpn].read_count <= HOTPROG && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
+        // 冷读热写
+        return R_LC;
+    }else if(ssd->dram->map->map_entry[lpn].read_count > HOTREAD && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
+        // 热读热写
+        return P_LC;
+    }else if(ssd->dram->map->map_entry[lpn].read_count <= HOTREAD && ssd->dram->map->map_entry[lpn].write_count <= HOTPROG){
+        // 冷读冷写
+        return P_MT;
+    }else{
+        // 热读冷写
         return R_MT;
-    }else return R_LC;
+    }
 }
 
 /**********************************************
@@ -1923,21 +1933,38 @@ Status copy_back(struct ssd_info * ssd, unsigned int channel, unsigned int chip,
     return SUCCESS;
 }
 
-int get_prog_time(unsigned int ppn){
+int get_prog_time(int type,unsigned int ppn){
     int bit_type = ppn % BITS_PER_CELL;
-    switch (bit_type)
-    {
-    case LSB_PAGE:
-    case CSB_PAGE:
-    // 1000 us 切换为ns
-        return 250000;
-    case MSB_PAGE:
-    case TSB_PAGE:
-    // 1630*4 - 1000 us 切换为ns,这里的时间包含了将前两页读出来的时间
-        return 6270000;
-    default:
-        return 0;
+    if(type == FORWARD){
+         switch (bit_type)
+        {
+        case LSB_PAGE:
+        case CSB_PAGE:
+        // 1000 us 切换为ns
+            return 1000000;
+        case MSB_PAGE:
+        case TSB_PAGE:
+        // 1630*4 - 1000 us 切换为ns,这里的时间包含了将前两页读出来的时间
+            return 5520000;
+        default:
+            return 0;
+        }
+    }else{
+        switch (bit_type)
+        {
+        case LSB_PAGE:
+        case CSB_PAGE:
+        // 1000 us 切换为ns
+            return 250000;
+        case MSB_PAGE:
+        case TSB_PAGE:
+        // 1630*4 - 1000 us 切换为ns,这里的时间包含了将前两页读出来的时间
+            return 6270000;
+        default:
+            return 0;
+        }
     }
+    
 }
 
 /*****************
@@ -1972,7 +1999,7 @@ Status static_write(struct ssd_info * ssd, unsigned int channel,unsigned int chi
 
     get_ppn(ssd,sub->location->channel,sub->location->chip,sub->location->die,sub->location->plane,sub);
 
-    int prog_times = get_prog_time(sub->ppn);
+    int prog_times = get_prog_time(sub->bit_type/2,sub->ppn);
     sub->complete_time=sub->next_state_predict_time + prog_times;		
     time=sub->complete_time;
 
@@ -2124,8 +2151,9 @@ int get_plane(struct ssd_info* ssd,unsigned int channel,unsigned int chip_token,
 void process_invalid(struct ssd_info* ssd,int plane){
     struct local* loc = get_loc_by_plane(ssd,plane);
     int block;
-    int type_new = find_open_block_for_2_write(ssd,loc->channel,loc->chip,loc->die,loc->plane,LSB_PAGE);
-    if(type_new == LSB_PAGE){
+    
+    int type_new = find_open_block_for_2_write(ssd,loc->channel,loc->chip,loc->die,loc->plane,R_LC);
+    if(type_new == R_LC){
         block = ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].active_block;
     }else{
         printf("find LC page error\n");
@@ -2154,36 +2182,54 @@ int get_plane_new(struct ssd_info* ssd,unsigned int channel,unsigned int chip_to
     int find_plane = NONE;
     // 这里表示随机产生一个planeindex，避免都集中都某个plane中进行写操作
     find_plane = ssd->total_write%plane_chip + start;
-    int count = 0;
-    while(count < 2){
-        for(int i = 0;i < plane_chip;i++){
-            if(bitmap_table[find_plane] != FULL){
-                if(sub->bit_type == R_LC){
-                    if(bitmap_table[find_plane] != LC_FULL){   
-                        return find_plane;
-                    }
-                }else{
-                    if(bitmap_table[find_plane] != MT_FULL){
-                        return find_plane;
-                    }
+    static int type_bit = NONE;
+    int index[4];
+    for(int i = 0;i < 4;i ++){
+        index[i] = NONE;
+    }
+    
+    // 这里遍历四个plane，如果找到对应的类型的plane，直接推出
+    for(int i = 0;i < plane_chip;i ++){
+        struct local* loc = get_loc_by_plane(ssd,find_plane);
+        for(int j_type = 0;j_type < BITS_PER_CELL;j_type++){
+            if(GET_BIT(ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].bitmap_type,j_type) == 0){
+                index[j_type] = find_plane;
+                if(j_type == sub->bit_type){
+                    flag = SUCCESS;
+                    break;
                 }
             }
-            find_plane = (find_plane + 1)% plane_chip + start;
         }
-        // 如果找不到，则需要进行切换类型
-        if(sub->bit_type == R_LC){
-            sub->bit_type = R_MT;
-        }else{
-            // 如果bit类型是MT类型，找不到MT位置，则产生空白页,无需转变类型
-            for(int i = 0;i < plane_chip;i ++){
-                if(bitmap_table[find_plane] != FULL || bitmap_table[find_plane]!=LC_FULL){
-                    process_invalid(ssd,find_plane);
-                    return find_plane;
-                }
-                find_plane = (find_plane + 1)% plane_chip + start; 
+        free(loc);
+        loc = NULL;
+        if(flag == SUCCESS){
+            break;
+        }
+        find_plane = (find_plane + 1) % plane_chip + start; 
+    }
+    if(flag == SUCCESS){
+        return index[sub->bit_type];
+    }else{
+        if(sub->bit_type == R_MT){
+            if(index[P_LC]!= NULL){
+                sub->bit_type = P_LC;
+                return index[P_LC];
+            }else if(index[R_LC]!=NONE){
+                process_invalid(ssd,index[R_LC]);
+                return index[R_LC];
             }
         }
-    }  
+        // 根据优先级分配plane
+        // TODO：这里为了避免每次都是分配到P_LC,创建了一个静态变量，每次加一，循环
+        type_bit = (type_bit + 1)%BITS_PER_CELL;
+        for(int i = 0;i < BITS_PER_CELL;i ++){
+            if(index[type_bit]!=NONE){
+                sub->bit_type = type_bit;
+                return index[type_bit];
+            }
+            type_bit = (type_bit + 1)%BITS_PER_CELL;
+        }
+    }
     printf("error ,find no plane\n"); 
     return NONE;
 }
@@ -2258,12 +2304,12 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 }
                                 free(loc);
                                 loc = NULL;
-                                sub->bit_type = sub->bit_type*2;
-                                if(sub_other != NULL){
-                                    sub_other->bit_type = sub->bit_type + 1;
-                                }
-                                get_ppn_for_2_write(ssd,channel,chip_token,die_token,plane_token,sub,sub_other);
                                 
+                                get_ppn_for_2_write(ssd,channel,chip_token,die_token,plane_token,sub,sub_other);
+                                // 子请求的类型现在不为具体的，而只为RLC RMT PLC PMT
+                                if(sub_other != NULL){
+                                    sub_other->bit_type = sub->bit_type;
+                                }
 
                                 ssd->channel_head[channel].chip_head[chip_token].die_head[die_token].token=(ssd->channel_head[channel].chip_head[chip_token].die_head[die_token].token+1)%ssd->parameter->plane_die;
 
@@ -4381,20 +4427,37 @@ int get_read_time(unsigned int ppn){
     return NONE;
 }
 
-int get_read_time_new(int type){
-    switch (type)
-    {
-    case LSB_PAGE:
-        return 8;
-    case CSB_PAGE:
-        return 4;
-    case MSB_PAGE:
-        return 2;
-    case TSB_PAGE:
-        return 1;
-    default:
-        printf("error in get_read_time\n");
-        break;
+int get_read_time_new(int type,int bit){
+    if(type / 2 == FORWARD){
+        switch (bit)
+        {
+        case LSB_PAGE:
+            return 1;
+        case CSB_PAGE:
+            return 2;
+        case MSB_PAGE:
+            return 4;
+        case TSB_PAGE:
+            return 8;
+        default:
+            printf("error in get_read_time\n");
+            break;
+        }
+    }else{
+        switch (bit)
+        {
+        case LSB_PAGE:
+            return 8;
+        case CSB_PAGE:
+            return 4;
+        case MSB_PAGE:
+            return 2;
+        case TSB_PAGE:
+            return 1;
+        default:
+            printf("error in get_read_time\n");
+            break;
+        }
     }
     return NONE;
 }
@@ -4473,7 +4536,9 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                     sub->current_time=ssd->current_time;
                     sub->current_state=SR_R_READ;
                     sub->next_state=SR_R_DATA_TRANSFER;
-                    int read_times = get_read_time_new(sub->bit_type);
+                    // 传进来的类型为rlc rmt plc pmt
+                    int bit = sub->ppn%BITS_PER_CELL;
+                    int read_times = get_read_time_new(sub->bit_type,bit);
                     // 20000 40000 80000 160000
                     sub->next_state_predict_time=ssd->current_time+read_times * ssd->parameter->time_characteristics.tR;
 
@@ -4566,7 +4631,7 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                      *此时channel，chip的当前状态变为CHANNEL_TRANSFER，CHIP_WRITE_BUSY
                      *下一个状态变为CHANNEL_IDLE，CHIP_IDLE
                      *******************************************************************************************************/
-                    prog_time = get_prog_time(sub1->ppn);
+                    prog_time = get_prog_time(sub->bit_type/2,sub1->ppn);
                     sub = sub1;
                     ssd->channel_head[location->channel].prog_sub_nums++;
                     ssd->channel_head[location->channel].chip_head[location->chip].prog_sub_nums++;	

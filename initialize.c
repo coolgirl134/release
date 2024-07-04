@@ -45,7 +45,9 @@ unsigned long long chip_time;
 bitchunk_t NONE_bitmap[1];
 bitchunk_t LC_bitmap[1];
 bitchunk_t MT_bitmap[1];
+// 对应bit置为1表示该plane中的该类型已满，RLC0 RMT1 PLC2 PMT3
 char bitmap_table[16];
+
 char current_buffer[16];
 
 
@@ -250,6 +252,7 @@ struct blk_info * initialize_block(struct blk_info * p_block,struct parameter_va
     p_block->free_page_num = parameter->page_block;	// all pages are free
     p_block->last_write_page = -1;	// no page has been programmed
     int page_block = parameter->page_block * BITS_PER_CELL;
+    p_block->program_type = NONE;
 
     p_block->page_head = (struct page_info *)malloc(page_block * sizeof(struct page_info));
     alloc_assert(p_block->page_head,"p_block->page_head");
@@ -272,7 +275,8 @@ struct plane_info * initialize_plane(struct plane_info * p_plane,struct paramete
     p_plane->add_reg_ppn = -1;  //plane 里面的额外寄存器additional register -1 表示无数据
     p_plane->free_page=parameter->block_plane*parameter->page_block*BITS_PER_CELL;
     p_plane->free_LC=p_plane->free_MT=p_plane->free_page/2;
-    
+    p_plane->free_page_num[R_LC]=p_plane->free_page_num[P_LC] = p_plane->free_page/BITS_PER_CELL;
+    p_plane->free_page_num[R_MT]=p_plane->free_page_num[P_MT] = 0;
     p_plane->blk_head = (struct blk_info *)malloc(parameter->block_plane * sizeof(struct blk_info));
     alloc_assert(p_plane->blk_head,"p_plane->blk_head");
     memset(p_plane->blk_head,0,parameter->block_plane * sizeof(struct blk_info));

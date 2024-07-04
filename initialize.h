@@ -114,11 +114,17 @@ Hao Luo         2011/01/01        2.0           Change               luohao13568
 #define OVERFLOW	-3
 typedef int Status;    
 
+#define BLOCK_PLANE 2048
+
 #define NONE -1
 #define MTNONE -2
 #define FULL 8
 #define LC_FULL 10
 #define MT_FULL 11
+#define P_LC_FULL 12
+#define P_MT_FULL 13
+#define R_LC_FULL 14
+#define R_MT_FULL 15
 
 #define LSB_PAGE 0
 #define CSB_PAGE 1
@@ -129,8 +135,16 @@ typedef int Status;
 #define HOTPROG 4
 #define COLD 2
 
-#define R_LC 0
-#define R_MT 1
+#define LC 0
+#define MT 1
+
+#define REVERSE 1
+#define FORWARD 0
+
+#define P_LC 0
+#define P_MT 1
+#define R_LC 2
+#define R_MT 3
 
 #define BITS_PER_CELL 4
 
@@ -351,9 +365,12 @@ struct plane_info{
     int can_erase_block;                //记录在一个plane�??准�?�在gc操作�??�??擦除操作的块,-1表示还没有找到合适的�??
     struct direct_erase *erase_node;    //用来记录�??以直接删除的块号,在获取新的ppn时，每当出现invalid_page_num==64时，将其添加到这�??指针上，供GC操作时直接删�??
     struct blk_info *blk_head;
-    int activeblk[2];                   //分别记录LC MT对应的活跃块
+    int activeblk[4];                   //分别记录PLC PMT RLC RMT对应的活跃块
     unsigned int free_LC;
     unsigned int free_MT;
+    // 记录当前plane四种类型的page是否满
+    bitchunk_t bitmap_type[1];
+    unsigned int free_page_num[4];          //记录每种类型的page剩余多少数量，以cell为单位，因为一次需要两页编程
 };
 
 
@@ -363,7 +380,8 @@ struct blk_info{
     unsigned int invalid_page_num;     //记录该块�??失效页的�??数，同上
     int last_write_page;               //记录最近一次写操作执�?�的页数,-1表示该块没有一页�??写过
     struct page_info *page_head;       //记录每一子页的状�??
-
+    int program_type;                   //记录当前块的编程方式，默认新块为NONE
+    
     int LCMT_number[2];                 //记录当前块�?�应的bit类型到达的cell number，刚开始为NONE
 };
 

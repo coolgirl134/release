@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-typedef unsigned short bitchunk_t;
+typedef char bitchunk_t;
 
 #define CHAR_BITS       8
 #define BITCHUNK_BITS   (sizeof(bitchunk_t) * CHAR_BITS)
