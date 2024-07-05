@@ -2186,6 +2186,7 @@ void process_invalid(struct ssd_info* ssd,int plane){
         printf("cell bigger than 63\n");
     }
     int page = cell*BITS_PER_CELL;
+    ssd->erase_count1+=2;
     make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,block,page);
     make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,block,page + 1);
     ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].free_page-=2;
@@ -2231,25 +2232,77 @@ int get_plane_new(struct ssd_info* ssd,unsigned int channel,unsigned int chip_to
     if(flag == SUCCESS){
         return index[sub->bit_type];
     }else{
+        int type_new = NONE;
+ 
         if(sub->bit_type == R_MT){
-            if(index[P_LC]!= NULL){
-                sub->bit_type = P_LC;
-                return index[P_LC];
+            if(index[P_LC]!= NONE){
+                type_new = P_LC;
             }else if(index[R_LC]!=NONE){
                 process_invalid(ssd,index[R_LC]);
-                return index[R_LC];
+                type_new = R_MT;
+            }else if(index[P_MT] != NONE){
+                type_new = P_MT;
+            }else{
+                printf("errorhere\n");
+            }
+        }else if(sub->bit_type == P_LC){
+            if(ssd->dram->map->map_entry[sub->lpn].read_count > ssd->dram->map->map_entry[sub->lpn].write_count){
+                if(index[R_MT] != NONE){
+                    type_new = R_MT;
+                }else if(index[R_LC]!=NONE){
+                    type_new = R_LC;
+                }else if(index[P_MT]!=NONE){
+                    type_new = P_MT;
+                }else{
+                    printf("errorhere\n");
+                }
+            }else{
+                if(index[R_LC] != NONE){
+                    type_new = R_LC;
+                }else if(index[R_MT]!=NONE){
+                    type_new = R_MT;
+                }else if(index[P_MT]!=NONE){
+                    type_new = P_MT;
+                }else{
+                    printf("errorhere\n");
+                }
+            }
+        }else if(sub->bit_type == P_MT){
+            if(index[R_MT] != NONE){
+                type_new = R_MT;
+            }else if(index[P_LC]!=NONE){
+                type_new = P_LC;
+            }else if(index[R_LC]!=NONE){
+                type_new = R_LC;
+            }else{
+                printf("errorhere\n");
+            }
+        }else if(sub->bit_type == R_LC){
+            if(index[P_LC] != NONE){
+                type_new = P_LC;
+            }else if(index[P_MT]!=NONE){
+                type_new = P_MT;
+            }else if(index[R_MT]!=NONE){
+                type_new = R_MT;
+            }else{
+                printf("errorhere\n");
             }
         }
+        if(type_new!=NONE){
+            sub->bit_type = type_new;
+            return index[type_new];
+
+        }
+        
         // 根据优先级分配plane
-        // TODO：这里为了避免每次都是分配到P_LC,创建了一个静态变量，每次加一，循环
-        type_bit = (type_bit + 1)%BITS_PER_CELL;
-        for(int i = 0;i < BITS_PER_CELL;i ++){
-            if(index[type_bit]!=NONE){
-                sub->bit_type = type_bit;
-                return index[type_bit];
-            }
-            type_bit = (type_bit + 1)%BITS_PER_CELL;
-        }
+        // type_bit = (type_bit + 1)%BITS_PER_CELL;
+        // for(int i = 0;i < BITS_PER_CELL;i ++){
+        //     if(index[type_bit]!=NONE){
+        //         sub->bit_type = type_bit;
+        //         return index[type_bit];
+        //     }
+        //     type_bit = (type_bit + 1)%BITS_PER_CELL;
+        // }
     }
     printf("error ,find no plane\n"); 
     return NONE;
@@ -2307,7 +2360,7 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 break;
                             }
                             // 根据上一个子请求类型找到第二个sub
-                            sub_other = find_write_sub_request(ssd,channel,sub->bit_type);
+                            
 
                             if(sub->current_state==SR_WAIT)
                             {
@@ -2315,6 +2368,36 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 if(find_plane == NONE){
                                     printf("error in findplane\n");
                                     while(1){}
+                                }
+                                int other_type;
+                                int count = 0;
+                                sub_other = find_write_sub_request(ssd,channel,sub->bit_type);
+                                if(sub_other == NULL){
+                                    struct sub_request* q=NULL;
+                                    switch (sub->bit_type)
+                                    {
+                                    case P_MT:
+                                        // 表示可以和任何page结合
+                                        other_type = NONE;
+                                        sub_other = find_write_sub_request(ssd,channel,other_type);
+                                        break;
+                                    case R_LC:
+                                        other_type = P_LC;
+                                        sub_other = find_write_sub_request(ssd,channel,other_type);
+                                        break;
+                                    case R_MT:
+                                        other_type = P_LC;
+                                        sub_other = find_write_sub_request(ssd,channel,other_type);
+                                        break;
+                                    case P_LC:
+                                        other_type = R_LC;
+                                        sub_other = find_write_sub_request(ssd,channel,other_type);
+                                        if(sub_other == NULL){
+                                            sub_other = find_write_sub_request(ssd,channel,R_MT);
+                                        }
+                                    default:
+                                        break;
+                                    }
                                 }  
                                 struct local* loc = get_loc_by_plane(ssd,find_plane);
                                 die_token = loc->die;

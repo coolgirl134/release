@@ -101,6 +101,7 @@ struct ssd_info *initiation(struct ssd_info *ssd)
     ssd->real_written = 0;
     ssd->gc_rewrite = 0;
     ssd->update_write = 0;
+    ssd->free_invalid = 0;
     // ssd->write_avg = ssd->read_avg = 0;
 
     /*printf("input parameter file name:");
@@ -403,7 +404,7 @@ struct parameter_value *load_parameters(char parameter_file[30])
     p = (struct parameter_value *)malloc(sizeof(struct parameter_value));
     alloc_assert(p,"parameter_value");
     memset(p,0,sizeof(struct parameter_value));
-    p->queue_length=5;
+    p->queue_length=10;
     memset(buf,0,BUFSIZE);
 
     fp=fopen(parameter_file,"r");
