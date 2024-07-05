@@ -2360,18 +2360,9 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                 break;
                             }
                             // 根据上一个子请求类型找到第二个sub
-                            
-
-                            if(sub->current_state==SR_WAIT)
-                            {
-                                find_plane = get_plane_new(ssd,channel,chip_token,sub); 
-                                if(find_plane == NONE){
-                                    printf("error in findplane\n");
-                                    while(1){}
-                                }
-                                int other_type;
-                                int count = 0;
-                                sub_other = find_write_sub_request(ssd,channel,sub->bit_type);
+                            int other_type;
+                            int count = 0;
+                            sub_other = find_write_sub_request(ssd,channel,sub->bit_type);
                                 if(sub_other == NULL){
                                     struct sub_request* q=NULL;
                                     switch (sub->bit_type)
@@ -2398,7 +2389,17 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                     default:
                                         break;
                                     }
-                                }  
+                                } 
+
+                            if(sub->current_state==SR_WAIT)
+                            {
+                                find_plane = get_plane_new(ssd,channel,chip_token,sub); 
+                                if(find_plane == NONE){
+                                    printf("error in findplane\n");
+                                    while(1){}
+                                }
+                                
+                                 
                                 struct local* loc = get_loc_by_plane(ssd,find_plane);
                                 die_token = loc->die;
                                 plane_token = loc->plane;
