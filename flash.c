@@ -646,17 +646,18 @@ Status find_open_block(struct ssd_info *ssd,unsigned int channel,unsigned int ch
     int index = get_index_by_loc(ssd,channel,chip,die,plane);
     int count = 0;
     if(type == LSB_PAGE || type ==CSB_PAGE){
-        actblk_type = R_LC;		
+        actblk_type = P_LC;		
     }else{
-        actblk_type = R_MT;
+        actblk_type = P_MT;
     }
     
 
     active_block = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[actblk_type];
     int bit_type = type/2;
-    unsigned int free_page_num = 1;
+    unsigned int free_page_num = 0;
     // 这里的free_page_num指的是字线，当类型为LSB或MSB时，字线才需要移动
-    if(bit_type == 0){
+    if(active_block != NONE){
+        if(bit_type == 0){
         free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
     }else{
         free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];  
@@ -676,21 +677,41 @@ Status find_open_block(struct ssd_info *ssd,unsigned int channel,unsigned int ch
             bitmap_table[index] = MT_FULL;
         }
     }
+    }
+    
 
-    while(free_page_num <=0 && count < ssd->parameter->block_plane){
+    while(active_block == NONE || (free_page_num <=0 && count < ssd->parameter->block_plane)){
         active_block = (active_block + 1)%ssd->parameter->block_plane;
+        
         if(bit_type == 0){
             free_page_num = ssd->parameter->page_block - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[bit_type] - 1;
+            if(free_page_num >0){
+                ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page_num[R_LC] -= ssd->parameter->page_block;
+            }
         }else{
             free_page_num = ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[0] - ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].LCMT_number[1];  
         }
         count++;
     }
-    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[actblk_type] =active_block;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[active_block].program_type = FORWARD;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].activeblk[bit_type] =active_block;
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].active_block=active_block;
     
     if(count<ssd->parameter->block_plane)
     {
+        if(type == CSB_PAGE){
+            ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page_num[P_LC]--;
+            UNSET_BIT(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].bitmap_type,P_MT);
+        }else if(type == TSB_PAGE){
+            ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page_num[P_MT]--;
+        }
+        if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page_num[P_LC]==0){
+            SET_BIT(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].bitmap_type,P_LC);
+        }
+        if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page_num[P_MT]==0){
+            SET_BIT(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].bitmap_type,P_MT);
+        }
+        
         if(type == LSB_PAGE){
             if(bitmap_table[index] == MT_FULL){
                 bitmap_table[index] = NONE;
@@ -2390,8 +2411,6 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
 
                         ssd->channel_head[channel].chip_head[chip_token].token=(ssd->channel_head[channel].chip_head[chip_token].token+1)%ssd->parameter->die_chip;
                     }
-                }else{
-                    printf("here to check ssd->current_time how to change\n");
                 }
 
                 ssd->channel_head[channel].token=(ssd->channel_head[channel].token+1)%ssd->parameter->chip_channel[channel];
