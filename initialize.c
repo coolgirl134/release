@@ -36,6 +36,7 @@ char chip_busy[4];
 char channel_busy[2];
 unsigned long long channel_time;
 unsigned long long chip_time;
+int invalid_program = 0;
 
 /*****************************************
  *三种plane类型的bitmap

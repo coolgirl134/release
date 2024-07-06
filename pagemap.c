@@ -1378,6 +1378,7 @@ unsigned int get_ppn_for_2_gc(struct ssd_info *ssd,unsigned int channel,unsigned
                     type = P_LC;
                 }else if(GET_BIT(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].bitmap_type,R_LC) == 0){
                     process_invalid(ssd,index);
+                    invalid_program = 1;
                 }else if(GET_BIT(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].bitmap_type,P_MT) == 0){
                     type = P_MT;
                 }
@@ -2266,7 +2267,8 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
                     // 第一个page 的flag 为0，第二个为1；
                     // 这里的type指的是反向还是正向，所以要根据block的program type进行判断
                     if(flag == FAILURE){
-                        total_prog_time += get_prog_time(bit_type,ppn);
+                        total_prog_time += get_prog_time(ssd,bit_type,ppn,invalid_program);
+                        invalid_program = 0;
                     }
                     if((type1%2)!=((ppn%BITS_PER_CELL)/2)){
                         if(type1 %2==0){
