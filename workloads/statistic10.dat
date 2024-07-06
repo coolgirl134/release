@@ -1,0 +1,2 @@
+parameter file: page.parameters
+trace file: ./workloads/hm_0.csv
