@@ -1923,10 +1923,21 @@ Status copy_back(struct ssd_info * ssd, unsigned int channel, unsigned int chip,
     return SUCCESS;
 }
 
-int get_prog_time(unsigned int ppn,int flag){
+int get_prog_time(struct ssd_info* ssd,unsigned int ppn,int flag){
     if(flag == 1){
         return 1000000;
     }else{
+        struct local* loc = find_location(ssd,ppn);
+        int channel = loc->channel;
+        int chip = loc->chip;
+        int die = loc->die;
+        int plane = loc->plane;
+        int block = loc->block;
+        unsigned int page = loc->page;
+        unsigned int page1 = page -1 ;
+        unsigned int page2 = page - 2;
+        free(loc);
+        loc = NULL;
         int bit_type = ppn % BITS_PER_CELL;
         switch (bit_type)
         {
@@ -1937,6 +1948,9 @@ int get_prog_time(unsigned int ppn,int flag){
         case MSB_PAGE:
         case TSB_PAGE:
         // 1630*4 - 1000 us 切换为ns,这里的时间包含了将前两页读出来的时间
+            if((ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page1].valid_state == 0) && (ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page2].valid_state == 0)){
+                return 1000000;
+            } 
             return 6270000;
         default:
             return 0;
@@ -1977,7 +1991,7 @@ Status static_write(struct ssd_info * ssd, unsigned int channel,unsigned int chi
 
     get_ppn(ssd,sub->location->channel,sub->location->chip,sub->location->die,sub->location->plane,sub);
 
-    int prog_times = get_prog_time(sub->ppn,1);
+    int prog_times = get_prog_time(ssd,sub->ppn,1);
     sub->complete_time=sub->next_state_predict_time + prog_times;		
     time=sub->complete_time;
 
@@ -4572,7 +4586,7 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                      *此时channel，chip的当前状态变为CHANNEL_TRANSFER，CHIP_WRITE_BUSY
                      *下一个状态变为CHANNEL_IDLE，CHIP_IDLE
                      *******************************************************************************************************/
-                    prog_time = get_prog_time(sub1->ppn,sub1->invalid_program);
+                    prog_time = get_prog_time(ssd,sub1->ppn,sub1->invalid_program);
                     sub = sub1;
                     ssd->channel_head[location->channel].prog_sub_nums++;
                     ssd->channel_head[location->channel].chip_head[location->chip].prog_sub_nums++;	

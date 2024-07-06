@@ -1971,7 +1971,7 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
                         type1 = type2 = NONE;
                     }else{
                         struct local* loc =find_location(ssd,ppn); 
-                        total_prog_time += get_prog_time(ppn,ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].blk_head[loc->block].page_head[loc->page].invalid_program);
+                        total_prog_time += get_prog_time(ssd,ppn,ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].blk_head[loc->block].page_head[loc->page].invalid_program);
                         free(loc);
                         loc = NULL;
                     }
