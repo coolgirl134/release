@@ -42,6 +42,7 @@ int  main()
 
     
     for(int index_i = 1;index_i < 2;index_i ++){
+        printf("******************FTSP************************\n");
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -94,6 +95,7 @@ int  main()
             break;
         }
     ssd=initiation(ssd);
+    fprintf(ssd->statisticfile,"\n**********************FTSP********************************\n");
     printf("***************************%s*******************\n",ssd->statisticfilename);
     for (i=0;i<ssd->parameter->channel_number;i++)
     {
