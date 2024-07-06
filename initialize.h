@@ -373,6 +373,7 @@ struct page_info{                      //lpn记录该物理页存储的逻辑页
     int free_state;                    //each bit indicates the subpage is free or occupted. 1 indicates that the bit is free and 0 indicates that the bit is used
     unsigned int lpn;                 
     unsigned int written_count;        //记录该页�??写的次数
+    int invalid_program;
 };
 
 
@@ -459,7 +460,7 @@ struct sub_request{
     unsigned int ppn;                  //分配那个物理子页给这�??子�?�求。在multi_chip_page_mapping�??，产生子页�?�求时可能就知道psn的值，其他时候psn的值由page_map_read,page_map_write等FTL最底层函数产生�?? 
     unsigned int operation;            //表示该子请求的类型，除了�??1 �??0，还有擦除，two plane等操�?? 
     int size;
-
+    int invalid_program;
     unsigned int req_id;
 
     unsigned int current_state;        //表示该子请求所处的状态，见宏定义sub request

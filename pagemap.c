@@ -706,6 +706,7 @@ void process_2_write(struct ssd_info* ssd,int channel,int chip,int die,int plane
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].valid_state=sub->state;
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].free_state=((~(sub->state))&full_page);
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].written_count++;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].invalid_program = sub->invalid_program;
 }
 
 void make_invalid(struct ssd_info* ssd,int channel,int chip,int die,int plane,int block,int page){
@@ -1232,6 +1233,7 @@ struct ssd_info *get_ppn(struct ssd_info *ssd,unsigned int channel,unsigned int 
 
 unsigned int get_ppn_for_2_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,unsigned int die,unsigned int plane,int type){
     unsigned int active_block,block,page,ppn;
+    int invalid =0;
     int type_new = find_open_block_for_2_write(ssd,channel,chip,die,plane,type);
     int index = get_index_by_loc(ssd,channel,chip,die,plane);
     if(type_new != type){
@@ -1242,6 +1244,7 @@ unsigned int get_ppn_for_2_gc(struct ssd_info *ssd,unsigned int channel,unsigned
             }else{
                 // 如果type为MSB_PAGE，将LC置为无效之后再进行编程
                 process_invalid(ssd,index);
+                invalid = 1;
             }
             type_new = find_open_block_for_2_write(ssd,channel,chip,die,plane,type);
             if(type_new != type){
@@ -1269,7 +1272,8 @@ unsigned int get_ppn_for_2_gc(struct ssd_info *ssd,unsigned int channel,unsigned
     page = cell * BITS_PER_CELL + type;
 
     ppn = find_ppn_new(ssd,channel,chip,die,plane,block,page);
-
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].invalid_program = invalid;
+    ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page + 1].invalid_program = invalid;
     ssd->program_count+=2;                                                           /*修改ssd的program_count,free_page等变量*/
     ssd->channel_head[channel].program_count+=2;
     ssd->channel_head[channel].chip_head[chip].program_count+=2;
@@ -1959,14 +1963,17 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
    
                     ppn = move_page( ssd, location, &transfer_size,flag,type1);   
                     // 第一个page 的flag 为0，第二个为1；
-                    
-                    type1 = ppn % BITS_PER_CELL;                                                
+                    type1 = ppn % BITS_PER_CELL; 
+                                                               
                     ssd->update_write++;
                     moved_count++;
                     if(flag == SUCCESS){
                         type1 = type2 = NONE;
                     }else{
-                        total_prog_time += get_prog_time(ppn);
+                        struct local* loc =find_location(ssd,ppn); 
+                        total_prog_time += get_prog_time(ppn,ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].blk_head[loc->block].page_head[loc->page].invalid_program);
+                        free(loc);
+                        loc = NULL;
                     }
                     flag = NONE;
                     free(location);
