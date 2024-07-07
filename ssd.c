@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 1;index_i < 2;index_i ++){
+    for(int index_i = 0;index_i < 1;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -94,7 +94,7 @@ int  main()
             break;
         }
     ssd=initiation(ssd);
-    printf("***************************Reverse_TSP*******************\n");
+    printf("***************************BDP_without_invalid*******************\n");
     printf("***************************%s*******************\n",ssd->statisticfilename);
     for (i=0;i<ssd->parameter->channel_number;i++)
     {
@@ -387,13 +387,13 @@ int get_requests(struct ssd_info *ssd)
         }
         else
         {
-            // if (ssd->request_queue_length>=ssd->parameter->queue_length)
-            // {
-            //     fseek(ssd->tracefile,filepoint,0);
-            //     ssd->current_time=nearest_event_time;
-            //     return -1;
-            // } 
-            // else
+            if (ssd->request_queue_length>=ssd->parameter->queue_length)
+            {
+                fseek(ssd->tracefile,filepoint,0);
+                ssd->current_time=nearest_event_time;
+                return -1;
+            } 
+            else
             {
                 ssd->current_time=time_t;
             }
