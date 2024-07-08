@@ -47,7 +47,7 @@ void make_invalid(struct ssd_info* ssd,int channel,int chip,int die,int plane,in
 
 int erase_operation(struct ssd_info * ssd,unsigned int channel ,unsigned int chip ,unsigned int die,unsigned int plane ,unsigned int block);
 int erase_planes(struct ssd_info * ssd, unsigned int channel, unsigned int chip, unsigned int die1, unsigned int plane1,unsigned int command);
-unsigned int move_page(struct ssd_info * ssd, struct local *location,unsigned int * transfer_size,int flag,int type);
+unsigned int move_page(struct ssd_info * ssd, struct local *location,unsigned int * transfer_size,int flag,int* type);
 int gc_for_channel(struct ssd_info *ssd, unsigned int channel);
 int delete_gc_node(struct ssd_info *ssd, unsigned int channel,struct gc_operation *gc_node);
 
