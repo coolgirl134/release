@@ -125,8 +125,8 @@ typedef int Status;
 #define MSB_PAGE 2
 #define TSB_PAGE 3
 
-#define HOTREAD 4
-#define HOTPROG 4
+#define HOTREAD 8
+#define HOTPROG 8
 #define COLD 2
 
 #define R_LC 0
