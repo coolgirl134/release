@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 0;index_i < 1;index_i ++){
+    for(int index_i = 5;index_i < 6;index_i ++){
         printf("******************FTSP************************\n");
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
@@ -1254,6 +1254,8 @@ void statistic_output(struct ssd_info *ssd)
     }
     fprintf(ssd->statisticfile,"\n");
     fprintf(ssd->statisticfile,"\n");
+    fprintf(ssd->statisticfile,"HOTREAD is %d\n",HOTREAD);
+    fprintf(ssd->statisticfile,"HOTPROG is %d\n",HOTPROG);
     fprintf(ssd->statisticfile,"---------------------------static data---------------------------\n");	
     fprintf(ssd->statisticfile,"min lsn: %13d\n",ssd->min_lsn);	
     fprintf(ssd->statisticfile,"max lsn: %lld\n",ssd->max_lsn);

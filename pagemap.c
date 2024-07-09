@@ -768,6 +768,9 @@ struct ssd_info *get_ppn_for_2_write(struct ssd_info *ssd,unsigned int channel,u
     ssd->channel_head[channel].program_count+=2;
     ssd->channel_head[channel].chip_head[chip].program_count+=2;
     ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page-=2;
+    if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].valid_state == 0){
+        printf("valid state == 0\n");
+    }
     if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page == 0){
         printf("\nchannel %d chip %d die %d plane %d free page is %d\n",channel,chip,die,plane,ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].free_page);
     }
