@@ -1174,8 +1174,10 @@ Status write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,un
 }
 
 int typeofdata(struct ssd_info* ssd,unsigned int lpn){
-    if(ssd->dram->map->map_entry[lpn].read_count <= HOTPROG && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
-        // 冷读热写
+    // if(ssd->dram->map->map_entry[lpn].read_count <= HOTPROG && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
+    //     // 冷读热写
+    if(ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
+        // 热写
         return R_LC;
     }else if(ssd->dram->map->map_entry[lpn].read_count > HOTREAD && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
         // 热读热写
@@ -1956,7 +1958,7 @@ Status copy_back(struct ssd_info * ssd, unsigned int channel, unsigned int chip,
 
 int get_prog_time(struct ssd_info* ssd,int type,unsigned int ppn,int flag){
     if(flag == 1){
-        return 1000000;
+        return 750000;
     }else{
         struct local* loc = find_location(ssd,ppn);
         int channel = loc->channel;
@@ -2416,6 +2418,9 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                                         break;
                                     }
                                 } 
+                            if(sub_other == NULL){
+                                sub_other = find_write_sub_request(ssd,channel,NONE);
+                            }
 
                             if(sub->current_state==SR_WAIT)
                             {
@@ -4729,21 +4734,17 @@ Status go_one_step(struct ssd_info * ssd, struct sub_request * sub1,struct sub_r
                     // 2048*25 = 51200
                     sub->next_state_predict_time=ssd->current_time+(sub->size*ssd->parameter->subpage_capacity)*ssd->parameter->time_characteristics.tRC;			
                     sub->complete_time=sub->next_state_predict_time;
-                    if(sub1->complete_time - sub1->begin_time > 1000000){
-                        printf("sub request%u\n",sub1->complete_time - sub1->begin_time);
-                        printf("big request %u\n",sub1->complete_time - sub1->req_begin_time);
-                    }
                     
                     ssd->request_queue->done_sub++;
                     ssd->channel_head[location->channel].current_state=CHANNEL_DATA_TRANSFER;		
                     ssd->channel_head[location->channel].current_time=ssd->current_time;		
                     ssd->channel_head[location->channel].next_state=CHANNEL_IDLE;	
-                    ssd->channel_head[location->channel].next_state_predict_time=sub->next_state_predict_time;
+                    ssd->channel_head[location->channel].next_state_predict_time=sub->next_state_predict_time + sub->prog_time;
 
                     ssd->channel_head[location->channel].chip_head[location->chip].current_state=CHIP_DATA_TRANSFER;				
                     ssd->channel_head[location->channel].chip_head[location->chip].current_time=ssd->current_time;			
                     ssd->channel_head[location->channel].chip_head[location->chip].next_state=CHIP_IDLE;			
-                    ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=sub->next_state_predict_time;
+                    ssd->channel_head[location->channel].chip_head[location->chip].next_state_predict_time=sub->next_state_predict_time + sub->prog_time;
 
                     ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].add_reg_ppn=-1;
                     ssd->channel_head[location->channel].busy_time += (ssd->channel_head[location->channel].next_state_predict_time - ssd->current_time);

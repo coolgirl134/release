@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 2;index_i < 6;index_i ++){
+    for(int index_i = 0;index_i < 1;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -141,6 +141,14 @@ int  main()
     fprintf(ssd->outputfile,"\t\t\t\t\t\t\t\t\tOUTPUT\n");
     fprintf(ssd->outputfile,"****************** TRACE INFO ******************\n");
     ssd=simulate(ssd);
+    struct sub_request* sub = ssd->to_move_sub_head;
+    struct sub_request* p = sub;
+    while(sub!= NULL){
+        sub = sub->next_node;
+        free(p);
+        p=NULL;
+        p=sub;
+    }
     printf("dram node %u\n",avlTreeCount(ssd->dram->buffer));
     printf("update write %llu + free invalid %llu = %llu, real written %llu\n",ssd->update_write,ssd->free_invalid,ssd->update_write + ssd->free_invalid,ssd->real_written);
     statistic_output(ssd);  
@@ -259,6 +267,21 @@ struct ssd_info *simulate(struct ssd_info *ssd)
     return ssd;
 }
 
+int get_predict_time(int type){
+    switch (type)
+    {
+    case P_LC:
+        return 1000000;
+    case P_MT: 
+        return 5520000;
+    case R_LC:
+        return 250000;
+    case R_MT:
+        return 6270000;
+    default:
+        break;
+    }
+}
 
 
 /********    get_request    ******************************************************
@@ -361,8 +384,107 @@ int get_requests(struct ssd_info *ssd)
 
      if (nearest_event_time==MAX_INT64)
     {
-        ssd->current_time=time_t;           
+        if(time_t - ssd->current_time > 10000000){
+            if(ssd->subs_w_head == NULL && ssd->channel_head[0].subs_r_head == NULL && ssd->channel_head[1].subs_r_head==NULL){
+                int move_flag = FAILURE;
+                printf("here %llu\n",time_t - ssd->current_time);
+                struct sub_request* sub = ssd->to_move_sub_head;
+                struct sub_request* q = ssd->to_move_sub_head;
+                while(sub!=NULL){
+                    int channel = sub->location->channel;
+                    int chip = sub->location->chip;
+                    int die = sub->location->die;
+                    int plane = sub->location->plane;
+                    int block = sub->location->block;
+                    int page = sub->location->page;
+                    if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[page].lpn == 0){
+                        // 表示已经被迁移
+                        move_flag = SUCCESS;
+                    }else{
+                        if((ssd->channel_head[channel].current_state==CHANNEL_IDLE)||(ssd->channel_head[channel].next_state==CHANNEL_IDLE&&ssd->channel_head[i].next_state_predict_time<=ssd->current_time)){
+                            if((ssd->channel_head[channel].chip_head[chip].current_state==CHIP_IDLE)||((ssd->channel_head[channel].chip_head[chip].next_state==CHIP_IDLE)&&(ssd->channel_head[channel].chip_head[chip].next_state_predict_time<=ssd->current_time))){
+                                int type = typeofdata(ssd,sub->lpn);
+                                if(type!=sub->bit_type){
+                                    int predict_time = get_predict_time(type);
+                                    if(ssd->current_time + predict_time > time_t) break;
+                                    if(GET_BIT(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].bitmap_type,type) == 0){
+                                        
+                                        unsigned int size;
+                                        unsigned int ppn = move_page(ssd,sub->location,&size,0,&type);
+                                        struct local* loc = find_location(ssd,ppn);
+                                        make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,loc->block,loc->page + 1);
+                                        ssd->free_invalid++;
+                                        int prog_time = get_prog_time(ssd,type/2,ppn,invalid_program);
+                                        ssd->current_time += prog_time;
+                                        if(ssd->current_time > time_t){
+                                            printf("error\n");
+                                        }
+                                        move_flag = SUCCESS;
+                                        ssd->channel_head[channel].next_state_predict_time += prog_time;
+                                        ssd->channel_head[channel].chip_head[chip].next_state_predict_time += prog_time;
+                                        
+                                        invalid_program = 0;
+                                        free(loc);
+                                        loc= NULL;
+                                        // 判断是不是整个块都是无效的
+                                        if (ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].invalid_page_num==(ssd->parameter->page_block * BITS_PER_CELL))    
+                                        {
+                                            for(int i=0;i < ssd->parameter->page_block*BITS_PER_CELL;i++){
+                                                // 验证是否所有page都是无效的
+                                                if(ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].blk_head[block].page_head[i].lpn !=0){
+                                                    printf("error\n");
+                                                }
+                                            }
+                                            struct direct_erase *direct_erase_node,*new_direct_erase;
+                                            new_direct_erase=(struct direct_erase *)malloc(sizeof(struct direct_erase));
+                                            alloc_assert(new_direct_erase,"new_direct_erase");
+                                            memset(new_direct_erase,0, sizeof(struct direct_erase));
 
+                                            new_direct_erase->block=block;
+                                            new_direct_erase->next_node=NULL;
+                                            direct_erase_node=ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].erase_node;
+                                            if (direct_erase_node==NULL)
+                                            {
+                                                ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].erase_node=new_direct_erase;
+                                            } 
+                                            else
+                                            {
+                                                new_direct_erase->next_node=ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].erase_node;
+                                                ssd->channel_head[channel].chip_head[chip].die_head[die].plane_head[plane].erase_node=new_direct_erase;
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                    if(move_flag == SUCCESS){
+                        
+                        if(sub==ssd->to_move_sub_head){
+                            ssd->to_move_sub_head = sub->next_node;
+                            q = sub->next_node;
+                            
+                        }else{
+                            q->next_node = sub->next_node;
+                        }
+                        free(sub);
+                        sub = NULL; 
+                        // 这里说明所有请求遍历完
+                        if(q == NULL) break;
+                        sub = q->next_node;
+                        move_flag = FAILURE;
+                    }else{
+                        q=sub;
+                        sub = sub->next_node;    
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        ssd->current_time=time_t;           
         //if (ssd->request_queue_length>ssd->parameter->queue_length)    //如果请求队列的长度超过了配置文件�?所设置的长�?                     
         //{
         //printf("error in get request , the queue length is too long\n");
@@ -711,6 +833,76 @@ struct ssd_info *distribute(struct ssd_info *ssd)
                             else
                             {
                                 sub=creat_sub_request(ssd,lpn,sub_size,0,req,req->operation);
+                                int type = typeofdata(ssd,sub->lpn);
+                                int type_sub = sub->ppn%BITS_PER_CELL;
+                                type_sub = ssd->channel_head[sub->location->channel].chip_head[sub->location->chip].die_head[sub->location->die].plane_head[sub->location->plane].blk_head[sub->location->block].program_type*2 + type_sub/2;
+                                if(type != type_sub){
+                                    struct sub_request* sub_new = (struct sub_request*)malloc(sizeof(struct sub_request));
+                                    sub_new->lpn = sub->lpn;
+                                    sub_new->bit_type = type_sub;
+                                    sub_new->location = find_location(ssd,sub->ppn);
+                                    sub_new->ppn = sub->ppn;
+                                    sub_new->size = sub->size;
+                                    sub_new->state = sub->state;
+                                    sub_new->next_node = NULL;
+                                    if (ssd->to_move_sub_tail!=NULL)
+                                    {
+                                        ssd->to_move_sub_tail->next_node=sub_new;
+                                        ssd->to_move_sub_tail=sub_new;
+                                    } 
+                                    else
+                                    {
+                                        ssd->to_move_sub_tail=sub_new;
+                                        ssd->to_move_sub_head=sub_new;
+                                    }
+                                }
+                                
+                                // int type = typeofdata(ssd,sub->lpn);
+                                // int type_sub = sub->ppn%BITS_PER_CELL;
+                                // struct local* sub_loc = find_location(ssd,sub->ppn);
+                                // type_sub = ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].blk_head[sub_loc->block].program_type*2 + type_sub/2;
+                                // if(type != type_sub){
+                                //     if(GET_BIT(ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].bitmap_type,type) == 0){
+                                //         unsigned int size;
+                                //         unsigned int ppn = move_page(ssd,sub_loc,&size,0,&type);
+                                //         struct local* loc = find_location(ssd,ppn);
+                                //         make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,loc->block,loc->page + 1);
+                                //         ssd->free_invalid++;
+                                //         sub->prog_time = get_prog_time(ssd,type,ppn,invalid_program);
+                                //         invalid_program = 0;
+                                //         free(loc);
+                                //         loc= NULL;
+                                //         if (ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].blk_head[sub_loc->block].invalid_page_num==(ssd->parameter->page_block * BITS_PER_CELL))    
+                                //         {
+                                //             for(int i=0;i < ssd->parameter->page_block*BITS_PER_CELL;i++){
+                                //                 // 验证是否所有page都是无效的
+                                //                 if(ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].blk_head[sub_loc->block].page_head[i].lpn !=0){
+                                //                     printf("error\n");
+                                //                 }
+                                //             }
+                                //             struct direct_erase *direct_erase_node,*new_direct_erase;
+                                //             new_direct_erase=(struct direct_erase *)malloc(sizeof(struct direct_erase));
+                                //             alloc_assert(new_direct_erase,"new_direct_erase");
+                                //             memset(new_direct_erase,0, sizeof(struct direct_erase));
+
+                                //             new_direct_erase->block=sub_loc->block;
+                                //             new_direct_erase->next_node=NULL;
+                                //             direct_erase_node=ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].erase_node;
+                                //             if (direct_erase_node==NULL)
+                                //             {
+                                //                 ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].erase_node=new_direct_erase;
+                                //             } 
+                                //             else
+                                //             {
+                                //                 new_direct_erase->next_node=ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].erase_node;
+                                //                 ssd->channel_head[sub_loc->channel].chip_head[sub_loc->chip].die_head[sub_loc->die].plane_head[sub_loc->plane].erase_node=new_direct_erase;
+                                //             }
+                                //         }
+                                //     }
+                                    
+                                // }
+                                // free(sub_loc);
+                                // sub_loc = NULL;
                                 // 用于追踪请求，记录请求时间
                                 sub->lsn = req->lsn;
                                 sub->req_id = req->id;
@@ -1254,6 +1446,8 @@ void statistic_output(struct ssd_info *ssd)
     }
     fprintf(ssd->statisticfile,"\n");
     fprintf(ssd->statisticfile,"\n");
+    fprintf(ssd->statisticfile,"HOTREAD is %d\n",HOTREAD);
+    fprintf(ssd->statisticfile,"HOTPROG is %d\n",HOTPROG);
     fprintf(ssd->statisticfile,"---------------------------static data---------------------------\n");	
     fprintf(ssd->statisticfile,"min lsn: %13d\n",ssd->min_lsn);	
     fprintf(ssd->statisticfile,"max lsn: %lld\n",ssd->max_lsn);

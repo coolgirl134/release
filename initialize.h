@@ -131,8 +131,8 @@ typedef int Status;
 #define MSB_PAGE 2
 #define TSB_PAGE 3
 
-#define HOTREAD 8
-#define HOTPROG 8
+#define HOTREAD 4
+#define HOTPROG 4
 #define COLD 2
 
 #define LC 0
@@ -282,7 +282,8 @@ struct ssd_info{
     FILE * tracefile;
     FILE * statisticfile;
     FILE * statisticfile2;
-
+    struct sub_request *to_move_sub_head;
+    struct sub_request *to_move_sub_tail;
     struct parameter_value *parameter;   //SSD参数因子
     struct dram_info *dram;
     struct request *request_queue;       //dynamic request queue
@@ -483,6 +484,7 @@ struct sub_request{
     int size;
     int invalid_program;
     unsigned int req_id;
+    int prog_time;
 
     unsigned int current_state;        //表示该子请求所处的状态，见宏定义sub request
     int64_t current_time;
