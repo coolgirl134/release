@@ -90,135 +90,137 @@ greed MPW command=0;            #1 for using multi-plane write greedily, 0 for n
 aged=0;                         #1 for making SSD aged, 0 for keeping SSD non-aged
 aged ratio=0.7;                #If we need to make SSD aged, set the aged ratio in advance
 -----------------------simulation output----------------------
-the 0 channel, 0 die, 0 plane, 2048 blocks has :           261 erase operations
-the 0 channel, 0 die, 1 plane, 2048 blocks has :           352 erase operations
-the 0 channel, 1 die, 0 plane, 2048 blocks has :           172 erase operations
-the 0 channel, 1 die, 1 plane, 2048 blocks has :           223 erase operations
-the 1 channel, 0 die, 0 plane, 2048 blocks has :           199 erase operations
-the 1 channel, 0 die, 1 plane, 2048 blocks has :           283 erase operations
-the 1 channel, 1 die, 0 plane, 2048 blocks has :           109 erase operations
-the 1 channel, 1 die, 1 plane, 2048 blocks has :           161 erase operations
+the 0 channel, 0 die, 0 plane, 2048 blocks has :           253 erase operations
+the 0 channel, 0 die, 1 plane, 2048 blocks has :           326 erase operations
+the 0 channel, 1 die, 0 plane, 2048 blocks has :           181 erase operations
+the 0 channel, 1 die, 1 plane, 2048 blocks has :           220 erase operations
+the 1 channel, 0 die, 0 plane, 2048 blocks has :           200 erase operations
+the 1 channel, 0 die, 1 plane, 2048 blocks has :           279 erase operations
+the 1 channel, 1 die, 0 plane, 2048 blocks has :           129 erase operations
+the 1 channel, 1 die, 1 plane, 2048 blocks has :           165 erase operations
 ---------------------------latency array distribute---------------------------
 total latency num is 1497174
-0.871537
-0.889794
-0.905658
-0.918150
-0.930610
-0.942853
-0.954301
-0.964752
-0.986775
+0.870844
+0.888922
+0.904741
+0.917458
+0.929683
+0.942353
+0.953855
+0.964542
+0.986668
 1.000000
 ---------------------------tail latency---------------------------
-start is 45198457070 rang is 1231707527
-0.011615
-0.025521
-0.035974
-0.052972
-0.063365
-0.073376
-0.084417
-0.093046
-0.103686
-0.113818
-0.124398
-0.137155
-0.144843
-0.152070
-0.159076
-0.165742
-0.173216
-0.181591
-0.188451
-0.196345
-0.209236
-0.224578
-0.231845
-0.239459
-0.246619
-0.254206
-0.261840
-0.271632
-0.281818
-0.290280
-0.300953
-0.310177
-0.326347
-0.334749
-0.344307
-0.352596
-0.360965
-0.371718
-0.378985
-0.386973
-0.395656
-0.403036
-0.410363
-0.417483
-0.426126
-0.432698
-0.440713
-0.450398
-0.458212
-0.466561
-0.476273
-0.484141
-0.491962
-0.501887
-0.509428
-0.517970
-0.526312
-0.534127
-0.543070
-0.550751
-0.559227
-0.566086
-0.573019
-0.583011
-0.589730
-0.597111
-0.604939
-0.612680
-0.619920
-0.627888
-0.634660
-0.641567
-0.649562
-0.657690
-0.664028
-0.679704
-0.692254
-0.707743
-0.739442
-0.764255
-0.775315
-0.783170
-0.801451
-0.846902
-0.856994
-0.864662
-0.873999
-0.882708
-0.891652
-0.903668
-0.911168
-0.920839
-0.929836
-0.938299
-0.946334
-0.954368
-0.966818
-0.976957
-0.988465
+start is 46240119437 rang is 1229983875
+0.013839
+0.025214
+0.039981
+0.050607
+0.060245
+0.069489
+0.080456
+0.089847
+0.101509
+0.112309
+0.123997
+0.132593
+0.140161
+0.147474
+0.154087
+0.161247
+0.170791
+0.178178
+0.184610
+0.194983
+0.210304
+0.220837
+0.228305
+0.235258
+0.243052
+0.250265
+0.258948
+0.267691
+0.277182
+0.286146
+0.294868
+0.305528
+0.317424
+0.328885
+0.338743
+0.351674
+0.360130
+0.368706
+0.376193
+0.383787
+0.394948
+0.401707
+0.408306
+0.416161
+0.423762
+0.431349
+0.439892
+0.447412
+0.455534
+0.466835
+0.475531
+0.483272
+0.491033
+0.498981
+0.506515
+0.516494
+0.524015
+0.532945
+0.540806
+0.549081
+0.557757
+0.565325
+0.572825
+0.579825
+0.587179
+0.597244
+0.604431
+0.612219
+0.618844
+0.625657
+0.633084
+0.641780
+0.648586
+0.656147
+0.666206
+0.678976
+0.691680
+0.710308
+0.744024
+0.763834
+0.773539
+0.782843
+0.807636
+0.845686
+0.857101
+0.864535
+0.874540
+0.883009
+0.891872
+0.902218
+0.911502
+0.921080
+0.930371
+0.938526
+0.946414
+0.954869
+0.967045
+0.977458
+0.988692
 1.000000
 
 
+HOTREAD is 4
+HOTPROG is 4
 ---------------------------static data---------------------------
 min lsn:             0
 max lsn: 4294942720
-read count:       7542879
-program count:      12365716
+read count:       7543592
+program count:      12362952
 ---------------------------read & program sub rate---------------------------
 total program sub:      31646082
 total read sub:      15372220
@@ -229,25 +231,25 @@ read request count:        308437
 write request count:       1722478
 read request rate: 0.151871
 write request rate: 0.848129
-read request average size:     49.842274
-write request average size:     18.384130
+read request average size:     49.841949
+write request average size:     18.385391
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 47199272073
-write request average response time: 2040027600
-read request total response time: 14558001880454676
-write request total response time: 3513902662034939
-total request average response time: 8898405173
-tail latency: 168369209774
+read request average response time: 47505100058
+write request average response time: 2153109188
+read request total response time: 14652330546680098
+write request total response time: 3708683209345008
+total request average response time: 9040759340
+tail latency: 169238506957
 ---------------------------Space utilization rate---------------------------
-free invalid pagenums: 255424
+free invalid pagenums: 252660
 ---------------------------WA---------------------------
-Write amplification: 0.999331
+Write amplification: 0.998982
 buffer read hits:         12744
 buffer read miss:          2401
 buffer write hits:       4943184
 buffer write miss:      17730942
-erase: 3520
-direct erase: 3520
+erase: 3512
+direct erase: 3512
 rewrite page num:             0
 Read 0: count is 0.936824
 Read 1: count is 0.007668
