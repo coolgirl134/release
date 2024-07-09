@@ -90,3 +90,206 @@ greed MPW command=0;            #1 for using multi-plane write greedily, 0 for n
 aged=0;                         #1 for making SSD aged, 0 for keeping SSD non-aged
 aged ratio=0.7;                #If we need to make SSD aged, set the aged ratio in advance
 -----------------------simulation output----------------------
+the 0 channel, 0 die, 0 plane, 2048 blocks has :             0 erase operations
+the 0 channel, 0 die, 1 plane, 2048 blocks has :             0 erase operations
+the 0 channel, 1 die, 0 plane, 2048 blocks has :             0 erase operations
+the 0 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 0 die, 0 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 0 die, 1 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 1 die, 0 plane, 2048 blocks has :             0 erase operations
+the 1 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
+---------------------------latency array distribute---------------------------
+total latency num is 2229255
+0.371644
+0.417566
+0.430223
+0.435199
+0.441526
+0.491573
+0.606024
+0.804445
+0.905651
+1.000000
+---------------------------tail latency---------------------------
+start is 109662715314 rang is 131648659
+0.007976
+0.016005
+0.025039
+0.033217
+0.041376
+0.049720
+0.059463
+0.068039
+0.080662
+0.096506
+0.111820
+0.127448
+0.139515
+0.154488
+0.170188
+0.183188
+0.198354
+0.210187
+0.223985
+0.241820
+0.252097
+0.262477
+0.272857
+0.284233
+0.297062
+0.309550
+0.320432
+0.339811
+0.369968
+0.384403
+0.396950
+0.413412
+0.434163
+0.453380
+0.468640
+0.485686
+0.503360
+0.521653
+0.541004
+0.555771
+0.570637
+0.584044
+0.592267
+0.600507
+0.614955
+0.634661
+0.643646
+0.653672
+0.666604
+0.680747
+0.693882
+0.705827
+0.718477
+0.730328
+0.748697
+0.759929
+0.768367
+0.776679
+0.781007
+0.785080
+0.790284
+0.794411
+0.798502
+0.802557
+0.806612
+0.810627
+0.815785
+0.820948
+0.824833
+0.828919
+0.832970
+0.837079
+0.841170
+0.845315
+0.850935
+0.855569
+0.859557
+0.867609
+0.871848
+0.876818
+0.881268
+0.886310
+0.892697
+0.896977
+0.901144
+0.905607
+0.909738
+0.913762
+0.918082
+0.923694
+0.928771
+0.932948
+0.938003
+0.952407
+0.964312
+0.968497
+0.973364
+0.982488
+0.992572
+1.000000
+
+
+HOTREAD is 4
+HOTPROG is 4
+---------------------------static data---------------------------
+min lsn:             0
+max lsn: 4292365824
+read count:      11456889
+program count:      15258285
+---------------------------read & program sub rate---------------------------
+total program sub:       5508487
+total read sub:      38246500
+read rate: 0.874106
+program rate: 0.125894
+---------------------------read & program request rate---------------------------
+read request count:       2128303
+write request count:        116341
+read request rate: 0.948170
+write request rate: 0.051830
+read request average size:     17.998898
+write request average size:     47.386795
+---------------------------read & program & total & tail latency---------------------------
+read request average response time: 57889870766
+write request average response time: 13648069295
+read request total response time: 123207185622127129
+write request total response time: 1587830029927959
+total request average response time: 55596796486
+tail latency: 122827581224
+---------------------------Space utilization rate---------------------------
+free invalid pagenums: 50643
+---------------------------WA---------------------------
+Write amplification: 1.074269
+buffer read hits:         18134
+buffer read miss:          4618
+buffer write hits:        121875
+buffer write miss:       4778391
+erase: 0
+direct erase: 0
+rewrite page num:             0
+Read 0: count is 0.939545
+Read 1: count is 0.005601
+Read 2: count is 0.005589
+Read 3: count is 0.005020
+Read 4: count is 0.004340
+Read 5: count is 0.003516
+Read 6: count is 0.003133
+Read 7: count is 0.002754
+Read 8: count is 0.002386
+Read 9: count is 0.028116
+Write 0: count is 0.954511
+Write 1: count is 0.015802
+Write 2: count is 0.010159
+Write 3: count is 0.007089
+Write 4: count is 0.004154
+Write 5: count is 0.002555
+Write 6: count is 0.001404
+Write 7: count is 0.000686
+Write 8: count is 0.000375
+Write 9: count is 0.003266
+READ
+7881471
+46983
+46881
+42114
+36409
+29497
+26279
+23104
+20018
+235852
+WRITE
+8007015
+132560
+85217
+59463
+34843
+21436
+11778
+5754
+3142
+27400
