@@ -864,9 +864,6 @@ struct ssd_info *get_ppn_for_2_write(struct ssd_info *ssd,unsigned int channel,u
 #endif
 
     lpn=sub->lpn;
-    if(lpn == 1537054 && sub->req_begin_time == 128169937263645484){
-        printf("here\n");
-    }
     if(find_open_block_for_2_write(ssd,channel,chip,die,plane,sub->bit_type) != sub->bit_type){
         printf("error in find open block new\n");
     }
@@ -892,12 +889,6 @@ struct ssd_info *get_ppn_for_2_write(struct ssd_info *ssd,unsigned int channel,u
     block=active_block;	
     page = cell * BITS_PER_CELL + (sub->bit_type%2)*2;
     // 同时处理两个page
-    if(sub->lpn == 1471099 && sub->req_begin_time == 128170028542981644){
-        printf("here\n");
-    }
-    if(sub->lpn == 1359721 || (sub_other!= NULL && sub_other->lpn == 1359721)){
-        printf("here to check why lpn is it\n");
-    }
     process_2_write(ssd,channel,chip,die,plane,block,page,sub);
     if(sub_other!=NULL){
         process_2_write(ssd,channel,chip,die,plane,block,page+1,sub_other);
@@ -2279,7 +2270,7 @@ int uninterrupt_gc(struct ssd_info *ssd,unsigned int channel,unsigned int chip,u
                             type1 = type1-1;
                         }
                     }                                                
-                    ssd->update_write++;
+                    // ssd->update_write++;
                     moved_count++;
                     if(flag == SUCCESS){
                         type1 = type2 = NONE;

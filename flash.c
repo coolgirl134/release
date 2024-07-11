@@ -74,6 +74,7 @@ Status allocate_location(struct ssd_info * ssd ,struct sub_request *sub_req)
                 update->size=size(update->state);
                 update->ppn = ssd->dram->map->map_entry[sub_req->lpn].pn;
                 update->operation = READ;
+                ssd->update_write++;
 
                 if (ssd->channel_head[location->channel].subs_r_tail!=NULL)            /*产生新的读请求，并且挂到channel的subs_r_tail队列尾*/
                 {
@@ -335,11 +336,11 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
                 sub_req_size=size(ssd->dram->buffer->buffer_tail->stored);
                 sub_req_lpn=ssd->dram->buffer->buffer_tail->group;
                 sub_req=creat_sub_request(ssd,sub_req_lpn,sub_req_size,sub_req_state,req,WRITE);
-                if(ssd->dram->map->map_entry[sub_req->lpn].pn!=0){
-                    // 验证是否创建的子请求产生的更新写和我们计算的一样
-                    ssd->update_write++;
-                    // 该数值和total write相加要等有real written
-                }
+                // if(ssd->dram->map->map_entry[sub_req->lpn].pn!=0){
+                //     // 验证是否创建的子请求产生的更新写和我们计算的一样
+                //     ssd->update_write++;
+                //     // 该数值和total write相加要等有real written
+                // }
                 sub_req->lsn = req->lsn;
                 sub_req->req_id = req->id;
                 sub_req->req_begin_time = req->time;
@@ -488,7 +489,7 @@ struct ssd_info * insert2buffer(struct ssd_info *ssd,unsigned int lpn,int state,
                         sub_req_size=size(ssd->dram->buffer->buffer_tail->stored);
                         sub_req_lpn=ssd->dram->buffer->buffer_tail->group;
                         sub_req=creat_sub_request(ssd,sub_req_lpn,sub_req_size,sub_req_state,req,WRITE);
-                        ssd->update_write++;
+                        // ssd->update_write++;
                         sub_req->lsn = req->lsn;
                         sub_req->req_begin_time = req->time;
                         if(req!=NULL)           
@@ -1174,7 +1175,7 @@ Status write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,un
 }
 
 int typeofdata(struct ssd_info* ssd,unsigned int lpn){
-    if(ssd->dram->map->map_entry[lpn].read_count <= HOTPROG && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
+    if(ssd->dram->map->map_entry[lpn].read_count <= HOTREAD && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
         // 冷读热写
         return R_LC;
     }else if(ssd->dram->map->map_entry[lpn].read_count > HOTREAD && ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
@@ -2389,33 +2390,33 @@ Status services_2_write(struct ssd_info * ssd,unsigned int channel,unsigned int 
                             int other_type;
                             int count = 0;
                             sub_other = find_write_sub_request(ssd,channel,sub->bit_type);
-                                if(sub_other == NULL){
-                                    struct sub_request* q=NULL;
-                                    switch (sub->bit_type)
-                                    {
-                                    case P_MT:
-                                        // 表示可以和任何page结合
-                                        other_type = NONE;
-                                        sub_other = find_write_sub_request(ssd,channel,other_type);
-                                        break;
-                                    case R_LC:
-                                        other_type = P_LC;
-                                        sub_other = find_write_sub_request(ssd,channel,other_type);
-                                        break;
-                                    case R_MT:
-                                        other_type = P_LC;
-                                        sub_other = find_write_sub_request(ssd,channel,other_type);
-                                        break;
-                                    case P_LC:
-                                        other_type = R_LC;
-                                        sub_other = find_write_sub_request(ssd,channel,other_type);
-                                        if(sub_other == NULL){
-                                            sub_other = find_write_sub_request(ssd,channel,R_MT);
-                                        }
-                                    default:
-                                        break;
-                                    }
-                                } 
+                                // if(sub_other == NULL){
+                                //     struct sub_request* q=NULL;
+                                //     switch (sub->bit_type)
+                                //     {
+                                //     case P_MT:
+                                //         // 表示可以和任何page结合
+                                //         other_type = NONE;
+                                //         sub_other = find_write_sub_request(ssd,channel,other_type);
+                                //         break;
+                                //     case R_LC:
+                                //         other_type = P_LC;
+                                //         sub_other = find_write_sub_request(ssd,channel,other_type);
+                                //         break;
+                                //     case R_MT:
+                                //         other_type = P_LC;
+                                //         sub_other = find_write_sub_request(ssd,channel,other_type);
+                                //         break;
+                                //     case P_LC:
+                                //         other_type = R_LC;
+                                //         sub_other = find_write_sub_request(ssd,channel,other_type);
+                                //         if(sub_other == NULL){
+                                //             sub_other = find_write_sub_request(ssd,channel,R_MT);
+                                //         }
+                                //     default:
+                                //         break;
+                                //     }
+                                // } 
 
                             if(sub->current_state==SR_WAIT)
                             {
