@@ -1159,13 +1159,13 @@ void statistic_output(struct ssd_info *ssd)
     // int k_index = latency_index / 10 * 9;
     int k_index = 0;
     // range = (ssd->tail_latency - latency[k_index])/100;
-    // range = 50000000000;
-    range = 100000000;
+    range = 50000000000;
+    // range = 100000000;
     printf("range is %llu\n",range);
     unsigned long long min = __UINT_LEAST64_MAX__;
     for(int i = k_index;i <= latency_index;i++){
-        // int j = latency[i]/range + (latency[i]%range)/100000000;
-        int j = latency[i]/range;
+        int j = latency[i]/range + (latency[i]%range)/100000000;
+        // int j = latency[i]/range;
         if(latency[i] < min){
             min = latency[i];
         }
