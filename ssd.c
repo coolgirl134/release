@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 0;index_i < 1;index_i ++){
+    for(int index_i = 8;index_i < 9;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -1156,7 +1156,8 @@ void statistic_output(struct ssd_info *ssd)
         latency_array[j]++;
     }
     qsort(latency,latency_index+1,sizeof(unsigned long long),compareULL);
-    int k_index = latency_index / 10 * 9;
+    // int k_index = latency_index / 10 * 9;
+    int k_index = 0;
     // range = (ssd->tail_latency - latency[k_index])/100;
     range = 50000000000;
     // range = 100000000;
