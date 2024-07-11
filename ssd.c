@@ -1156,7 +1156,8 @@ void statistic_output(struct ssd_info *ssd)
         latency_array[j]++;
     }
     qsort(latency,latency_index+1,sizeof(unsigned long long),compareULL);
-    int k_index = latency_index / 10 * 9;
+    // int k_index = latency_index / 10 * 9;
+    int k_index = 0;
     // range = (ssd->tail_latency - latency[k_index])/100;
     range = 50000000000;
     printf("range is %llu\n",range);
