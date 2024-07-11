@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 1;index_i < 2;index_i ++){
+    for(int index_i = 3;index_i < 4;index_i ++){
         printf("******************FTSP************************\n");
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
