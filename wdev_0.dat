@@ -246,6 +246,7 @@ tail latency: 24800399409
 free invalid pagenums: 113007
 ---------------------------WA---------------------------
 Write amplification: 0.951930
+Write amplification: 3453561
 buffer read hits:         11577
 buffer read miss:           396
 buffer write hits:       3018577

@@ -1303,6 +1303,7 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"free invalid pagenums: %d\n",ssd->free_invalid);
     fprintf(ssd->statisticfile,"---------------------------WA---------------------------\n");
     fprintf(ssd->statisticfile,"Write amplification: %f\n",(float)((ssd->real_written + ssd->free_invalid)*ssd->parameter->subpage_page + ssd->dram->buffer->buffer_sector_count)/ssd->total_write);
+    fprintf(ssd->statisticfile,"real written: %u\n",ssd->real_written);
     fprintf(ssd->statisticfile,"buffer read hits: %13d\n",ssd->dram->buffer->read_hit);
     fprintf(ssd->statisticfile,"buffer read miss: %13d\n",ssd->dram->buffer->read_miss_hit);
     fprintf(ssd->statisticfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
