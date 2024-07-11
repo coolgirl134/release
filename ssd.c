@@ -1141,8 +1141,8 @@ void statistic_output(struct ssd_info *ssd)
     }
     int size = 10;
     int latency_array[size];
-    int tail_latency_array[100];
-    for(int i = 0;i < 100;i ++){
+    int tail_latency_array[1000];
+    for(int i = 0;i < 1000;i ++){
         tail_latency_array[i] = 0;
     }
     for(int i = 0;i < size; i++){
@@ -1156,14 +1156,21 @@ void statistic_output(struct ssd_info *ssd)
         latency_array[j]++;
     }
     qsort(latency,latency_index+1,sizeof(unsigned long long),compareULL);
-    int k_index = latency_index / 10 * 9;
+    // int k_index = latency_index / 10 * 9;
+    int k_index = 0;
     // range = (ssd->tail_latency - latency[k_index])/100;
-    range = 6000000000;
+    // range = 50000000000;
+    range = 100000000;
     printf("range is %llu\n",range);
+    unsigned long long min = __UINT_LEAST64_MAX__;
     for(int i = k_index;i <= latency_index;i++){
-        int j = latency[i]/range + (latency[i]%range)/100000000;
-        if(j >= 100){
-            tail_latency_array[99]++;
+        // int j = latency[i]/range + (latency[i]%range)/100000000;
+        int j = latency[i]/range;
+        if(latency[i] < min){
+            min = latency[i];
+        }
+        if(j >= 1000){
+            tail_latency_array[999]++;
         }else{
             tail_latency_array[j]++;
         }
@@ -1178,7 +1185,7 @@ void statistic_output(struct ssd_info *ssd)
             latency_array[i] += latency_array[i - 1];
         }
     }
-    for(int i = 0;i < 100;i ++){
+    for(int i = 0;i < 1000;i ++){
         if(i != 0){
             tail_latency_array[i] += tail_latency_array[i - 1];
         }
@@ -1254,7 +1261,7 @@ void statistic_output(struct ssd_info *ssd)
     }
     fprintf(ssd->statisticfile,"---------------------------tail latency---------------------------\n");	
     fprintf(ssd->statisticfile,"start is %llu rang is %llu\n",latency[k_index],range);
-    for(int i = 0;i < 100; i++){
+    for(int i = 0;i < 1000; i++){
         fprintf(ssd->statisticfile,"%f\n",(float)tail_latency_array[i]/(latency_index-k_index + 1));
     }
     fprintf(ssd->statisticfile,"\n");
