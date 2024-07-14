@@ -41,7 +41,7 @@ int  main()
 #endif
 
     
-    for(int index_i = 8;index_i < 9;index_i ++){
+    for(int index_i = 3;index_i < 4;index_i ++){
         struct ssd_info *ssd;
         ssd=(struct ssd_info*)malloc(sizeof(struct ssd_info));
         alloc_assert(ssd,"ssd");
@@ -1320,6 +1320,7 @@ void statistic_output(struct ssd_info *ssd)
     fprintf(ssd->statisticfile,"buffer write hits: %13d\n",ssd->dram->buffer->write_hit);
     fprintf(ssd->statisticfile,"buffer write miss: %13d\n",ssd->dram->buffer->write_miss_hit);
     fprintf(ssd->statisticfile,"erase: %u\n",ssd->erase_count);
+    fprintf(ssd->statisticfile,"invalid: %u\n",ssd->invalid1);
     fprintf(ssd->statisticfile,"direct erase: %u\n",ssd->direct_erase_count);
     fprintf(ssd->statisticfile,"rewrite page num: %13d\n",ssd->gc_rewrite);
     unsigned int page_num = ssd->parameter->page_block*ssd->parameter->block_plane*ssd->parameter->plane_die*ssd->parameter->die_chip*ssd->parameter->chip_num * BITS_PER_CELL;

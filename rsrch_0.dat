@@ -100,65 +100,65 @@ the 1 channel, 1 die, 0 plane, 2048 blocks has :             0 erase operations
 the 1 channel, 1 die, 1 plane, 2048 blocks has :             0 erase operations
 ---------------------------latency array distribute---------------------------
 total latency num is 997538
-0.890772
-0.920500
-0.946310
-0.971680
-0.989727
-0.996694
-0.997795
-0.998427
-0.999038
+0.886763
+0.922440
+0.951682
+0.976335
+0.986823
+0.994325
+0.996705
+0.997970
+0.999384
 1.000000
 ---------------------------tail latency---------------------------
 start is 0 rang is 50000000000
-0.862731
-0.872886
-0.882865
-0.892602
-0.900929
-0.908266
-0.916337
-0.923796
-0.932207
-0.938918
-0.944144
-0.949432
-0.955504
-0.963238
-0.970634
-0.976440
-0.981644
-0.985547
-0.989829
-0.992981
-0.995054
-0.995986
-0.996870
-0.997139
-0.997495
-0.997719
-0.997968
-0.998199
-0.998314
-0.998402
-0.998481
-0.998535
-0.998828
-0.999027
-0.999295
-0.999492
-0.999749
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
+0.855873
+0.864186
+0.871774
+0.880795
+0.889428
+0.899278
+0.907063
+0.913777
+0.920197
+0.925020
+0.930244
+0.936912
+0.943154
+0.950165
+0.956399
+0.961899
+0.966930
+0.970900
+0.976416
+0.979908
+0.981701
+0.983097
+0.985122
+0.987477
+0.989722
+0.991604
+0.992726
+0.993758
+0.994746
+0.995418
+0.995819
+0.996454
+0.996672
+0.996867
+0.997179
+0.997489
+0.997927
+0.997970
+0.997997
+0.998116
+0.998710
+0.999129
+0.999480
+0.999566
+0.999668
+0.999727
+0.999917
 1.000000
 1.000000
 1.000000
@@ -1119,8 +1119,8 @@ HOTPROG is 4
 ---------------------------static data---------------------------
 min lsn:             0
 max lsn: 4294909952
-read count:       2725292
-program count:       6367938
+read count:       2725111
+program count:       6379696
 ---------------------------read & program sub rate---------------------------
 total program sub:      22685988
 total read sub:       2918759
@@ -1131,24 +1131,25 @@ read request count:        133625
 write request count:       1300030
 read request rate: 0.093206
 write request rate: 0.906794
-read request average size:     21.841217
-write request average size:     17.457890
+read request average size:     21.841175
+write request average size:     17.456860
 ---------------------------read & program & total & tail latency---------------------------
-read request average response time: 749373716
-write request average response time: 30379604
-read request total response time: 100135062884269
-write request total response time: 39494397607606
-total request average response time: 97394045
-tail latency: 3793491992
+read request average response time: 911580808
+write request average response time: 40433703
+read request total response time: 121809985489672
+write request total response time: 52565027277018
+total request average response time: 121629689
+tail latency: 4746653518
 ---------------------------Space utilization rate---------------------------
-free invalid pagenums: 162614
+free invalid pagenums: 206728
 ---------------------------WA---------------------------
-Write amplification: 0.947031
+Write amplification: 0.954809
 buffer read hits:          5140
 buffer read miss:           880
 buffer write hits:       4695135
 buffer write miss:      12496453
 erase: 0
+invalid: 32356
 direct erase: 0
 rewrite page num:             0
 Read 0: count is 0.989315

@@ -645,7 +645,6 @@ void process_2_write(struct ssd_info* ssd,int channel,int chip,int die,int plane
             printf("lpn from find_location is %d and its ppn is%d\n",lpn1,ppn1);
             printf("Error in get_ppn() from find_location\n");
         }
-
         ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].page_head[location->page].valid_state=0;             /*表示某一页失效，同时标记valid和free状态都为0*/
         ssd->channel_head[location->channel].chip_head[location->chip].die_head[location->die].plane_head[location->plane].blk_head[location->block].page_head[location->page].free_state=0;              /*表示某一页失效，同时标记valid和free状态都为0*/
         // if(ppn == 1048829){

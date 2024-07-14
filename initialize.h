@@ -221,7 +221,7 @@ struct ssd_info{
     unsigned long long read_avg;                    //记录用于计算读�?�求平均响应时间的时�??
 
     unsigned long long update_write;
-
+    unsigned long long invalid1;
     unsigned int total_write;           //记录基于子�?�求的写操作�??�??
     unsigned int total_read;            //记录基于子�?�求的�?�操作个�??
     unsigned long long tail_latency;          // 记录尾延�??

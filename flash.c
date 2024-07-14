@@ -1153,9 +1153,9 @@ Status write_page(struct ssd_info *ssd,unsigned int channel,unsigned int chip,un
 }
 
 int typeofdata(struct ssd_info* ssd,unsigned int lpn){
-    if(ssd->dram->map->map_entry[lpn].read_count > HOTREAD){
-        return R_MT;
-    }else return R_LC;
+    if(ssd->dram->map->map_entry[lpn].write_count > HOTPROG){
+        return R_LC;
+    }else return R_MT;
 }
 
 /**********************************************
@@ -2156,6 +2156,7 @@ void process_invalid(struct ssd_info* ssd,int plane){
         printf("cell bigger than 63\n");
     }
     int page = cell*BITS_PER_CELL;
+    ssd->invalid1+=2;
     make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,block,page);
     make_invalid(ssd,loc->channel,loc->chip,loc->die,loc->plane,block,page + 1);
     ssd->channel_head[loc->channel].chip_head[loc->chip].die_head[loc->die].plane_head[loc->plane].free_page-=2;
